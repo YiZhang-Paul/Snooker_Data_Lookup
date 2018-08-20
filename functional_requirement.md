@@ -26,7 +26,7 @@
 
 ### _1.1.3 requirement details_
 
-> users should be presented with __predefined__ list of all available years to choose from, and the page will display world ranking for chosen year; when data is unavailable (e.g. invalid year or failure to retrieve data from server), users should be notified and instructed to retry or choose another year.
+> users should be presented with __predefined__ list of all available years to choose from, and the page will display world ranking for chosen year (otherwise always display current year ranking on default); when data is unavailable (e.g. invalid year or failure to retrieve data from server), users should be notified and instructed to retry or choose another year.
 
 ## 1.2 Display all/part of rankings per page
 

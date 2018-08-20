@@ -11,11 +11,11 @@ export class LiveRankingFetcherService implements ICanFetchRanking {
 
     constructor(private httpClient: HttpClient) { }
 
-    public fetch(year: number, type: string = 'MoneyRankings'): Observable<string> {
+    public fetch(year: number, type: string = 'MoneyRankings'): Observable<object> {
 
-        const url = `api.snooker.org/?rt=${type}&s=${year}`;
+        const url = `http://api.snooker.org/?rt=${type}&s=${year}`;
 
-        return this.httpClient.get<string>(url).pipe(
+        return this.httpClient.get<object>(url).pipe(
 
             catchError(error => of(null))
         );

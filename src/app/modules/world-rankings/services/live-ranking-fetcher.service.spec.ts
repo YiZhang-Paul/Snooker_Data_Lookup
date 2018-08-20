@@ -29,14 +29,14 @@ describe('LiveRankingFetcherService', () => {
 
     it('should return JSON response on success', () => {
 
-        const response = '{ID: 1, MatchID: 1, Type: "MoneyRankings"}';
+        const response = {ID: 1, MatchID: 1, Type: "MoneyRankings"};
 
         fetcher.fetch(2015, 'MoneyRankings').subscribe(data => {
 
             expect(data).toEqual(response);
         });
 
-        httpTestingController.expectOne('api.snooker.org/?rt=MoneyRankings&s=2015').flush(response);
+        httpTestingController.expectOne('http://api.snooker.org/?rt=MoneyRankings&s=2015').flush(response);
     });
 
     it('should return null on failure', () => {
@@ -46,6 +46,6 @@ describe('LiveRankingFetcherService', () => {
             expect(data).toBeNull();
         });
 
-        httpTestingController.expectOne('api.snooker.org/?rt=MoneyRankings&s=2015').error(null);
+        httpTestingController.expectOne('http://api.snooker.org/?rt=MoneyRankings&s=2015').error(null);
     });
 });
