@@ -1,18 +1,24 @@
 <h1>World Rankings {{ year }}</h1>
 <ng-container *ngIf="rankings.length > 0">
-<app-group-size-selector></app-group-size-selector>
-<table border="1">
-    <tr>
-        <th>Rank</th>
-        <th>Player</th>
-        <th>Nationality</th>
-        <th>Winnings</th>
-    </tr>
-    <tr *ngFor="let ranking of rankings">
-        <td>{{ ranking.position }}</td>
-        <td>{{ ranking.playerId }}</td>
-        <td>3</td>
-        <td>{{ ranking.earnings }}</td>
-    </tr>
-</table>
+    <app-group-size-selector
+        [currentGroup]="groupIndex + 1"
+        [totalGroups]="totalGroups"
+        [size]="rankings.length"
+        (groupChange)="onGroupChanged($event)"
+        (sizeSelect)="onSizeSelected($event)">
+    </app-group-size-selector>
+    <table border="1">
+        <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Nationality</th>
+            <th>Winnings</th>
+        </tr>
+        <tr *ngFor="let ranking of currentGroup">
+            <td>{{ ranking.position }}</td>
+            <td>{{ ranking.playerId }}</td>
+            <td>3</td>
+            <td>{{ ranking.earnings }}</td>
+        </tr>
+    </table>
 </ng-container>

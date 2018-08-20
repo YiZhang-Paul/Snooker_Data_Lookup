@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { IRankItem } from '../services/rank-item.interface';
@@ -7,13 +7,21 @@ import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.serv
 import { RankingListComponent } from './ranking-list.component';
 
 @Component({selector: 'app-group-size-selector', template: ''})
-class GroupSizeSelectorComponent {}
+class GroupSizeSelectorComponent {
+
+    @Input() currentGroup: number;
+    @Input() totalGroups: number;
+    @Input() size: number;
+    @Output() groupChange = new EventEmitter<number>();
+    @Output() sizeSelect = new EventEmitter<number>();
+}
 
 describe('RankingListComponent', () => {
     let fixture: ComponentFixture<RankingListComponent>;
     let component: RankingListComponent;
     let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
     let fetchSpy: jasmine.Spy;
+
     const rankings: IRankItem[] = [
 
         { position: 1, playerId: 100, earnings: 150, type: 'MoneyRankings' },
@@ -60,7 +68,7 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        expect(component.rankings.length).toEqual(2);
+        expect(component.rankings.length).toEqual(rankings.length);
         expect(component.rankings[0].playerId).toEqual(100);
         expect(component.rankings[1].playerId).toEqual(200);
     });
@@ -82,11 +90,72 @@ describe('RankingListComponent', () => {
     it('should have empty ranking list when data is not available', () => {
 
         fetchSpy = fetcher.fetch.and.returnValue(of(null));
-
         expect(component.rankings.length).toEqual(0);
 
         fixture.detectChanges();
-
         expect(component.rankings.length).toEqual(0);
+    });
+
+    it('should display all players when invalid group size is received', () => {
+
+        fixture.detectChanges();
+        expect(component.rankings.length).toEqual(rankings.length);
+
+        component.onSizeSelected(-1);
+        expect(component.currentGroup.length).toEqual(component.rankings.length);
+        expect(component.totalGroups).toEqual(1);
+
+        component.onSizeSelected(component.rankings.length + 1);
+        expect(component.currentGroup.length).toEqual(component.rankings.length);
+        expect(component.totalGroups).toEqual(1);
+    });
+
+    it('should display a group of players when valid group size is received', () => {
+
+        fixture.detectChanges();
+        expect(component.rankings.length).toEqual(rankings.length);
+
+        component.onSizeSelected(rankings.length / 2);
+        expect(component.currentGroup.length).toEqual(rankings.length / 2);
+        expect(component.totalGroups).toEqual(2);
+    });
+
+    it('should move to previous/next group when possible', () => {
+
+        fixture.detectChanges();
+
+        component.onSizeSelected(rankings.length / 2);
+        expect(component.groupIndex).toEqual(0);
+
+        component.onGroupChanged(1);
+        expect(component.groupIndex).toEqual(1);
+
+        component.onGroupChanged(-1);
+        expect(component.groupIndex).toEqual(0);
+    });
+
+    it('should stop moving to previous group upon reaching the start of list', () => {
+
+        fixture.detectChanges();
+
+        component.onSizeSelected(rankings.length / 2);
+        expect(component.groupIndex).toEqual(0);
+
+        component.onGroupChanged(-1);
+        expect(component.groupIndex).toEqual(0);
+    });
+
+    it('should stop moving to next group upon reaching the end of list', () => {
+
+        fixture.detectChanges();
+
+        component.onSizeSelected(rankings.length / 2);
+        expect(component.groupIndex).toEqual(0);
+
+        component.onGroupChanged(1);
+        expect(component.groupIndex).toEqual(1);
+
+        component.onGroupChanged(1);
+        expect(component.groupIndex).toEqual(1);
     });
 });

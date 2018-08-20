@@ -11,7 +11,7 @@ export class GroupSizeSelectorComponent {
     @Input() totalGroups = 1;
     @Input() size: number;
     @Output() groupChange = new EventEmitter<number>();
-    @Output() select = new EventEmitter<number>();
+    @Output() sizeSelect = new EventEmitter<number>();
 
     constructor() { }
 
@@ -20,18 +20,18 @@ export class GroupSizeSelectorComponent {
         this.groupChange.emit(direction > 0 ? 1 : -1);
     }
 
-    public onSelect(size: number = null): void {
+    public onSizeSelect(size: number = null): void {
 
         if (size !== null) {
 
-            this.select.emit(size);
+            this.sizeSelect.emit(size);
 
             return;
         }
 
         if (!isNaN(this.size)) {
 
-            this.select.emit(this.size);
+            this.sizeSelect.emit(this.size);
         }
     }
 }

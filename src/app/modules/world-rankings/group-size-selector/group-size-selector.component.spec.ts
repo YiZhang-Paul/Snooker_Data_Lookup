@@ -11,7 +11,7 @@ import { GroupSizeSelectorComponent } from '../group-size-selector/group-size-se
             [totalGroups]="totalGroups"
             [size]="150"
             (groupChange)="onGroupChanged($event)"
-            (select)="onSizeSelected($event)">
+            (sizeSelect)="onSizeSelected($event)">
         </app-group-size-selector>
     `
 })
