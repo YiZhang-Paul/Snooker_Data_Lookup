@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { IRankItem } from '../services/rank-item.interface';
 import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.serv
 export class RankingListComponent implements OnInit {
 
     private _year = new Date().getFullYear();
-    private _rankings: object[] = [];
+    private _rankings: IRankItem[] = [];
 
     constructor(private fetcher: LiveRankingFetcherService) { }
 
@@ -19,7 +19,7 @@ export class RankingListComponent implements OnInit {
         return this._year;
     }
 
-    get rankings(): object[] {
+    get rankings(): IRankItem[] {
 
         return this._rankings;
     }
@@ -30,9 +30,8 @@ export class RankingListComponent implements OnInit {
 
             if (rankings !== null) {
 
-                this._rankings = rankings as object[];
+                this._rankings = rankings;
             }
         });
     }
-
 }

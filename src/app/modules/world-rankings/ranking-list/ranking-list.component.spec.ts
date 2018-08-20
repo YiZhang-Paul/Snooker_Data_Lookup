@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { IRankItem } from '../services/rank-item.interface';
 import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.service';
 import { RankingListComponent } from './ranking-list.component';
 
@@ -9,7 +10,11 @@ describe('RankingListComponent', () => {
     let component: RankingListComponent;
     let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
     let fetchSpy: jasmine.Spy;
-    const rankings = [{ ID: 1, PlayerID: 1 }, { ID: 2, PlayerID: 2 }];
+    const rankings: IRankItem[] = [
+
+        { position: 1, playerId: 100, earnings: 150, type: 'MoneyRankings' },
+        { position: 2, playerId: 200, earnings: 250, type: 'MoneyRankings' }
+    ];
 
     beforeEach(() => {
 
@@ -52,8 +57,8 @@ describe('RankingListComponent', () => {
         fixture.detectChanges();
 
         expect(component.rankings.length).toEqual(2);
-        expect(component.rankings[0]['ID']).toEqual(1);
-        expect(component.rankings[1]['ID']).toEqual(2);
+        expect(component.rankings[0].playerId).toEqual(100);
+        expect(component.rankings[1].playerId).toEqual(200);
     });
 
     it('should display ranking table when data is available', () => {
@@ -61,8 +66,13 @@ describe('RankingListComponent', () => {
         fixture.detectChanges();
 
         const rows = fixture.debugElement.queryAll(By.css('tr'));
+        const columns = rows[1].queryAll(By.css('td'));
         // including table header
         expect(rows.length).toEqual(rankings.length + 1);
+        expect(columns.length).toEqual(4);
+        expect(columns[0].nativeElement.textContent).toEqual('1');
+        expect(columns[1].nativeElement.textContent).toEqual('100');
+        expect(columns[3].nativeElement.textContent).toEqual('150');
     });
 
     it('should have empty ranking list when data is not available', () => {

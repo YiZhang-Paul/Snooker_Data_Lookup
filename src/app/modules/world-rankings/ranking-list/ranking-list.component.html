@@ -8,10 +8,10 @@
         <th>Winnings</th>
     </tr>
     <tr *ngFor="let ranking of rankings">
-        <td>{{ ranking['Position'] }}</td>
-        <td>{{ ranking['PlayerID'] }}</td>
+        <td>{{ ranking.position }}</td>
+        <td>{{ ranking.playerId }}</td>
         <td>3</td>
-        <td>{{ ranking['Sum'] }}</td>
+        <td>{{ ranking.earnings }}</td>
     </tr>
 </table>
 </ng-container>

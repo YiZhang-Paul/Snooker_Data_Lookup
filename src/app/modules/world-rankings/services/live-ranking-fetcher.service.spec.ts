@@ -1,12 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
+import { IRankItem } from './rank-item.interface';
 import { LiveRankingFetcherService } from './live-ranking-fetcher.service';
 
 describe('LiveRankingFetcherService', () => {
 
     let httpTestingController: HttpTestingController;
     let fetcher: LiveRankingFetcherService;
+    const url = 'http://api.snooker.org/?rt=MoneyRankings&s=2015';
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -27,25 +28,29 @@ describe('LiveRankingFetcherService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('should return JSON response on success', () => {
+    it('should return rank items response on success', () => {
 
-        const response = {ID: 1, MatchID: 1, Type: "MoneyRankings"};
+        const rawData: object[] = [{ Position: 1, PlayerID: 1, Sum: 1, Type: "MoneyRankings" }];
+        const response: IRankItem[] = [{ position: 1, playerId: 1, earnings: 1, type: 'MoneyRankings' }];
 
         fetcher.fetch(2015, 'MoneyRankings').subscribe(data => {
 
-            expect(data).toEqual(response);
+            expect(JSON.stringify(data)).toEqual(JSON.stringify(response));
         });
 
-        httpTestingController.expectOne('http://api.snooker.org/?rt=MoneyRankings&s=2015').flush(response);
+        httpTestingController.expectOne(url).flush(rawData);
     });
 
-    it('should return null on failure', () => {
+    it('should retry 2 times before returning null on failure', () => {
 
         fetcher.fetch(2015, 'MoneyRankings').subscribe(data => {
 
             expect(data).toBeNull();
         });
 
-        httpTestingController.expectOne('http://api.snooker.org/?rt=MoneyRankings&s=2015').error(null);
+        for(let i = 0; i < 3; i++) {
+
+            httpTestingController.expectOne(url).error(null);
+        }
     });
 });
