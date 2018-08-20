@@ -15,9 +15,9 @@ export class LiveRankingFetcherService implements ICanFetchRanking {
 
     protected toRankItems(items: object[]): IRankItem[] {
 
-        let rankItems: IRankItem[] = [];
+        const rankItems: IRankItem[] = [];
 
-        for(let item of items) {
+        for (const item of items) {
 
             rankItems.push(new RankItem(
 

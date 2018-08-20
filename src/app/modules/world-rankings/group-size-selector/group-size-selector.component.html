@@ -1,0 +1,6 @@
+<a (click)="onGroupChange(-1)" class="previous">&lt;&lt;</a>
+<span>Page {{ currentGroup }} of {{ totalGroups }}</span>
+<a (click)="onGroupChange(1)" class="next">&gt;&gt;</a>
+<input type="text" maxlength=4 (keyup.enter)="onSelect()" [(ngModel)]="size" class="sizeInput">
+<a (click)="onSelect()" class="showSize">Show</a>
+<a (click)="onSelect(-1)" class="showAll">All</a>

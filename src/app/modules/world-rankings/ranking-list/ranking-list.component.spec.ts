@@ -1,9 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { IRankItem } from '../services/rank-item.interface';
 import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.service';
 import { RankingListComponent } from './ranking-list.component';
+
+@Component({selector: 'app-group-size-selector', template: ''})
+class GroupSizeSelectorComponent {}
 
 describe('RankingListComponent', () => {
     let fixture: ComponentFixture<RankingListComponent>;
@@ -22,7 +26,7 @@ describe('RankingListComponent', () => {
         fetchSpy = fetcher.fetch.and.returnValue(of(rankings));
 
         TestBed.configureTestingModule({
-            declarations: [RankingListComponent],
+            declarations: [RankingListComponent, GroupSizeSelectorComponent],
             providers: [
                 { provide: LiveRankingFetcherService, useValue: fetcher }
             ]
