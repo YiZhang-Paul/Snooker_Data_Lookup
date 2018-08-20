@@ -20,5 +20,5 @@ export function TriggerEventByCss(
 
 ): void {
 
-    return QueryByCss(element, css).triggerEventHandler(event, eventArgs);
+    QueryByCss(element, css).triggerEventHandler(event, eventArgs);
 }
