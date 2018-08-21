@@ -63,6 +63,19 @@ describe('RankingListComponent', () => {
         expect(fetchSpy.calls.count()).toEqual(1);
     });
 
+    it('should display all rankings when selected year changes', () => {
+
+        fixture.detectChanges();
+        component.onSizeSelected(rankings.length / 2);
+        component.onGroupChanged(1);
+        expect(component.groupIndex).toEqual(1);
+
+        const element = fixture.debugElement;
+        const payload = { target: { value: 2017 } };
+        TriggerEventByCss(element, 'select', 'change', payload);
+        expect(component.groupIndex).toEqual(0);
+    });
+
     it('fetcher should be invoked on ngOnInit', () => {
 
         expect(fetchSpy.calls.any()).toBe(false);

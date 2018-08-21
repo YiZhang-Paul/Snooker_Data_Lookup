@@ -58,6 +58,12 @@ export class RankingListComponent implements OnInit {
         this.fetchRankings();
     }
 
+    private setGroupRange(size: number): void {
+
+        this._currentIndex = 0;
+        this._groupSize = size;
+    }
+
     private fetchRankings(): void {
 
         this.fetcher.fetch(this._selectedYear).subscribe(rankings => {
@@ -65,7 +71,7 @@ export class RankingListComponent implements OnInit {
             if (rankings !== null) {
 
                 this._rankings = rankings;
-                this._groupSize = this._rankings.length;
+                this.setGroupRange(rankings.length);
             }
         });
     }
@@ -115,7 +121,6 @@ export class RankingListComponent implements OnInit {
             size = this._rankings.length;
         }
 
-        this._currentIndex = 0;
-        this._groupSize = Number(size);
+        this.setGroupRange(Number(size));
     }
 }
