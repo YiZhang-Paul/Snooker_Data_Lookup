@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { TriggerEventByCss } from '../../../../testing/custom-test-utilities';
 import { IRankItem } from '../services/rank-item.interface';
 import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.service';
 import { RankingListComponent } from './ranking-list.component';
@@ -50,7 +51,16 @@ describe('RankingListComponent', () => {
 
     it('should default to current year', () => {
 
-        expect(component.year).toEqual(new Date().getFullYear());
+        expect(component.selectedYear).toEqual(new Date().getFullYear());
+    });
+
+    it('should fetch new rankings when selected year changes', () => {
+
+        const element = fixture.debugElement;
+        const payload = { target: { value: 2017 } };
+        TriggerEventByCss(element, 'select', 'change', payload);
+
+        expect(fetchSpy.calls.count()).toEqual(1);
     });
 
     it('fetcher should be invoked on ngOnInit', () => {

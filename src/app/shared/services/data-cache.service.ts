@@ -18,7 +18,7 @@ class CacheItem {
 export class DataCacheService {
 
     private _cache = new Map<string, CacheItem>();
-    private _lifeTime = 3600000;
+    private _lifeTime = 1800000;
 
     constructor() { }
 

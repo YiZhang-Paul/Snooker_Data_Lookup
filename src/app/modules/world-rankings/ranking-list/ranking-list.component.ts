@@ -9,16 +9,26 @@ import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.serv
 })
 export class RankingListComponent implements OnInit {
 
-    private _year = new Date().getFullYear();
+    private _selectedYear = new Date().getFullYear();
     private _currentIndex = 0;
     private _groupSize: number;
     private _rankings: IRankItem[] = [];
 
     constructor(private fetcher: LiveRankingFetcherService) { }
 
-    get year(): number {
+    get selectedYear(): number {
 
-        return this._year;
+        return this._selectedYear;
+    }
+
+    get validYears(): number[] {
+
+        const startYear = 2013;
+        const currentYear = new Date().getFullYear();
+        const totalYears = currentYear - startYear + 1;
+        const result = new Array(totalYears).fill(0);
+
+        return result.map((year, index) => startYear + index);
     }
 
     get rankings(): IRankItem[] {
@@ -45,7 +55,12 @@ export class RankingListComponent implements OnInit {
 
     ngOnInit() {
 
-        this.fetcher.fetch(this._year).subscribe(rankings => {
+        this.fetchRankings();
+    }
+
+    private fetchRankings(): void {
+
+        this.fetcher.fetch(this._selectedYear).subscribe(rankings => {
 
             if (rankings !== null) {
 
@@ -53,6 +68,12 @@ export class RankingListComponent implements OnInit {
                 this._groupSize = this._rankings.length;
             }
         });
+    }
+
+    public onYearSelected(year: string): void {
+
+        this._selectedYear = Number(year);
+        this.fetchRankings();
     }
 
     private toPreviousGroup(): void {

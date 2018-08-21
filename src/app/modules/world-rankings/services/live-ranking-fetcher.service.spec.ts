@@ -30,7 +30,7 @@ describe('LiveRankingFetcherService', () => {
 
     it('should return rank items response on success', () => {
 
-        const rawData: object[] = [{ Position: 1, PlayerID: 1, Sum: 1, Type: "MoneyRankings" }];
+        const rawData: object[] = [{ Position: 1, PlayerID: 1, Sum: 1, Type: 'MoneyRankings' }];
         const response: IRankItem[] = [{ position: 1, playerId: 1, earnings: 1, type: 'MoneyRankings' }];
 
         fetcher.fetch(2015, 'MoneyRankings').subscribe(data => {
@@ -48,7 +48,7 @@ describe('LiveRankingFetcherService', () => {
             expect(data).toBeNull();
         });
 
-        for(let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
 
             httpTestingController.expectOne(url).error(null);
         }
