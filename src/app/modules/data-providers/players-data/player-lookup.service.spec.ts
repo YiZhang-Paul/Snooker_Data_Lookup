@@ -67,7 +67,7 @@ describe('PlayerLookupService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('should fetch players from server upon new request', () => {
+    it('getPlayers() should fetch players from server upon new request', () => {
 
         playerLookup.getPlayers(year).subscribe(data => {
 
@@ -82,7 +82,7 @@ describe('PlayerLookupService', () => {
         expect(fetchSpy.calls.count()).toEqual(1);
     });
 
-    it('should cache player data and return cached data on same request', () => {
+    it('getPlayers() should cache player data and return cached data on same request', () => {
 
         playerLookup.getPlayers(year).subscribe(data => {
 
@@ -108,6 +108,72 @@ describe('PlayerLookupService', () => {
             expect(data).toBeNull();
         });
 
+        expect(fetchFailedSpy.calls.count()).toEqual(1);
+    });
+
+    it('getPlayer() should fetch players from server upon new request', () => {
+
+        const target = players[1];
+
+        playerLookup.getPlayer(year, target.id).subscribe(data => {
+
+            expect(data.id).toEqual(target.id);
+            expect(data.nationality).toEqual(target.nationality);
+            expect(data.shortName).toEqual(target.shortName);
+        });
+
+        expect(fetchSpy.calls.count()).toEqual(1);
+    });
+
+    it('getPlayer() should cache player data and return cached data on same request', () => {
+
+        const target = players[1];
+
+        playerLookup.getPlayer(year, target.id).subscribe(data => {
+
+            expect(data.id).toEqual(target.id);
+            expect(data.nationality).toEqual(target.nationality);
+            expect(data.shortName).toEqual(target.shortName);
+
+            playerLookup.getPlayer(year, target.id).subscribe(cachedData => {
+
+                expect(cachedData.id).toEqual(data.id);
+                expect(cachedData.nationality).toEqual(data.nationality);
+                expect(cachedData.shortName).toEqual(data.shortName);
+            });
+        });
+        // no more subsequent requests after the first request
+        expect(fetchSpy.calls.count()).toEqual(1);
+    });
+
+    it('getPlayer() should return observable of null when failed to retrieve new data', () => {
+
+        const fetchFailedSpy = fetcher.fetch.and.returnValue(of(null));
+
+        playerLookup.getPlayer(year, players[0].id).subscribe(data => {
+
+            expect(data).toBeNull();
+        });
+
+        expect(fetchFailedSpy.calls.count()).toEqual(1);
+    });
+
+    it('getPlayer() should return observable of null when data is cached but without target player', () => {
+
+        const cachedPlayer = players[0];
+        const nonExistentPlayer = players[1];
+        const fetchFailedSpy = fetcher.fetch.and.returnValue(of([cachedPlayer]));
+
+        playerLookup.getPlayer(year, cachedPlayer.id).subscribe(data => {
+
+            expect(data.id).toEqual(cachedPlayer.id);
+            // same year, but requesting a non-existent player
+            playerLookup.getPlayer(year, nonExistentPlayer.id).subscribe(cachedData => {
+
+                expect(cachedData).toBeNull();
+            });
+        });
+        // no more subsequent requests after the first request
         expect(fetchFailedSpy.calls.count()).toEqual(1);
     });
 });

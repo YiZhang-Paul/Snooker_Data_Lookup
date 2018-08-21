@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { LivePlayerFetcherService } from './live-player-fetcher.service';
 
@@ -61,6 +61,24 @@ export class PlayerLookupService {
 
     public getPlayer(year: number, id: number): Observable<IPlayer> {
 
-        return null;
+        if (this._lookup.has(year)) {
+
+            const players = this._lookup.get(year);
+
+            return of(players.has(id) ? players.get(id) : null);
+        }
+
+        return this.loadPlayers(year).pipe(
+
+            switchMap(players => {
+
+                if (players === null) {
+
+                    return of(null);
+                }
+
+                return of(players.find(player => player.id === id));
+            })
+        );
     }
 }
