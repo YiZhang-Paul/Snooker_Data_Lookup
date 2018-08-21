@@ -43,12 +43,14 @@ describe('LiveRankingFetcherService', () => {
 
     it('should retry 2 times before returning null on failure', () => {
 
+        const totalRetries = 2;
+
         fetcher.fetch(2015, 'MoneyRankings').subscribe(data => {
 
             expect(data).toBeNull();
         });
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < totalRetries + 1; i++) {
 
             httpTestingController.expectOne(url).error(null);
         }
