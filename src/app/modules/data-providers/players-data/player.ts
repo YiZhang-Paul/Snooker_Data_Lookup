@@ -21,3 +21,24 @@ export class Player implements IPlayer {
 
     ) { }
 }
+
+export function recordToPlayer(record: object): IPlayer {
+
+    return new Player(
+
+        record['ID'],
+        record['FirstName'],
+        record['MiddleName'],
+        record['LastName'],
+        record['ShortName'],
+        record['Born'],
+        record['Sex'],
+        record['Nationality'],
+        record['Photo'],
+        record['BioPage'],
+        record['URL'],
+        record['Twitter'],
+        record['FirstSeasonAsPro'],
+        record['LastSeasonAsPro']
+    );
+}

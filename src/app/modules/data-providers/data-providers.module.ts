@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LiveRankingFetcherService } from './rankings-data/live-ranking-fetcher.service';
 import { LivePlayerFetcherService } from './players-data/live-player-fetcher.service';
+import { PlayerLookupService } from './players-data/player-lookup.service';
 
 @NgModule({
     imports: [
@@ -11,7 +12,8 @@ import { LivePlayerFetcherService } from './players-data/live-player-fetcher.ser
     declarations: [],
     providers: [
         LiveRankingFetcherService,
-        LivePlayerFetcherService
+        LivePlayerFetcherService,
+        PlayerLookupService
     ]
 })
 export class DataProvidersModule { }

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, retry, switchMap } from 'rxjs/operators';
 import { ICanFetchPlayer } from './can-fetch-player.interface';
 import { IPlayer } from './player.interface';
-import { Player } from './player';
+import { recordToPlayer } from './player';
 
 @Injectable({
     providedIn: 'root'
@@ -19,23 +19,7 @@ export class LivePlayerFetcherService implements ICanFetchPlayer {
 
         for (const record of records) {
 
-            players.push(new Player(
-
-                record['ID'],
-                record['FirstName'],
-                record['MiddleName'],
-                record['LastName'],
-                record['ShortName'],
-                record['Born'],
-                record['Sex'],
-                record['Nationality'],
-                record['Photo'],
-                record['BioPage'],
-                record['URL'],
-                record['Twitter'],
-                record['FirstSeasonAsPro'],
-                record['LastSeasonAsPro']
-            ));
+            players.push(recordToPlayer(record));
         }
 
         return players;
