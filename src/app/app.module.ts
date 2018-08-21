@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DataProvidersModule } from './modules/data-providers/data-providers.module';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -16,6 +17,7 @@ import { CachingInterceptorService } from './shared/interceptors/caching-interce
     imports: [
         BrowserModule,
         HttpClientModule,
+        DataProvidersModule,
         AppRoutingModule
     ],
     providers: [

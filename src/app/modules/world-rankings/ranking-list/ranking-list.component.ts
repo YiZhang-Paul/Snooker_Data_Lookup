@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IRankItem } from '../services/rank-item.interface';
-import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.service';
+import { IRankItem } from '../../data-providers/rankings-data/rank-item.interface';
+import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 
 @Component({
     selector: 'app-ranking-list',

@@ -3,8 +3,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { TriggerEventByCss } from '../../../../testing/custom-test-utilities';
-import { IRankItem } from '../services/rank-item.interface';
-import { LiveRankingFetcherService } from '../services/live-ranking-fetcher.service';
+import { IRankItem } from '../../data-providers/rankings-data/rank-item.interface';
+import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 import { RankingListComponent } from './ranking-list.component';
 
 @Component({selector: 'app-group-size-selector', template: ''})
