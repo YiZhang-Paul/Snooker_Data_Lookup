@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry, switchMap } from 'rxjs/operators';
-import { ICanFetchRanking } from './can-fetch-ranking.interface';
 import { IRankData } from './rank-data.interface';
 import { RankData } from './rank-data';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LiveRankingFetcherService implements ICanFetchRanking {
+export class LiveRankingFetcherService {
 
     constructor(private httpClient: HttpClient) { }
 
