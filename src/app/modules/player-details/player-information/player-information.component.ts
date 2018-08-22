@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
@@ -12,7 +11,7 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 })
 export class PlayerInformationComponent implements OnInit {
 
-    private _player$: Observable<IPlayer>;
+    private _player: IPlayer;
 
     constructor(
 
@@ -21,14 +20,14 @@ export class PlayerInformationComponent implements OnInit {
 
     ) { }
 
-    get player$(): Observable<IPlayer> {
+    get player(): IPlayer {
 
-        return this._player$;
+        return this._player;
     }
 
     ngOnInit() {
 
-        this._player$ = this.route.parent.paramMap.pipe(
+        this.route.parent.paramMap.pipe(
 
             switchMap(params => {
 
@@ -37,6 +36,10 @@ export class PlayerInformationComponent implements OnInit {
 
                 return this.lookup.getPlayer(year, id);
             })
-        );
+
+        ).subscribe(player => {
+
+            this._player = player;
+        });
     }
 }

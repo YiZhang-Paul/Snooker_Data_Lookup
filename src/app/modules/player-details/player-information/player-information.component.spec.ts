@@ -1,27 +1,36 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { Pipe, PipeTransform } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActivatedRouteStub } from '../../../../testing/activated-route-stub';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerInformationComponent } from './player-information.component';
+import { first } from 'rxjs/operators';
+
+@Pipe({ name: 'urlFormatter' })
+class UrlFormatterPipe implements PipeTransform {
+
+    transform(url: string): string { return ''; }
+}
 
 describe('PlayerInformationComponent', () => {
 
     const player: IPlayer = {
 
         id: 293,
-        firstName: '',
-        middleName: '',
-        lastName: '',
+        firstName: 'John',
+        middleName: 'K',
+        lastName: 'Doe',
         shortName: 'John Doe',
-        dateOfBirth: '',
-        sex: '',
+        dateOfBirth: '1999-12-12',
+        sex: 'M',
         nationality: 'three-body',
-        photo: '',
-        bioPage: '',
-        website: '',
-        twitter: '',
+        photo: 'photo.jpg',
+        bioPage: 'bio.com',
+        website: 'site.com',
+        twitter: '@kDoe',
         turnedPro: 2016,
         lastSeasonPlayed: 2018
     };
@@ -41,7 +50,7 @@ describe('PlayerInformationComponent', () => {
         setupGetPlayerSpy(year, id, player);
 
         TestBed.configureTestingModule({
-            declarations: [PlayerInformationComponent],
+            declarations: [PlayerInformationComponent, UrlFormatterPipe],
             providers: [
                 { provide: ActivatedRoute, useValue: route },
                 { provide: PlayerLookupService, useValue: lookup }
@@ -62,10 +71,7 @@ describe('PlayerInformationComponent', () => {
 
         fixture.detectChanges();
 
-        component.player$.subscribe(data => {
-
-            expect(data).toEqual(player);
-        });
+        expect(component.player).toEqual(player);
     });
 
     it('should receive null when any parent route parameter is missing', () => {
@@ -73,11 +79,33 @@ describe('PlayerInformationComponent', () => {
         route.parent = new ActivatedRouteStub({ id, bar: 1 });
         fixture.detectChanges();
 
-        component.player$.subscribe(data => {
-
-            expect(data).toBeNull();
-        });
+        expect(component.player).toBeNull();
     });
+
+    it('should display information properly', () => {
+
+        fixture.detectChanges();
+
+        checkTextContent('h2', `${player.firstName} ${player.lastName}`);
+        checkTextContent('.firstName', `First Name: ${player.firstName}`);
+        checkTextContent('.middleName', `Middle Name: ${player.middleName}`);
+        checkTextContent('.lastName', `Last Name: ${player.lastName}`);
+        checkTextContent('.gender', `Gender: ${player.sex}`);
+        checkTextContent('.birth', `Date of Birth: ${player.dateOfBirth}`);
+        checkTextContent('.country', `Country of Origin: ${player.nationality}`);
+        checkTextContent('.bio', `Bio Page: ${player.bioPage}`);
+        checkTextContent('.website', `Website: ${player.website}`);
+        checkTextContent('.twitter', `Twitter: @${player.twitter}`);
+        checkTextContent('.turnedPro', `Year Turned Pro: ${player.turnedPro}`);
+        checkTextContent('.lastSeason', `Last Season Played: ${player.lastSeasonPlayed}`);
+    });
+
+    function checkTextContent(css: string, expected: string): void {
+
+        const element = fixture.debugElement.query(By.css(css));
+        const textContent = element.nativeElement.textContent;
+        expect(textContent).toEqual(expected);
+    }
 
     function setupGetPlayerSpy(expectedYear: number, expectedId: number, response: IPlayer): void {
 
