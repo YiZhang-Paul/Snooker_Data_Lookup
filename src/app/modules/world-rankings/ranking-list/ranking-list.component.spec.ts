@@ -8,7 +8,7 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { RankingListComponent } from './ranking-list.component';
-import { RouterLinkDirectiveStub } from '../../../../testing/router-link-directive-stub';
+import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 
 @Component({selector: 'app-group-size-selector', template: ''})
 class GroupSizeSelectorComponent {
@@ -24,7 +24,7 @@ describe('RankingListComponent', () => {
     let fixture: ComponentFixture<RankingListComponent>;
     let component: RankingListComponent;
     let linkDebugElements: DebugElement[];
-    let routerLinks: RouterLinkDirectiveStub[];
+    let routerLinks: RouterLinkStubDirective[];
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
     let fetchSpy: jasmine.Spy;
@@ -83,7 +83,7 @@ describe('RankingListComponent', () => {
             declarations: [
                 RankingListComponent,
                 GroupSizeSelectorComponent,
-                RouterLinkDirectiveStub
+                RouterLinkStubDirective
             ],
             providers: [
                 { provide: PlayerLookupService, useValue: playerLookup },
@@ -150,14 +150,15 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
-        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkDirectiveStub));
+        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkStubDirective));
         expect(routerLinks.length).toEqual(component.rankings.length);
+        const year = component.selectedYear;
 
         for (let i = 0; i < routerLinks.length; i++) {
 
             const realParameters = routerLinks[i].linkParams;
-            const expectedParameters = ['../players', players[i].id, { player: players[i] }];
+            const expectedParameters = ['../players', players[i].id, { year }];
             expect(JSON.stringify(realParameters)).toEqual(JSON.stringify(expectedParameters));
         }
     });

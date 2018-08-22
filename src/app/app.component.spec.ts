@@ -1,34 +1,37 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { RouterLinkDirectiveStub } from '../testing/router-link-directive-stub';
+import { RouterLinkStubDirective } from '../testing/router-link-stub-directive';
 import { AppComponent } from './app.component';
 
-@Component({selector: 'router-outlet', template: ''})
+// tslint:disable:component-selector
+@Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent { }
 
 describe('AppComponent', () => {
 
     let fixture: ComponentFixture<AppComponent>;
     let linkDebugElements: DebugElement[];
-    let routerLinks: RouterLinkDirectiveStub[];
+    let routerLinks: RouterLinkStubDirective[];
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
                 AppComponent,
-                RouterLinkDirectiveStub,
+                RouterLinkStubDirective,
                 RouterOutletStubComponent
             ],
-        }).compileComponents().then(() => {
-
-            fixture = TestBed.createComponent(AppComponent);
-            fixture.detectChanges();
-
-            linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
-            routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkDirectiveStub));
-        });
+        }).compileComponents();
     }));
+
+    beforeEach(() => {
+
+        fixture = TestBed.createComponent(AppComponent);
+        fixture.detectChanges();
+
+        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkStubDirective));
+    });
 
     it('should create the app', async(() => {
 
@@ -38,9 +41,9 @@ describe('AppComponent', () => {
 
     it('should bind to corresponding links', () => {
 
-        expect(routerLinks.length).toBe(2);
-        expect(routerLinks[0].linkParams).toBe('');
-        expect(routerLinks[1].linkParams).toBe('/rankings');
+        expect(routerLinks.length).toEqual(2);
+        expect(routerLinks[0].linkParams).toEqual('');
+        expect(routerLinks[1].linkParams).toEqual('/rankings');
     });
 
     it('should navigate to binding links on click', () => {

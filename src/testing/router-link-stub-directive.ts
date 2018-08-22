@@ -1,10 +1,13 @@
 import { Directive, Input } from '@angular/core';
 
+// tslint:disable:directive-selector
+// tslint:disable:use-host-property-decorator
+// tslint:disable:no-input-rename
 @Directive({
     selector: '[routerLink]',
     host: { '(click)': 'onClick()' }
 })
-export class RouterLinkDirectiveStub {
+export class RouterLinkStubDirective {
 
     @Input('routerLink') linkParams: string;
     private _navigatedTo: string = null;
@@ -24,7 +27,7 @@ import { NgModule } from '@angular/core';
 
 @NgModule({
     declarations: [
-        RouterLinkDirectiveStub
+        RouterLinkStubDirective
     ]
 })
 export class RouterStubsModule { }
