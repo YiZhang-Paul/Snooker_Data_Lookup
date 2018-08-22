@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { PlayerWikiComponent } from '../player-details/player-wiki/player-wiki.component';
 import { PlayerInformationComponent } from './player-information/player-information.component';
+import { PlayerStatsComponent } from './player-stats/player-stats.component';
 
 const playerDetailsRoutes: Routes = [
     {
@@ -12,6 +13,10 @@ const playerDetailsRoutes: Routes = [
             {
                 path: 'details',
                 component: PlayerInformationComponent
+            },
+            {
+                path: 'stats',
+                component: PlayerStatsComponent
             },
             {
                 path: '',

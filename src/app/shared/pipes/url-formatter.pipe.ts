@@ -9,7 +9,7 @@ export class UrlFormatterPipe implements PipeTransform {
 
         if (!/https?:\/\//.test(url)) {
 
-            url = 'https://' + url;
+            url = 'http://' + url;
         }
 
         return url;

@@ -39,7 +39,8 @@ describe('PlayerWikiComponent', () => {
 
     it('should bind to corresponding links', () => {
 
-        expect(routerLinks.length).toEqual(1);
+        expect(routerLinks.length).toEqual(2);
         expect(routerLinks[0].linkParams).toEqual('details');
+        expect(routerLinks[1].linkParams).toEqual('stats');
     });
 });
