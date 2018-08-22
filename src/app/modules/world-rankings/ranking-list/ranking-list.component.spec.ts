@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { TriggerEventByCss } from '../../../../testing/custom-test-utilities';
@@ -8,6 +8,7 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { RankingListComponent } from './ranking-list.component';
+import { RouterLinkDirectiveStub } from '../../../../testing/router-link-directive-stub';
 
 @Component({selector: 'app-group-size-selector', template: ''})
 class GroupSizeSelectorComponent {
@@ -22,6 +23,8 @@ class GroupSizeSelectorComponent {
 describe('RankingListComponent', () => {
     let fixture: ComponentFixture<RankingListComponent>;
     let component: RankingListComponent;
+    let linkDebugElements: DebugElement[];
+    let routerLinks: RouterLinkDirectiveStub[];
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
     let fetchSpy: jasmine.Spy;
@@ -77,7 +80,11 @@ describe('RankingListComponent', () => {
         fetchSpy = fetcher.fetch.and.returnValue(of(rankData));
 
         TestBed.configureTestingModule({
-            declarations: [RankingListComponent, GroupSizeSelectorComponent],
+            declarations: [
+                RankingListComponent,
+                GroupSizeSelectorComponent,
+                RouterLinkDirectiveStub
+            ],
             providers: [
                 { provide: PlayerLookupService, useValue: playerLookup },
                 { provide: LiveRankingFetcherService, useValue: fetcher }
@@ -137,6 +144,22 @@ describe('RankingListComponent', () => {
         expect(columns[1].nativeElement.textContent).toEqual(expectedName);
         expect(columns[2].nativeElement.textContent).toEqual(player.nationality);
         expect(columns[3].nativeElement.textContent).toEqual(`${data.earnings}`);
+    });
+
+    it('should setup links to player wiki pages through player names on ranking table', () => {
+
+        fixture.detectChanges();
+
+        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
+        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkDirectiveStub));
+        expect(routerLinks.length).toEqual(component.rankings.length);
+
+        for (let i = 0; i < routerLinks.length; i++) {
+
+            const realParameters = routerLinks[i].linkParams;
+            const expectedParameters = ['../players', players[i].id, { player: players[i] }];
+            expect(JSON.stringify(realParameters)).toEqual(JSON.stringify(expectedParameters));
+        }
     });
 
     it('should have empty ranking list when data is not available', () => {

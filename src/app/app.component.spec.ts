@@ -1,7 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { RouterLinkDirectiveStub } from '../testing/router-link-directive-stub'
+import { RouterLinkDirectiveStub } from '../testing/router-link-directive-stub';
 import { AppComponent } from './app.component';
 
 @Component({selector: 'router-outlet', template: ''})
@@ -45,7 +45,7 @@ describe('AppComponent', () => {
 
     it('should navigate to binding links on click', () => {
 
-        for(let i = 0; i < routerLinks.length; i++) {
+        for (let i = 0; i < routerLinks.length; i++) {
 
             expect(routerLinks[i].navigatedTo).not.toEqual(routerLinks[i].linkParams);
 

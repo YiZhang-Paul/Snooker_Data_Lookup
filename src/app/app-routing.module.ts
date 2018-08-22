@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
 
-    { path: 'rankings', loadChildren: './modules/world-rankings/world-rankings.module#WorldRankingsModule' }
+    { path: 'rankings', loadChildren: './modules/world-rankings/world-rankings.module#WorldRankingsModule' },
+    { path: 'players', loadChildren: './modules/player-details/player-details.module#PlayerDetailsModule' }
 ];
 
 @NgModule({
