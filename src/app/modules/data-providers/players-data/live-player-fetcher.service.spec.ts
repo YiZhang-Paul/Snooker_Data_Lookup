@@ -7,7 +7,10 @@ describe('LivePlayerFetcherService', () => {
 
     let httpTestingController: HttpTestingController;
     let fetcher: LivePlayerFetcherService;
-    const url = `http://api.snooker.org/?t=10&st=p&s=2017`;
+    const id = 233;
+    const year = 2017;
+    const urlById = `http://api.snooker.org/?p=${id}`;
+    const urlByYear = `http://api.snooker.org/?t=10&st=p&s=${year}`;
 
     const rawData: object[] = [{
 
@@ -64,28 +67,53 @@ describe('LivePlayerFetcherService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('should return player data response on success', () => {
+    it('fetchById() should return player data response on success', () => {
 
-        fetcher.fetch(2017).subscribe(data => {
+        fetcher.fetchById(id).subscribe(data => {
 
-            expect(JSON.stringify(data)).toEqual(JSON.stringify(response));
+            expect(JSON.stringify(data)).toEqual(JSON.stringify(response[0]));
         });
 
-        httpTestingController.expectOne(url).flush(rawData);
+        httpTestingController.expectOne(urlById).flush(rawData[0]);
     });
 
-    it('should retry 2 times before returning null on failure', () => {
+    it('fetchById() should retry 2 times before returning null on failure', () => {
 
         const totalRetries = 2;
 
-        fetcher.fetch(2017).subscribe(data => {
+        fetcher.fetchById(id).subscribe(data => {
 
             expect(data).toBeNull();
         });
 
         for (let i = 0; i < totalRetries + 1; i++) {
 
-            httpTestingController.expectOne(url).error(null);
+            httpTestingController.expectOne(urlById).error(null);
+        }
+    });
+
+    it('fetchByYear() should return player data response on success', () => {
+
+        fetcher.fetchByYear(year).subscribe(data => {
+
+            expect(JSON.stringify(data)).toEqual(JSON.stringify(response));
+        });
+
+        httpTestingController.expectOne(urlByYear).flush(rawData);
+    });
+
+    it('fetchByYear() should retry 2 times before returning null on failure', () => {
+
+        const totalRetries = 2;
+
+        fetcher.fetchByYear(year).subscribe(data => {
+
+            expect(data).toBeNull();
+        });
+
+        for (let i = 0; i < totalRetries + 1; i++) {
+
+            httpTestingController.expectOne(urlByYear).error(null);
         }
     });
 });

@@ -40,7 +40,7 @@ export class PlayerLookupService {
             return of(this._storage.get(year));
         }
 
-        return this.fetcher.fetch(year).pipe(
+        return this.fetcher.fetchByYear(year).pipe(
 
             tap(players => {
 
