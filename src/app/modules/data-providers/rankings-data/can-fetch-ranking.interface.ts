@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { IRankItem } from './rank-item.interface';
+import { IRankData } from './rank-data.interface';
 
 export interface ICanFetchRanking {
 
-    fetch(year: number, type: string): Observable<IRankItem[]>;
+    fetch(year: number, type: string): Observable<IRankData[]>;
 }

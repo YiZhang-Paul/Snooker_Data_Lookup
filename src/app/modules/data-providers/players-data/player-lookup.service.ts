@@ -9,11 +9,11 @@ import { LivePlayerFetcherService } from './live-player-fetcher.service';
 })
 export class PlayerLookupService {
 
-    private _lookup = new Map<number, Map<number, IPlayer>>();
+    private _storage = new Map<number, Map<number, IPlayer>>();
 
     constructor(private fetcher: LivePlayerFetcherService) { }
 
-    private savePlayers(year: number, players: IPlayer[]): void {
+    private toMap(players: IPlayer[]): Map<number, IPlayer> {
 
         const map = new Map<number, IPlayer>();
 
@@ -22,53 +22,47 @@ export class PlayerLookupService {
             map.set(player.id, player);
         });
 
-        this._lookup.set(year, map);
+        return map;
     }
 
-    private loadPlayers(year: number): Observable<IPlayer[]> {
+    private savePlayers(year: number, players: IPlayer[]): void {
+
+        if (players !== null) {
+
+            this._storage.set(year, this.toMap(players));
+        }
+    }
+
+    public getPlayers(year: number): Observable<Map<number, IPlayer>> {
+
+        if (this._storage.has(year)) {
+
+            return of(this._storage.get(year));
+        }
 
         return this.fetcher.fetch(year).pipe(
 
             tap(players => {
 
-                if (players !== null) {
+                this.savePlayers(year, players);
+            }),
+            switchMap(players => {
 
-                    this.savePlayers(year, players);
-                }
+                return of(players !== null ? this.toMap(players) : null);
             })
         );
     }
 
-    private toList(map: Map<number, IPlayer>): IPlayer[] {
-
-        const list: IPlayer[] = [];
-        map.forEach(player => list.push(player));
-
-        return list;
-    }
-
-    public getPlayers(year: number): Observable<IPlayer[]> {
-
-        if (this._lookup.has(year)) {
-
-            const players = this._lookup.get(year);
-
-            return of(this.toList(players));
-        }
-
-        return this.loadPlayers(year);
-    }
-
     public getPlayer(year: number, id: number): Observable<IPlayer> {
 
-        if (this._lookup.has(year)) {
+        if (this._storage.has(year)) {
 
-            const players = this._lookup.get(year);
+            const players = this._storage.get(year);
 
             return of(players.has(id) ? players.get(id) : null);
         }
 
-        return this.loadPlayers(year).pipe(
+        return this.getPlayers(year).pipe(
 
             switchMap(players => {
 
@@ -77,7 +71,7 @@ export class PlayerLookupService {
                     return of(null);
                 }
 
-                return of(players.find(player => player.id === id));
+                return of(players.has(id) ? players.get(id) : null);
             })
         );
     }

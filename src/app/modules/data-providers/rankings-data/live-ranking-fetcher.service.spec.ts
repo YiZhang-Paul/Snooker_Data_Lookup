@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { IRankItem } from './rank-item.interface';
+import { IRankData } from './rank-data.interface';
 import { LiveRankingFetcherService } from './live-ranking-fetcher.service';
 
 describe('LiveRankingFetcherService', () => {
@@ -31,7 +31,7 @@ describe('LiveRankingFetcherService', () => {
     it('should return rank items response on success', () => {
 
         const rawData: object[] = [{ Position: 1, PlayerID: 1, Sum: 1, Type: 'MoneyRankings' }];
-        const response: IRankItem[] = [{ position: 1, playerId: 1, earnings: 1, type: 'MoneyRankings' }];
+        const response: IRankData[] = [{ position: 1, playerId: 1, earnings: 1, type: 'MoneyRankings' }];
 
         fetcher.fetch(2015, 'MoneyRankings').subscribe(data => {
 

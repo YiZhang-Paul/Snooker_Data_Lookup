@@ -1,4 +1,4 @@
-export interface IRankItem {
+export interface IRankData {
 
     readonly position: number;
     readonly playerId: number;

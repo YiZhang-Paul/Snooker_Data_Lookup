@@ -19,9 +19,9 @@
             <th>Winnings</th>
         </tr>
         <tr *ngFor="let ranking of currentGroup">
-            <td>{{ ranking.position }}</td>
-            <td>{{ ranking.playerId }}</td>
-            <td>3</td>
+            <td>{{ ranking.rank }}</td>
+            <td>{{ ranking.name }}</td>
+            <td>{{ ranking.nationality }}</td>
             <td>{{ ranking.earnings }}</td>
         </tr>
     </table>

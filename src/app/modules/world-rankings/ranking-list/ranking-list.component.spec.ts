@@ -3,8 +3,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { TriggerEventByCss } from '../../../../testing/custom-test-utilities';
-import { IRankItem } from '../../data-providers/rankings-data/rank-item.interface';
+import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
+import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
+import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { RankingListComponent } from './ranking-list.component';
 
 @Component({selector: 'app-group-size-selector', template: ''})
@@ -20,23 +22,64 @@ class GroupSizeSelectorComponent {
 describe('RankingListComponent', () => {
     let fixture: ComponentFixture<RankingListComponent>;
     let component: RankingListComponent;
+    let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
     let fetchSpy: jasmine.Spy;
 
-    const rankings: IRankItem[] = [
+    const rankData: IRankData[] = [
 
         { position: 1, playerId: 100, earnings: 150, type: 'MoneyRankings' },
         { position: 2, playerId: 200, earnings: 250, type: 'MoneyRankings' }
     ];
 
+    const players: IPlayer[] = [
+
+        {
+            id: 100,
+            firstName: 'Jane',
+            middleName: '',
+            lastName: 'Doe',
+            shortName: '',
+            dateOfBirth: '',
+            sex: '',
+            nationality: 'three-body',
+            photo: '',
+            bioPage: '',
+            website: '',
+            twitter: '',
+            turnedPro: null,
+            lastSeasonPlayed: null
+        },
+        {
+            id: 200,
+            firstName: 'John',
+            middleName: '',
+            lastName: 'Doe',
+            shortName: '',
+            dateOfBirth: '',
+            sex: '',
+            nationality: 'three-body',
+            photo: '',
+            bioPage: '',
+            website: '',
+            twitter: '',
+            turnedPro: null,
+            lastSeasonPlayed: null
+        }
+    ];
+
     beforeEach(() => {
 
+        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayers', 'getPlayer']);
+        playerLookup.getPlayers.and.returnValue(of(getPlayerLookupMap(players)));
+        setPlayerLookupStream(players, 5);
         fetcher = jasmine.createSpyObj('LiveRankingFetcherService', ['fetch']);
-        fetchSpy = fetcher.fetch.and.returnValue(of(rankings));
+        fetchSpy = fetcher.fetch.and.returnValue(of(rankData));
 
         TestBed.configureTestingModule({
             declarations: [RankingListComponent, GroupSizeSelectorComponent],
             providers: [
+                { provide: PlayerLookupService, useValue: playerLookup },
                 { provide: LiveRankingFetcherService, useValue: fetcher }
             ]
         });
@@ -54,28 +97,6 @@ describe('RankingListComponent', () => {
         expect(component.selectedYear).toEqual(new Date().getFullYear());
     });
 
-    it('should fetch new rankings when selected year changes', () => {
-
-        const element = fixture.debugElement;
-        const payload = { target: { value: 2017 } };
-        TriggerEventByCss(element, 'select', 'change', payload);
-
-        expect(fetchSpy.calls.count()).toEqual(1);
-    });
-
-    it('should display all rankings when selected year changes', () => {
-
-        fixture.detectChanges();
-        component.onSizeSelected(rankings.length / 2);
-        component.onGroupChanged(1);
-        expect(component.groupIndex).toEqual(1);
-
-        const element = fixture.debugElement;
-        const payload = { target: { value: 2017 } };
-        TriggerEventByCss(element, 'select', 'change', payload);
-        expect(component.groupIndex).toEqual(0);
-    });
-
     it('fetcher should be invoked on ngOnInit', () => {
 
         expect(fetchSpy.calls.any()).toBe(false);
@@ -91,9 +112,13 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        expect(component.rankings.length).toEqual(rankings.length);
-        expect(component.rankings[0].playerId).toEqual(100);
-        expect(component.rankings[1].playerId).toEqual(200);
+        expect(component.rankings.length).toEqual(rankData.length);
+
+        for (let i = 0; i < component.rankings.length; i++) {
+
+            const expectedName = `${players[i].firstName} ${players[i].lastName}`;
+            expect(component.rankings[i].name).toEqual(expectedName);
+        }
     });
 
     it('should display ranking table when data is available', () => {
@@ -102,12 +127,16 @@ describe('RankingListComponent', () => {
 
         const rows = fixture.debugElement.queryAll(By.css('tr'));
         const columns = rows[1].queryAll(By.css('td'));
+        const player = players[0];
+        const data = rankData[0];
+        const expectedName = `${player.firstName} ${player.lastName}`;
         // including table header
-        expect(rows.length).toEqual(rankings.length + 1);
+        expect(rows.length).toEqual(rankData.length + 1);
         expect(columns.length).toEqual(4);
-        expect(columns[0].nativeElement.textContent).toEqual('1');
-        expect(columns[1].nativeElement.textContent).toEqual('100');
-        expect(columns[3].nativeElement.textContent).toEqual('150');
+        expect(columns[0].nativeElement.textContent).toEqual(`${data.position}`);
+        expect(columns[1].nativeElement.textContent).toEqual(expectedName);
+        expect(columns[2].nativeElement.textContent).toEqual(player.nationality);
+        expect(columns[3].nativeElement.textContent).toEqual(`${data.earnings}`);
     });
 
     it('should have empty ranking list when data is not available', () => {
@@ -119,10 +148,32 @@ describe('RankingListComponent', () => {
         expect(component.rankings.length).toEqual(0);
     });
 
+    it('should fetch new rankings when selected year changes', () => {
+
+        const element = fixture.debugElement;
+        const payload = { target: { value: 2017 } };
+        TriggerEventByCss(element, 'select', 'change', payload);
+
+        expect(fetchSpy.calls.count()).toEqual(1);
+    });
+
+    it('should display all rankings when selected year changes', () => {
+
+        fixture.detectChanges();
+        component.onSizeSelected(players.length / 2);
+        component.onGroupChanged(1);
+        expect(component.groupIndex).toEqual(1);
+
+        const element = fixture.debugElement;
+        const payload = { target: { value: 2017 } };
+        TriggerEventByCss(element, 'select', 'change', payload);
+        expect(component.groupIndex).toEqual(0);
+    });
+
     it('should display all players when invalid group size is received', () => {
 
         fixture.detectChanges();
-        expect(component.rankings.length).toEqual(rankings.length);
+        expect(component.rankings.length).toEqual(rankData.length);
 
         component.onSizeSelected(-1);
         expect(component.currentGroup.length).toEqual(component.rankings.length);
@@ -136,10 +187,10 @@ describe('RankingListComponent', () => {
     it('should display a group of players when valid group size is received', () => {
 
         fixture.detectChanges();
-        expect(component.rankings.length).toEqual(rankings.length);
+        expect(component.rankings.length).toEqual(rankData.length);
 
-        component.onSizeSelected(rankings.length / 2);
-        expect(component.currentGroup.length).toEqual(rankings.length / 2);
+        component.onSizeSelected(rankData.length / 2);
+        expect(component.currentGroup.length).toEqual(rankData.length / 2);
         expect(component.totalGroups).toEqual(2);
     });
 
@@ -147,7 +198,7 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        component.onSizeSelected(rankings.length / 2);
+        component.onSizeSelected(rankData.length / 2);
         expect(component.groupIndex).toEqual(0);
 
         component.onGroupChanged(1);
@@ -161,7 +212,7 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        component.onSizeSelected(rankings.length / 2);
+        component.onSizeSelected(rankData.length / 2);
         expect(component.groupIndex).toEqual(0);
 
         component.onGroupChanged(-1);
@@ -172,7 +223,7 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        component.onSizeSelected(rankings.length / 2);
+        component.onSizeSelected(rankData.length / 2);
         expect(component.groupIndex).toEqual(0);
 
         component.onGroupChanged(1);
@@ -181,4 +232,28 @@ describe('RankingListComponent', () => {
         component.onGroupChanged(1);
         expect(component.groupIndex).toEqual(1);
     });
+
+    function getPlayerLookupMap(input: IPlayer[]): Map<number, IPlayer> {
+
+        const map = new Map<number, IPlayer>();
+
+        input.forEach(player => {
+
+            map.set(player.id, player);
+        });
+
+        return map;
+    }
+
+    function setPlayerLookupStream(input: IPlayer[], repeat: number = 1): void {
+
+        const stream: IPlayer[] = [];
+
+        for (let i = 0; i < repeat; i++) {
+
+            stream.push(...input);
+        }
+
+        playerLookup.getPlayer.and.returnValues(...stream);
+    }
 });

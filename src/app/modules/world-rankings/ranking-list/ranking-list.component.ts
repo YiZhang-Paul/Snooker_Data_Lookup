@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { IRankItem } from '../../data-providers/rankings-data/rank-item.interface';
+import { of, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { IPlayer } from '../../data-providers/players-data/player.interface';
+import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
+import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.interface';
+import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
+import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 
 @Component({
@@ -12,9 +18,14 @@ export class RankingListComponent implements OnInit {
     private _selectedYear = new Date().getFullYear();
     private _currentIndex = 0;
     private _groupSize: number;
-    private _rankings: IRankItem[] = [];
+    private _rankings: IRankDetail[] = [];
 
-    constructor(private fetcher: LiveRankingFetcherService) { }
+    constructor(
+
+        private fetcher: LiveRankingFetcherService,
+        private lookup: PlayerLookupService
+
+    ) { }
 
     get selectedYear(): number {
 
@@ -31,7 +42,7 @@ export class RankingListComponent implements OnInit {
         return result.map((year, index) => startYear + index);
     }
 
-    get rankings(): IRankItem[] {
+    get rankings(): IRankDetail[] {
 
         return this._rankings;
     }
@@ -46,7 +57,7 @@ export class RankingListComponent implements OnInit {
         return Math.ceil(this._rankings.length / this._groupSize);
     }
 
-    get currentGroup(): IRankItem[] {
+    get currentGroup(): IRankDetail[] {
 
         const endIndex = this._currentIndex + this._groupSize;
 
@@ -64,14 +75,54 @@ export class RankingListComponent implements OnInit {
         this._groupSize = size;
     }
 
+    private getRankDetail(rankData: IRankData, player: IPlayer): IRankDetail {
+
+        const rank = rankData.position;
+        const earnings = rankData.earnings;
+
+        if (!player) {
+
+            return new RankDetail(rank, 'N/A', 'N/A', earnings, player);
+        }
+
+        const middleName = player.middleName ? ` ${player.middleName} ` : ' ';
+        const name = `${player.firstName}${middleName}${player.lastName}`;
+
+        return new RankDetail(rank, name, player.nationality, earnings, player);
+    }
+
+    private getRankDetails(rankData: IRankData[], players: Map<number, IPlayer>): Observable<IRankDetail[]> {
+
+        const details = rankData.map(data => {
+
+            const player = players.get(data.playerId);
+
+            return this.getRankDetail(data, player);
+        });
+
+        return of(details);
+    }
+
+    private updateRankDetails(rankData: IRankData[]): void {
+
+        this.lookup.getPlayers(this._selectedYear).pipe(
+
+            switchMap(players => this.getRankDetails(rankData, players))
+
+        ).subscribe(rankDetails => {
+
+            this._rankings = rankDetails;
+        });
+    }
+
     private fetchRankings(): void {
 
         this.fetcher.fetch(this._selectedYear).subscribe(rankings => {
 
             if (rankings !== null) {
 
-                this._rankings = rankings;
                 this.setGroupRange(rankings.length);
+                this.updateRankDetails(rankings);
             }
         });
     }

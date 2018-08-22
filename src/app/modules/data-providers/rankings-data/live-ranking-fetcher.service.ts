@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry, switchMap } from 'rxjs/operators';
 import { ICanFetchRanking } from './can-fetch-ranking.interface';
-import { IRankItem } from './rank-item.interface';
-import { RankItem } from './rank-item';
+import { IRankData } from './rank-data.interface';
+import { RankData } from './rank-data';
 
 @Injectable({
     providedIn: 'root'
@@ -13,13 +13,13 @@ export class LiveRankingFetcherService implements ICanFetchRanking {
 
     constructor(private httpClient: HttpClient) { }
 
-    protected toRankItems(items: object[]): IRankItem[] {
+    protected toRankItems(items: object[]): IRankData[] {
 
-        const rankItems: IRankItem[] = [];
+        const rankItems: IRankData[] = [];
 
         for (const item of items) {
 
-            rankItems.push(new RankItem(
+            rankItems.push(new RankData(
 
                 item['Position'], item['PlayerID'], item['Sum'], item['Type']
             ));
@@ -28,7 +28,7 @@ export class LiveRankingFetcherService implements ICanFetchRanking {
         return rankItems;
     }
 
-    public fetch(year: number, type: string = 'MoneyRankings'): Observable<IRankItem[]> {
+    public fetch(year: number, type: string = 'MoneyRankings'): Observable<IRankData[]> {
 
         const url = `http://api.snooker.org/?rt=${type}&s=${year}`;
 

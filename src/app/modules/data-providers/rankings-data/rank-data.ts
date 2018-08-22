@@ -1,6 +1,6 @@
-import { IRankItem } from './rank-item.interface';
+import { IRankData } from './rank-data.interface';
 
-export class RankItem implements IRankItem {
+export class RankData implements IRankData {
 
     constructor(
 
