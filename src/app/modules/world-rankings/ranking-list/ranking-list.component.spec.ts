@@ -5,10 +5,14 @@ import { of } from 'rxjs';
 import { TriggerEventByCss } from '../../../../testing/custom-test-utilities';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
+import { Router, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { worldRankingRoutes } from '../world-rankings-routing.module';
+import { ActivatedRoute } from '@angular/router';
+import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { RankingListComponent } from './ranking-list.component';
-import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 
 @Component({selector: 'app-group-size-selector', template: ''})
 class GroupSizeSelectorComponent {
@@ -28,6 +32,12 @@ describe('RankingListComponent', () => {
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
     let fetchSpy: jasmine.Spy;
+    let routes: ActivatedRoute;
+    let router: Router;
+    let paramMapSpy: jasmine.Spy;
+    let navigateSpy: jasmine.Spy;
+    const currentYear = new Date().getFullYear();
+    const paramMap = of(convertToParamMap({ year: currentYear }));
 
     const rankData: IRankData[] = [
 
@@ -80,6 +90,7 @@ describe('RankingListComponent', () => {
         fetchSpy = fetcher.fetch.and.returnValue(of(rankData));
 
         TestBed.configureTestingModule({
+            imports: [RouterTestingModule.withRoutes(worldRankingRoutes)],
             declarations: [
                 RankingListComponent,
                 GroupSizeSelectorComponent,
@@ -93,15 +104,15 @@ describe('RankingListComponent', () => {
 
         fixture = TestBed.createComponent(RankingListComponent);
         component = fixture.componentInstance;
+        routes = TestBed.get(ActivatedRoute);
+        router = TestBed.get(Router);
+        router.initialNavigation();
+        paramMapSpy = spyOnProperty(routes, 'paramMap').and.returnValue(paramMap);
+        navigateSpy = spyOn(router, 'navigate');
     });
 
     it('should create', () => {
         expect(component).toBeTruthy();
-    });
-
-    it('should default to current year', () => {
-
-        expect(component.selectedYear).toEqual(new Date().getFullYear());
     });
 
     it('fetcher should be invoked on ngOnInit', () => {
@@ -111,6 +122,14 @@ describe('RankingListComponent', () => {
         fixture.detectChanges();
 
         expect(fetchSpy.calls.any()).toBe(true);
+    });
+
+    it('should default to current year', () => {
+
+        fixture.detectChanges();
+
+        expect(paramMapSpy).toHaveBeenCalledTimes(1);
+        expect(component.selectedYear).toEqual(currentYear);
     });
 
     it('should have rankings when data is available', () => {
@@ -153,12 +172,11 @@ describe('RankingListComponent', () => {
         linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
         routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkStubDirective));
         expect(routerLinks.length).toEqual(component.rankings.length);
-        const year = component.selectedYear;
 
         for (let i = 0; i < routerLinks.length; i++) {
 
             const realParameters = routerLinks[i].linkParams;
-            const expectedParameters = ['../players', players[i].id];
+            const expectedParameters = ['../../players', players[i].id];
             expect(JSON.stringify(realParameters)).toEqual(JSON.stringify(expectedParameters));
         }
     });
@@ -172,26 +190,15 @@ describe('RankingListComponent', () => {
         expect(component.rankings.length).toEqual(0);
     });
 
-    it('should fetch new rankings when selected year changes', () => {
+    it('should navigate to next ranking page when selected year changes', () => {
 
+        const year = 2017;
         const element = fixture.debugElement;
-        const payload = { target: { value: 2017 } };
+        const payload = { target: { value: year } };
         TriggerEventByCss(element, 'select', 'change', payload);
 
-        expect(fetchSpy.calls.count()).toEqual(1);
-    });
-
-    it('should display all rankings when selected year changes', () => {
-
-        fixture.detectChanges();
-        component.onSizeSelected(players.length / 2);
-        component.onGroupChanged(1);
-        expect(component.groupIndex).toEqual(1);
-
-        const element = fixture.debugElement;
-        const payload = { target: { value: 2017 } };
-        TriggerEventByCss(element, 'select', 'change', payload);
-        expect(component.groupIndex).toEqual(0);
+        expect(navigateSpy).toHaveBeenCalledTimes(1);
+        expect(navigateSpy).toHaveBeenCalledWith(['../', year], { relativeTo: routes });
     });
 
     it('should display all players when invalid group size is received', () => {

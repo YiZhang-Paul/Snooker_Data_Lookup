@@ -21,7 +21,7 @@
         <tr *ngFor="let ranking of currentGroup">
             <td>{{ ranking.rank }}</td>
             <td>
-                <a [routerLink]="['../players', ranking.player.id]">{{ ranking.name }}</a>
+                <a [routerLink]="['../../players', ranking.player.id]">{{ ranking.name }}</a>
             </td>
             <td>{{ ranking.nationality }}</td>
             <td>{{ ranking.earnings }}</td>

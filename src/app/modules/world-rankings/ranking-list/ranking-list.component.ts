@@ -5,6 +5,7 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
 import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.interface';
 import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 
@@ -15,13 +16,15 @@ import { LiveRankingFetcherService } from '../../data-providers/rankings-data/li
 })
 export class RankingListComponent implements OnInit {
 
-    private _selectedYear = new Date().getFullYear();
+    private _selectedYear: number;
     private _currentIndex = 0;
     private _groupSize: number;
     private _rankings: IRankDetail[] = [];
 
     constructor(
 
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
         private fetcher: LiveRankingFetcherService,
         private lookup: PlayerLookupService
 
@@ -66,13 +69,11 @@ export class RankingListComponent implements OnInit {
 
     ngOnInit() {
 
-        this.fetchRankings();
-    }
+        this.activatedRoute.paramMap.subscribe(params => {
 
-    private setGroupRange(size: number): void {
-
-        this._currentIndex = 0;
-        this._groupSize = size;
+            this._selectedYear = Number(params.get('year'));
+            this.fetchRankings();
+        });
     }
 
     private getRankDetail(rankData: IRankData, player: IPlayer): IRankDetail {
@@ -115,6 +116,12 @@ export class RankingListComponent implements OnInit {
         });
     }
 
+    private setGroupRange(size: number): void {
+
+        this._currentIndex = 0;
+        this._groupSize = size;
+    }
+
     private fetchRankings(): void {
 
         this.fetcher.fetch(this._selectedYear).subscribe(rankings => {
@@ -129,8 +136,10 @@ export class RankingListComponent implements OnInit {
 
     public onYearSelected(year: string): void {
 
-        this._selectedYear = Number(year);
-        this.fetchRankings();
+        const parameters = ['../', year];
+        const relativeTo = this.activatedRoute;
+
+        this.router.navigate(parameters, { relativeTo });
     }
 
     private toPreviousGroup(): void {

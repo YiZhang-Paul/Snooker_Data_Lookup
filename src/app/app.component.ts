@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         const startYear = 2013;
         const currentYear = new Date().getFullYear();
 
-        for (let i = startYear; i <= currentYear; i++) {
+        for (let i = currentYear; i >= startYear; i--) {
 
             this.playerLookup.getPlayers(i).subscribe();
             this.rankingLookup.getRankings(i).subscribe();
