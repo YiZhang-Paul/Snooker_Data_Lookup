@@ -158,7 +158,7 @@ describe('RankingListComponent', () => {
         for (let i = 0; i < routerLinks.length; i++) {
 
             const realParameters = routerLinks[i].linkParams;
-            const expectedParameters = ['../players', players[i].id, { year }];
+            const expectedParameters = ['../players', players[i].id];
             expect(JSON.stringify(realParameters)).toEqual(JSON.stringify(expectedParameters));
         }
     });

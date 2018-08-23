@@ -9,7 +9,8 @@ import { LivePlayerFetcherService } from './live-player-fetcher.service';
 })
 export class PlayerLookupService {
 
-    private _storage = new Map<number, Map<number, IPlayer>>();
+    private _storageById = new Map<number, IPlayer>();
+    private _storageByYear = new Map<number, Map<number, IPlayer>>();
 
     constructor(private fetcher: LivePlayerFetcherService) { }
 
@@ -25,19 +26,43 @@ export class PlayerLookupService {
         return map;
     }
 
+    private savePlayer(player: IPlayer): void {
+
+        if (player !== null && !this._storageById.has(player.id)) {
+
+            this._storageById.set(player.id, player);
+        }
+    }
+
     private savePlayers(year: number, players: IPlayer[]): void {
 
         if (players !== null) {
 
-            this._storage.set(year, this.toMap(players));
+            this._storageByYear.set(year, this.toMap(players));
         }
+    }
+
+    public getPlayer(id: number): Observable<IPlayer> {
+
+        if (this._storageById.has(id)) {
+
+            return of(this._storageById.get(id));
+        }
+
+        return this.fetcher.fetchById(id).pipe(
+
+            tap(player => {
+
+                this.savePlayer(player);
+            })
+        );
     }
 
     public getPlayers(year: number): Observable<Map<number, IPlayer>> {
 
-        if (this._storage.has(year)) {
+        if (this._storageByYear.has(year)) {
 
-            return of(this._storage.get(year));
+            return of(this._storageByYear.get(year));
         }
 
         return this.fetcher.fetchByYear(year).pipe(
@@ -49,29 +74,6 @@ export class PlayerLookupService {
             switchMap(players => {
 
                 return of(players !== null ? this.toMap(players) : null);
-            })
-        );
-    }
-
-    public getPlayer(year: number, id: number): Observable<IPlayer> {
-
-        if (this._storage.has(year)) {
-
-            const players = this._storage.get(year);
-
-            return of(players.has(id) ? players.get(id) : null);
-        }
-
-        return this.getPlayers(year).pipe(
-
-            switchMap(players => {
-
-                if (players === null) {
-
-                    return of(null);
-                }
-
-                return of(players.has(id) ? players.get(id) : null);
             })
         );
     }

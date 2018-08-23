@@ -32,9 +32,8 @@ export class PlayerInformationComponent implements OnInit {
             switchMap(params => {
 
                 const id = Number(params.get('id'));
-                const year = Number(params.get('year'));
 
-                return this.lookup.getPlayer(year, id);
+                return this.lookup.getPlayer(id);
             })
 
         ).subscribe(player => {

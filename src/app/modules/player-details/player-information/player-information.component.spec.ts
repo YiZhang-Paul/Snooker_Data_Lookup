@@ -7,7 +7,6 @@ import { ActivatedRouteStub } from '../../../../testing/activated-route-stub';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerInformationComponent } from './player-information.component';
-import { first } from 'rxjs/operators';
 
 @Pipe({ name: 'urlFormatter' })
 class UrlFormatterPipe implements PipeTransform {
@@ -40,14 +39,13 @@ describe('PlayerInformationComponent', () => {
     let route: ActivatedRouteStub;
     let lookup: jasmine.SpyObj<PlayerLookupService>;
     const id = player.id;
-    const year = 2018;
 
     beforeEach(async(() => {
 
         route = new ActivatedRouteStub();
-        route.parent = new ActivatedRouteStub({ id, year });
+        route.parent = new ActivatedRouteStub({ id });
         lookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayer']);
-        setupGetPlayerSpy(year, id, player);
+        setupGetPlayerSpy(id, player);
 
         TestBed.configureTestingModule({
             declarations: [PlayerInformationComponent, UrlFormatterPipe],
@@ -76,7 +74,7 @@ describe('PlayerInformationComponent', () => {
 
     it('should receive null when any parent route parameter is missing', () => {
 
-        route.parent = new ActivatedRouteStub({ id, bar: 1 });
+        route.parent = new ActivatedRouteStub({ bar: 1 });
         fixture.detectChanges();
 
         expect(component.player).toBeNull();
@@ -107,16 +105,11 @@ describe('PlayerInformationComponent', () => {
         expect(textContent).toEqual(expected);
     }
 
-    function setupGetPlayerSpy(expectedYear: number, expectedId: number, response: IPlayer): void {
+    function setupGetPlayerSpy(expectedId: number, response: IPlayer): void {
 
-        lookup.getPlayer.and.callFake((targetYear, targetId) => {
+        lookup.getPlayer.and.callFake(targetId => {
 
-            if (targetYear !== expectedYear || targetId !== expectedId) {
-
-                return of(null);
-            }
-
-            return of(response);
+            return of(targetId === expectedId ? response : null);
         });
     }
 });
