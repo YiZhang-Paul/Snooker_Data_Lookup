@@ -134,7 +134,7 @@ describe('PlayerLookupService', () => {
         expect(fetchByYearSpy.calls.count()).toEqual(1);
     });
 
-    it('getPlayers() should cache player data and return cached data on same request', () => {
+    it('getPlayers() should cache players data and return cached data on same request', () => {
 
         playerLookup.getPlayers(year).subscribe(data => {
 
@@ -150,6 +150,23 @@ describe('PlayerLookupService', () => {
             // no more subsequent requests after the first request
             expect(fetchByYearSpy.calls.count()).toEqual(1);
         });
+    });
+
+    it('getPlayers() should make cached data available for individual lookup by id in the future', () => {
+
+        playerLookup.getPlayers(year).subscribe(data => {
+
+            data.forEach(player => {
+
+                playerLookup.getPlayer(player.id).subscribe(cachedData => {
+
+                    expect(cachedData).toEqual(player);
+                });
+            });
+        });
+
+        expect(fetchByYearSpy.calls.count()).toEqual(1);
+        expect(fetchByIdSpy.calls.count()).toEqual(0);
     });
 
     it('getPlayers() should return observable of null when failed to retrieve data', () => {

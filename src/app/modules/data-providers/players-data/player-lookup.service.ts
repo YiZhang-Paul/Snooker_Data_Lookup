@@ -39,6 +39,11 @@ export class PlayerLookupService {
         if (players !== null) {
 
             this._storageByYear.set(year, this.toMap(players));
+
+            players.forEach(player => {
+
+                this.savePlayer(player);
+            });
         }
     }
 
