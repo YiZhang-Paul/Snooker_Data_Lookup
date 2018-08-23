@@ -3,6 +3,7 @@ import { Component, DebugElement } from '@angular/core';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { RouterLinkStubDirective } from '../testing/router-link-stub-directive';
+import { PlayerLookupService } from './modules/data-providers/players-data/player-lookup.service';
 import { RankingLookupService } from './modules/data-providers/rankings-data/ranking-lookup.service';
 import { AppComponent } from './app.component';
 
@@ -15,12 +16,19 @@ describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
     let linkDebugElements: DebugElement[];
     let routerLinks: RouterLinkStubDirective[];
+    let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let rankingLookup: jasmine.SpyObj<RankingLookupService>;
+    let getPlayersSpy: jasmine.Spy;
     let getRankingsSpy: jasmine.Spy;
+    const startYear = 2013;
+    const endYear = new Date().getFullYear();
+    const totalYears = endYear - startYear + 1;
 
     beforeEach(async(() => {
 
+        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayers']);
         rankingLookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
+        getPlayersSpy = playerLookup.getPlayers.and.returnValue(of(null));
         getRankingsSpy = rankingLookup.getRankings.and.returnValue(of(null));
 
         TestBed.configureTestingModule({
@@ -30,6 +38,7 @@ describe('AppComponent', () => {
                 RouterOutletStubComponent
             ],
             providers: [
+                { provide: PlayerLookupService, useValue: playerLookup },
                 { provide: RankingLookupService, useValue: rankingLookup }
             ]
         }).compileComponents();
@@ -70,11 +79,13 @@ describe('AppComponent', () => {
         }
     });
 
+    it('should load players from all supported years on load', () => {
+
+        expect(getPlayersSpy.calls.count()).toEqual(totalYears);
+    });
+
     it('should load rankings from all supported years on load', () => {
 
-        const startYear = 2013;
-        const endYear = new Date().getFullYear();
-        const totalYears = endYear - startYear + 1;
         expect(getRankingsSpy.calls.count()).toEqual(totalYears);
     });
 });
