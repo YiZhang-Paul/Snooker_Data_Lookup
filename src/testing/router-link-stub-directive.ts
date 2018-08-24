@@ -1,4 +1,7 @@
+import { NgModule, DebugElement } from '@angular/core';
+import { ComponentFixture } from '@angular/core/testing';
 import { Directive, Input } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 // tslint:disable:directive-selector
 // tslint:disable:use-host-property-decorator
@@ -23,11 +26,24 @@ export class RouterLinkStubDirective {
     }
 }
 
-import { NgModule } from '@angular/core';
-
 @NgModule({
+
     declarations: [
+
         RouterLinkStubDirective
     ]
 })
 export class RouterStubsModule { }
+
+export function getLinkStub(debugElement: DebugElement): RouterLinkStubDirective {
+
+    return debugElement.injector.get(RouterLinkStubDirective);
+}
+
+export function getLinkStubs(fixture: ComponentFixture<any>): [DebugElement[], RouterLinkStubDirective[]] {
+
+    const filter = By.directive(RouterLinkStubDirective);
+    const debugElements = fixture.debugElement.queryAll(filter);
+
+    return [debugElements, debugElements.map(getLinkStub)];
+}

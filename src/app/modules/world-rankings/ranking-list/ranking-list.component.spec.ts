@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, Output, EventEmitter, DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { Router, ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { TriggerEventByCss } from '../../../../testing/custom-test-utilities';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
-import { Router, convertToParamMap } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { worldRankingRoutes } from '../world-rankings-routing.module';
-import { ActivatedRoute } from '@angular/router';
-import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
-import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
+import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
+import { compareTextContent, queryAllByCss, triggerEventByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 import { RankingListComponent } from './ranking-list.component';
 
-@Component({selector: 'app-group-size-selector', template: ''})
+@Component({ selector: 'app-group-size-selector', template: '' })
 class GroupSizeSelectorComponent {
 
     @Input() currentGroup: number;
@@ -25,6 +23,7 @@ class GroupSizeSelectorComponent {
 }
 
 describe('RankingListComponent', () => {
+
     let fixture: ComponentFixture<RankingListComponent>;
     let component: RankingListComponent;
     let linkDebugElements: DebugElement[];
@@ -37,7 +36,7 @@ describe('RankingListComponent', () => {
     let paramMapSpy: jasmine.Spy;
     let navigateSpy: jasmine.Spy;
     const currentYear = new Date().getFullYear();
-    const paramMap = of(convertToParamMap({ year: currentYear }));
+    const paramMap = convertToParamMap({ year: currentYear });
 
     const rankData: IRankData[] = [
 
@@ -83,20 +82,21 @@ describe('RankingListComponent', () => {
 
     beforeEach(() => {
 
-        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayers', 'getPlayer']);
-        playerLookup.getPlayers.and.returnValue(of(getPlayerLookupMap(players)));
-        setPlayerLookupStream(players, 5);
+        setupPlayerLookup(players);
         fetcher = jasmine.createSpyObj('LiveRankingFetcherService', ['fetch']);
         fetchSpy = fetcher.fetch.and.returnValue(of(rankData));
 
         TestBed.configureTestingModule({
+
             imports: [RouterTestingModule.withRoutes(worldRankingRoutes)],
             declarations: [
+
                 RankingListComponent,
                 GroupSizeSelectorComponent,
                 RouterLinkStubDirective
             ],
             providers: [
+
                 { provide: PlayerLookupService, useValue: playerLookup },
                 { provide: LiveRankingFetcherService, useValue: fetcher }
             ]
@@ -107,24 +107,26 @@ describe('RankingListComponent', () => {
         routes = TestBed.get(ActivatedRoute);
         router = TestBed.get(Router);
         router.initialNavigation();
-        paramMapSpy = spyOnProperty(routes, 'paramMap').and.returnValue(paramMap);
-        navigateSpy = spyOn(router, 'navigate');
+        setupRoutesSpy(paramMap);
     });
 
     it('should create', () => {
+
         expect(component).toBeTruthy();
     });
 
     it('fetcher should be invoked on ngOnInit', () => {
 
-        expect(fetchSpy.calls.any()).toBe(false);
+        expect(fetchSpy).not.toHaveBeenCalled();
 
         fixture.detectChanges();
 
-        expect(fetchSpy.calls.any()).toBe(true);
+        expect(fetchSpy).toHaveBeenCalled();
     });
 
     it('should default to current year', () => {
+
+        expect(component.selectedYear).not.toEqual(currentYear);
 
         fixture.detectChanges();
 
@@ -151,33 +153,32 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        const rows = fixture.debugElement.queryAll(By.css('tr'));
-        const columns = rows[1].queryAll(By.css('td'));
-        const player = players[0];
-        const data = rankData[0];
-        const expectedName = `${player.firstName} ${player.lastName}`;
+        const rows = queryAllByCss(fixture.debugElement, 'tr');
+        const columns = queryAllByCss(rows[1], 'td');
         // including table header
         expect(rows.length).toEqual(rankData.length + 1);
         expect(columns.length).toEqual(4);
-        expect(columns[0].nativeElement.textContent).toEqual(`${data.position}`);
-        expect(columns[1].nativeElement.textContent).toEqual(expectedName);
-        expect(columns[2].nativeElement.textContent).toEqual(player.nationality);
-        expect(columns[3].nativeElement.textContent).toEqual(`${data.earnings}`);
+
+        const player = players[0];
+        const data = rankData[0];
+        compareTextContent(columns[0], `${data.position}`);
+        compareTextContent(columns[1], `${player.firstName} ${player.lastName}`);
+        compareTextContent(columns[2], `${player.nationality}`);
+        compareTextContent(columns[3], `${data.earnings}`);
     });
 
     it('should setup links to player wiki pages through player names on ranking table', () => {
 
         fixture.detectChanges();
 
-        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkStubDirective));
+        [linkDebugElements, routerLinks] = getLinkStubs(fixture);
         expect(routerLinks.length).toEqual(component.rankings.length);
 
         for (let i = 0; i < routerLinks.length; i++) {
 
-            const realParameters = routerLinks[i].linkParams;
+            const actualParameters = JSON.stringify(routerLinks[i].linkParams);
             const expectedParameters = ['../../players', players[i].id];
-            expect(JSON.stringify(realParameters)).toEqual(JSON.stringify(expectedParameters));
+            expect(actualParameters).toEqual(JSON.stringify(expectedParameters));
         }
     });
 
@@ -192,13 +193,11 @@ describe('RankingListComponent', () => {
 
     it('should navigate to next ranking page when selected year changes', () => {
 
-        const year = 2017;
-        const element = fixture.debugElement;
-        const payload = { target: { value: year } };
-        TriggerEventByCss(element, 'select', 'change', payload);
+        const payload = { target: { value: currentYear } };
+        triggerEventByCss(fixture.debugElement, 'select', 'change', payload);
 
         expect(navigateSpy).toHaveBeenCalledTimes(1);
-        expect(navigateSpy).toHaveBeenCalledWith(['../', year], { relativeTo: routes });
+        expect(navigateSpy).toHaveBeenCalledWith(['../', currentYear], { relativeTo: routes });
     });
 
     it('should display all players when invalid group size is received', () => {
@@ -276,15 +275,26 @@ describe('RankingListComponent', () => {
         return map;
     }
 
-    function setPlayerLookupStream(input: IPlayer[], repeat: number = 1): void {
+    function setupPlayerLookup(input: IPlayer[]): void {
 
-        const stream: IPlayer[] = [];
+        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayers', 'getPlayer']);
 
-        for (let i = 0; i < repeat; i++) {
+        playerLookup.getPlayer.and.callFake(targetId => {
 
-            stream.push(...input);
-        }
+            if (!new Set(rankData.map(data => data.playerId)).has(targetId)) {
 
-        playerLookup.getPlayer.and.returnValues(...stream);
+                return of(null);
+            }
+
+            return of(players[targetId === rankData[0].playerId ? 0 : 1]);
+        });
+
+        playerLookup.getPlayers.and.returnValue(of(getPlayerLookupMap(input)));
+    }
+
+    function setupRoutesSpy(map: ParamMap): void {
+
+        paramMapSpy = spyOnProperty(routes, 'paramMap').and.returnValue(of(map));
+        navigateSpy = spyOn(router, 'navigate');
     }
 });

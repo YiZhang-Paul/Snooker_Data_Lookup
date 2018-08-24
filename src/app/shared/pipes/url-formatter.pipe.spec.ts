@@ -17,7 +17,7 @@ describe('UrlFormatterPipe', () => {
     it('should format urls without "http(s)://"', () => {
 
         const url = 'test.com';
-        expect(pipe.transform(url)).toEqual('http://' + url);
+        expect(pipe.transform(url)).toEqual(`http://${url}`);
     });
 
     it('should not format urls with "http(s)://"', () => {

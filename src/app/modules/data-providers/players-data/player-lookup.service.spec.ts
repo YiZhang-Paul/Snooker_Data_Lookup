@@ -6,122 +6,122 @@ import { PlayerLookupService } from './player-lookup.service';
 
 describe('PlayerLookupService', () => {
 
-    const playerOne: IPlayer = {
+    const players: IPlayer[] = [
 
-        id: 207,
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        shortName: 'John Doe',
-        dateOfBirth: '',
-        sex: '',
-        nationality: 'three-body',
-        photo: '',
-        bioPage: '',
-        website: '',
-        twitter: '',
-        turnedPro: 2016,
-        lastSeasonPlayed: 2018
-    };
+        {
+            id: 207,
+            firstName: 'John',
+            middleName: 'M',
+            lastName: 'Doe',
+            shortName: 'John Doe',
+            dateOfBirth: '1992-03-01',
+            sex: 'M',
+            nationality: 'three-body',
+            photo: '',
+            bioPage: '',
+            website: '',
+            twitter: '',
+            turnedPro: 2016,
+            lastSeasonPlayed: 2018
+        },
+        {
+            id: 53,
+            firstName: 'Jane',
+            middleName: '',
+            lastName: 'Doe',
+            shortName: 'Jane Doe',
+            dateOfBirth: '',
+            sex: 'F',
+            nationality: 'three-body',
+            photo: '',
+            bioPage: '',
+            website: '',
+            twitter: '',
+            turnedPro: 2013,
+            lastSeasonPlayed: 2017
+        }
+    ];
 
-    const playerTwo: IPlayer = {
-
-        id: 53,
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        shortName: 'Jane Doe',
-        dateOfBirth: '',
-        sex: '',
-        nationality: 'three-body',
-        photo: '',
-        bioPage: '',
-        website: '',
-        twitter: '',
-        turnedPro: 2013,
-        lastSeasonPlayed: 2017
-    };
-
-    const year = 2017;
-    const target = playerTwo;
-    const players = [playerOne, playerTwo];
+    const targetYear = 2017;
+    const targetPlayer = players[1];
     let fetcher: jasmine.SpyObj<LivePlayerFetcherService>;
     let fetchByIdSpy: jasmine.Spy;
     let fetchByYearSpy: jasmine.Spy;
-    let playerLookup: PlayerLookupService;
+    let lookup: PlayerLookupService;
 
     beforeEach(() => {
 
-        fetcher = jasmine.createSpyObj('LivePlayerFetcherService', ['fetchById', 'fetchByYear']);
-        fetchByIdSpy = fetcher.fetchById.and.returnValue(of(players[1]));
-        fetchByYearSpy = fetcher.fetchByYear.and.returnValue(of(players));
+        setupFetcher(targetPlayer, players);
 
         TestBed.configureTestingModule({
+
             providers: [
+
                 PlayerLookupService,
                 { provide: LivePlayerFetcherService, useValue: fetcher }
             ]
         });
 
-        playerLookup = TestBed.get(PlayerLookupService);
+        lookup = TestBed.get(PlayerLookupService);
     });
 
     it('should be created', inject([PlayerLookupService], (service: PlayerLookupService) => {
+
         expect(service).toBeTruthy();
     }));
 
     it('getPlayer() should fetch player from server upon new request', () => {
 
-        playerLookup.getPlayer(target.id).subscribe(data => {
+        lookup.getPlayer(targetPlayer.id).subscribe(data => {
 
-            expect(data).toEqual(target);
+            expect(data).toEqual(targetPlayer);
         });
 
-        expect(fetchByIdSpy.calls.count()).toEqual(1);
+        expect(fetchByIdSpy).toHaveBeenCalledTimes(1);
     });
 
     it('getPlayer() should cache player data and return cached data on same request', () => {
 
-        playerLookup.getPlayer(target.id).subscribe(data => {
+        lookup.getPlayer(targetPlayer.id).subscribe(data => {
 
-            expect(data).toEqual(target);
+            expect(data).toEqual(targetPlayer);
 
-            playerLookup.getPlayer(target.id).subscribe(cachedData => {
+            lookup.getPlayer(targetPlayer.id).subscribe(cachedData => {
 
                 expect(cachedData).toEqual(data);
             });
         });
         // no more subsequent requests after the first request
-        expect(fetchByIdSpy.calls.count()).toEqual(1);
+        expect(fetchByIdSpy).toHaveBeenCalledTimes(1);
     });
 
     it('getPlayer() should not cache null value returned by server', () => {
 
         fetchByIdSpy = fetcher.fetchById.and.returnValue(of(null));
 
-        playerLookup.getPlayer(target.id).subscribe(data => {
+        lookup.getPlayer(targetPlayer.id).subscribe(() => {
 
-            playerLookup.getPlayer(target.id).subscribe();
+            lookup.getPlayer(targetPlayer.id).subscribe();
         });
 
-        expect(fetchByIdSpy.calls.count()).toEqual(2);
+        expect(fetchByIdSpy).toHaveBeenCalledTimes(2);
     });
 
     it('getPlayer() should return observable of null when failed to retrieve new data', () => {
 
         fetchByIdSpy = fetcher.fetchById.and.returnValue(of(null));
 
-        playerLookup.getPlayer(target.id).subscribe(data => {
+        lookup.getPlayer(targetPlayer.id).subscribe(data => {
 
             expect(data).toBeNull();
         });
 
-        expect(fetchByIdSpy.calls.count()).toEqual(1);
+        expect(fetchByIdSpy).toHaveBeenCalledTimes(1);
     });
 
     it('getPlayers() should fetch players from server upon request', () => {
 
-        playerLookup.getPlayers(year).subscribe(data => {
+        lookup.getPlayers(targetYear).subscribe(data => {
 
             expect(data.size).toEqual(players.length);
 
@@ -131,53 +131,59 @@ describe('PlayerLookupService', () => {
             });
         });
 
-        expect(fetchByYearSpy.calls.count()).toEqual(1);
+        expect(fetchByYearSpy).toHaveBeenCalledTimes(1);
     });
 
     it('getPlayers() should cache players data and return cached data on same request', () => {
 
-        playerLookup.getPlayers(year).subscribe(data => {
+        lookup.getPlayers(targetYear).subscribe(data => {
 
-            const id = target.id;
             expect(data.size).toEqual(players.length);
-            expect(data.get(id)).toEqual(target);
+            expect(data.get(targetPlayer.id)).toEqual(targetPlayer);
 
-            playerLookup.getPlayers(year).subscribe(cachedData => {
+            lookup.getPlayers(targetYear).subscribe(cachedData => {
 
-                expect(cachedData.size).toEqual(data.size);
-                expect(cachedData.get(id)).toEqual(data.get(id));
+                expect(cachedData).toEqual(data);
             });
-            // no more subsequent requests after the first request
-            expect(fetchByYearSpy.calls.count()).toEqual(1);
         });
+        // no more subsequent requests after the first request
+        expect(fetchByYearSpy).toHaveBeenCalledTimes(1);
     });
 
     it('getPlayers() should make cached data available for individual lookup by id in the future', () => {
 
-        playerLookup.getPlayers(year).subscribe(data => {
+        lookup.getPlayers(targetYear).subscribe(data => {
 
             data.forEach(player => {
 
-                playerLookup.getPlayer(player.id).subscribe(cachedData => {
+                lookup.getPlayer(player.id).subscribe(cachedData => {
 
                     expect(cachedData).toEqual(player);
                 });
             });
         });
 
-        expect(fetchByYearSpy.calls.count()).toEqual(1);
-        expect(fetchByIdSpy.calls.count()).toEqual(0);
+        expect(fetchByIdSpy).toHaveBeenCalledTimes(0);
+        expect(fetchByYearSpy).toHaveBeenCalledTimes(1);
     });
 
     it('getPlayers() should return observable of null when failed to retrieve data', () => {
 
         fetchByYearSpy = fetcher.fetchByYear.and.returnValue(of(null));
 
-        playerLookup.getPlayers(year).subscribe(data => {
+        lookup.getPlayers(targetYear).subscribe(data => {
 
             expect(data).toBeNull();
         });
 
-        expect(fetchByYearSpy.calls.count()).toEqual(1);
+        expect(fetchByYearSpy).toHaveBeenCalledTimes(1);
     });
+
+    function setupFetcher(responseById: IPlayer = null, responseByYear: IPlayer[] = null): void {
+
+        const methods = ['fetchById', 'fetchByYear'];
+        fetcher = jasmine.createSpyObj('LivePlayerFetcherService', methods);
+        fetchByIdSpy = fetcher.fetchById.and.returnValue(of(responseById));
+        fetchByYearSpy = fetcher.fetchByYear.and.returnValue(of(responseByYear));
+    }
 });

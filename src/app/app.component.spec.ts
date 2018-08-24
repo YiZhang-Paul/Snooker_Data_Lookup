@@ -1,8 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
-import { RouterLinkStubDirective } from '../testing/router-link-stub-directive';
+import { RouterLinkStubDirective, getLinkStubs } from '../testing/router-link-stub-directive';
+import { IPlayer } from './modules/data-providers/players-data/player.interface';
+import { IRankData } from './modules/data-providers/rankings-data/rank-data.interface';
 import { PlayerLookupService } from './modules/data-providers/players-data/player-lookup.service';
 import { RankingLookupService } from './modules/data-providers/rankings-data/ranking-lookup.service';
 import { AppComponent } from './app.component';
@@ -14,49 +15,49 @@ class RouterOutletStubComponent { }
 describe('AppComponent', () => {
 
     let fixture: ComponentFixture<AppComponent>;
+    let component: AppComponent;
     let linkDebugElements: DebugElement[];
     let routerLinks: RouterLinkStubDirective[];
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let rankingLookup: jasmine.SpyObj<RankingLookupService>;
     let getPlayersSpy: jasmine.Spy;
     let getRankingsSpy: jasmine.Spy;
-    const startYear = 2013;
-    const endYear = new Date().getFullYear();
-    const totalYears = endYear - startYear + 1;
+    const totalYears = countYears(2013);
 
     beforeEach(async(() => {
 
-        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayers']);
-        rankingLookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
-        getPlayersSpy = playerLookup.getPlayers.and.returnValue(of(null));
-        getRankingsSpy = rankingLookup.getRankings.and.returnValue(of(null));
+        setupPlayerLookup(null);
+        setupRankingLookup(null);
 
         TestBed.configureTestingModule({
+
             declarations: [
+
                 AppComponent,
                 RouterLinkStubDirective,
                 RouterOutletStubComponent
             ],
             providers: [
+
                 { provide: PlayerLookupService, useValue: playerLookup },
                 { provide: RankingLookupService, useValue: rankingLookup }
             ]
+
         }).compileComponents();
     }));
 
     beforeEach(() => {
 
         fixture = TestBed.createComponent(AppComponent);
+        component = fixture.componentInstance;
         fixture.detectChanges();
 
-        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkStubDirective));
+        [linkDebugElements, routerLinks] = getLinkStubs(fixture);
     });
 
-    it('should create the app', async(() => {
+    it('should create the component', async(() => {
 
-        const app = fixture.debugElement.componentInstance;
-        expect(app).toBeTruthy();
+        expect(component).toBeTruthy();
     }));
 
     it('should bind to corresponding links', () => {
@@ -81,11 +82,28 @@ describe('AppComponent', () => {
 
     it('should load players from all supported years on load', () => {
 
-        expect(getPlayersSpy.calls.count()).toEqual(totalYears);
+        expect(getPlayersSpy).toHaveBeenCalledTimes(totalYears);
     });
 
     it('should load rankings from all supported years on load', () => {
 
-        expect(getRankingsSpy.calls.count()).toEqual(totalYears);
+        expect(getRankingsSpy).toHaveBeenCalledTimes(totalYears);
     });
+
+    function countYears(startYear: number = 2013): number {
+
+        return new Date().getFullYear() - startYear + 1;
+    }
+
+    function setupPlayerLookup(response: IPlayer[] = null): void {
+
+        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayers']);
+        getPlayersSpy = playerLookup.getPlayers.and.returnValue(of(response));
+    }
+
+    function setupRankingLookup(response: IRankData[] = null): void {
+
+        rankingLookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
+        getRankingsSpy = rankingLookup.getRankings.and.returnValue(of(response));
+    }
 });

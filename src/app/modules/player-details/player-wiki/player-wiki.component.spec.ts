@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
-import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
+import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
 import { PlayerWikiComponent } from './player-wiki.component';
 
 // tslint:disable:component-selector
@@ -9,31 +8,37 @@ import { PlayerWikiComponent } from './player-wiki.component';
 class RouterOutletStubComponent { }
 
 describe('PlayerWikiComponent', () => {
-    let component: PlayerWikiComponent;
+
     let fixture: ComponentFixture<PlayerWikiComponent>;
+    let component: PlayerWikiComponent;
     let linkDebugElements: DebugElement[];
     let routerLinks: RouterLinkStubDirective[];
 
     beforeEach(async(() => {
+
         TestBed.configureTestingModule({
+
             declarations: [
+
                 PlayerWikiComponent,
                 RouterLinkStubDirective,
                 RouterOutletStubComponent
             ]
+
         }).compileComponents();
     }));
 
     beforeEach(() => {
+
         fixture = TestBed.createComponent(PlayerWikiComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
 
-        linkDebugElements = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-        routerLinks = linkDebugElements.map(debugElement => debugElement.injector.get(RouterLinkStubDirective));
+        [linkDebugElements, routerLinks] = getLinkStubs(fixture);
     });
 
     it('should create', () => {
+
         expect(component).toBeTruthy();
     });
 

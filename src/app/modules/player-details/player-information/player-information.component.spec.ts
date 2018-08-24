@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Pipe, PipeTransform } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '../../../../testing/activated-route-stub';
+import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
+import { compareTextContent, queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerInformationComponent } from './player-information.component';
 
@@ -34,34 +34,44 @@ describe('PlayerInformationComponent', () => {
         lastSeasonPlayed: 2018
     };
 
-    let component: PlayerInformationComponent;
     let fixture: ComponentFixture<PlayerInformationComponent>;
-    let route: ActivatedRouteStub;
+    let component: PlayerInformationComponent;
+    let routes: ActivatedRoute;
+    let routesParentSpy: jasmine.Spy;
     let lookup: jasmine.SpyObj<PlayerLookupService>;
-    const id = player.id;
 
     beforeEach(async(() => {
 
-        route = new ActivatedRouteStub();
-        route.parent = new ActivatedRouteStub({ id });
-        lookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayer']);
-        setupGetPlayerSpy(id, player);
+        setupGetPlayerSpy(player.id, player);
 
         TestBed.configureTestingModule({
-            declarations: [PlayerInformationComponent, UrlFormatterPipe],
+
+            imports: [RouterTestingModule],
+            declarations: [
+
+                PlayerInformationComponent,
+                UrlFormatterPipe
+            ],
             providers: [
-                { provide: ActivatedRoute, useValue: route },
+
                 { provide: PlayerLookupService, useValue: lookup }
             ]
+
         }).compileComponents();
+
+        routes = TestBed.get(ActivatedRoute);
+        routesParentSpy = spyOnProperty(routes, 'parent');
+        setupParamMapSpy({ id: player.id });
     }));
 
     beforeEach(() => {
+
         fixture = TestBed.createComponent(PlayerInformationComponent);
         component = fixture.componentInstance;
     });
 
     it('should create', () => {
+
         expect(component).toBeTruthy();
     });
 
@@ -74,7 +84,7 @@ describe('PlayerInformationComponent', () => {
 
     it('should receive null when any parent route parameter is missing', () => {
 
-        route.parent = new ActivatedRouteStub({ bar: 1 });
+        setupParamMapSpy({ foo: 1 });
         fixture.detectChanges();
 
         expect(component.player).toBeNull();
@@ -84,32 +94,41 @@ describe('PlayerInformationComponent', () => {
 
         fixture.detectChanges();
 
-        checkTextContent('h2', `${player.firstName} ${player.lastName}`);
-        checkTextContent('.firstName', `First Name: ${player.firstName}`);
-        checkTextContent('.middleName', `Middle Name: ${player.middleName}`);
-        checkTextContent('.lastName', `Last Name: ${player.lastName}`);
-        checkTextContent('.gender', `Gender: ${player.sex}`);
-        checkTextContent('.birth', `Date of Birth: ${player.dateOfBirth}`);
-        checkTextContent('.country', `Country of Origin: ${player.nationality}`);
-        checkTextContent('.bio', `Bio Page: ${player.bioPage}`);
-        checkTextContent('.website', `Website: ${player.website}`);
-        checkTextContent('.twitter', `Twitter: @${player.twitter}`);
-        checkTextContent('.turnedPro', `Year Turned Pro: ${player.turnedPro}`);
-        checkTextContent('.lastSeason', `Last Season Played: ${player.lastSeasonPlayed}`);
+        compareText('h2', `${player.firstName} ${player.lastName}`);
+        compareText('.firstName', `First Name: ${player.firstName}`);
+        compareText('.middleName', `Middle Name: ${player.middleName}`);
+        compareText('.lastName', `Last Name: ${player.lastName}`);
+        compareText('.gender', `Gender: ${player.sex}`);
+        compareText('.birth', `Date of Birth: ${player.dateOfBirth}`);
+        compareText('.country', `Country of Origin: ${player.nationality}`);
+        compareText('.bio', `Bio Page: ${player.bioPage}`);
+        compareText('.website', `Website: ${player.website}`);
+        compareText('.twitter', `Twitter: @${player.twitter}`);
+        compareText('.turnedPro', `Year Turned Pro: ${player.turnedPro}`);
+        compareText('.lastSeason', `Last Season Played: ${player.lastSeasonPlayed}`);
     });
 
-    function checkTextContent(css: string, expected: string): void {
+    function setupParamMapSpy(map: object): void {
 
-        const element = fixture.debugElement.query(By.css(css));
-        const textContent = element.nativeElement.textContent;
-        expect(textContent).toEqual(expected);
+        const parent = new ActivatedRoute();
+        routesParentSpy.and.returnValue(parent);
+
+        const paramMap$ = of(convertToParamMap(map));
+        spyOnProperty(parent, 'paramMap').and.returnValue(paramMap$);
     }
 
     function setupGetPlayerSpy(expectedId: number, response: IPlayer): void {
+
+        lookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayer']);
 
         lookup.getPlayer.and.callFake(targetId => {
 
             return of(targetId === expectedId ? response : null);
         });
+    }
+
+    function compareText(css: string, expected: string): void {
+
+        compareTextContent(queryByCss(fixture.debugElement, css), expected);
     }
 });

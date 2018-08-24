@@ -7,14 +7,14 @@ describe('LivePlayerFetcherService', () => {
 
     let httpTestingController: HttpTestingController;
     let fetcher: LivePlayerFetcherService;
-    const id = 233;
+    const id = 107;
     const year = 2017;
     const urlById = `http://api.snooker.org/?p=${id}`;
     const urlByYear = `http://api.snooker.org/?t=10&st=p&s=${year}`;
 
     const rawData: object[] = [{
 
-        ID: 107,
+        ID: id,
         FirstName: '',
         MiddleName: '',
         LastName: '',
@@ -32,7 +32,7 @@ describe('LivePlayerFetcherService', () => {
 
     const response: IPlayer[] = [{
 
-        id: 107,
+        id,
         firstName: '',
         middleName: '',
         lastName: '',
@@ -49,7 +49,9 @@ describe('LivePlayerFetcherService', () => {
     }];
 
     beforeEach(() => {
+
         TestBed.configureTestingModule({
+
             imports: [HttpClientTestingModule],
             providers: [LivePlayerFetcherService]
         });
@@ -64,6 +66,7 @@ describe('LivePlayerFetcherService', () => {
     });
 
     it('should be created', inject([LivePlayerFetcherService], (service: LivePlayerFetcherService) => {
+
         expect(service).toBeTruthy();
     }));
 
@@ -79,14 +82,12 @@ describe('LivePlayerFetcherService', () => {
 
     it('fetchById() should retry 2 times before returning null on failure', () => {
 
-        const totalRetries = 2;
-
         fetcher.fetchById(id).subscribe(data => {
 
             expect(data).toBeNull();
         });
 
-        for (let i = 0; i < totalRetries + 1; i++) {
+        for (let retries = 2, i = 0; i < retries + 1; i++) {
 
             httpTestingController.expectOne(urlById).error(null);
         }
@@ -104,14 +105,12 @@ describe('LivePlayerFetcherService', () => {
 
     it('fetchByYear() should retry 2 times before returning null on failure', () => {
 
-        const totalRetries = 2;
-
         fetcher.fetchByYear(year).subscribe(data => {
 
             expect(data).toBeNull();
         });
 
-        for (let i = 0; i < totalRetries + 1; i++) {
+        for (let retries = 2, i = 0; i < retries + 1; i++) {
 
             httpTestingController.expectOne(urlByYear).error(null);
         }

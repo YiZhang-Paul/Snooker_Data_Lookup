@@ -1,13 +1,17 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { fakeRequest, fakeResponse } from '../../../testing/custom-test-utilities';
 import { DataCacheService } from './data-cache.service';
 
 describe('DataCacheService', () => {
 
+    const request = fakeRequest('request-url');
+    const response = fakeResponse('response-text');
     let dataCache: DataCacheService;
 
     beforeEach(() => {
+
         TestBed.configureTestingModule({
+
             providers: [DataCacheService]
         });
 
@@ -15,14 +19,13 @@ describe('DataCacheService', () => {
     });
 
     it('should be created', inject([DataCacheService], (service: DataCacheService) => {
+
         expect(service).toBeTruthy();
     }));
 
-    it('should cache new requests with their responses', () => {
+    it('should cache new requests with corresponding responses', () => {
 
-        const request = createRequest('request-url');
-        const anotherRequest = createRequest('another-request-url');
-        const response = createResponse('response-text');
+        const anotherRequest = fakeRequest('another-request-url');
         const totalCached = dataCache.totalCached;
 
         dataCache.set(request, response);
@@ -34,61 +37,41 @@ describe('DataCacheService', () => {
 
     it('should not cache duplicated requests', () => {
 
-        const sameRequest = createRequest('request-url');
-        const response = createResponse('response-text');
         const totalCached = dataCache.totalCached;
 
-        dataCache.set(sameRequest, response);
+        dataCache.set(request, response);
         expect(dataCache.totalCached).toEqual(totalCached + 1);
-
-        dataCache.set(sameRequest, response);
-        expect(dataCache.totalCached).toEqual(totalCached + 1);
-    });
-
-    it('should return cached response when possible', () => {
-
-        const request = createRequest('request-url');
-        const response = createResponse('response-text');
 
         dataCache.set(request, response);
-
-        expect(dataCache.get(request).body).toEqual(response.body);
+        expect(dataCache.totalCached).toEqual(totalCached + 1);
     });
 
     it('should return null when no cached response is found', () => {
 
-        const request = createRequest('request-url');
-
         expect(dataCache.get(request)).toBeNull();
+    });
+
+    it('should return cached response when possible', () => {
+
+        dataCache.set(request, response);
+
+        expect(dataCache.get(request)).toEqual(response);
     });
 
     it('should delete expired cache', () => {
 
-        const request = createRequest('request-url');
-        const response = createResponse('response-text');
         const totalCached = dataCache.totalCached;
 
         dataCache.set(request, response);
-        expect(dataCache.get(request)).not.toBeNull();
         expect(dataCache.totalCached).toEqual(totalCached + 1);
 
         jasmine.clock().install();
         jasmine.clock().mockDate(new Date());
         jasmine.clock().tick(dataCache.lifeTime + 1000);
-
+        // requesting expired cached data will cause data to be removed
         expect(dataCache.get(request)).toBeNull();
         expect(dataCache.totalCached).toEqual(totalCached);
 
         jasmine.clock().uninstall();
     });
 });
-
-function createRequest(url: string, method: string = 'GET'): HttpRequest<any> {
-
-    return new HttpRequest<any>('GET', url);
-}
-
-function createResponse(body: string): HttpResponse<any> {
-
-    return new HttpResponse({ body });
-}

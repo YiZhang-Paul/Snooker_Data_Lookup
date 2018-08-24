@@ -1,15 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { QueryByCss, QueryByDirective, TriggerEventByCss } from '../../../../testing/custom-test-utilities';
+import { queryByCss, queryByDirective, triggerEventByCss } from '../../../../testing/custom-test-utilities';
 import { GroupSizeSelectorComponent } from '../group-size-selector/group-size-selector.component';
+
+const groupSize = 150;
 
 @Component({
     template: `
         <app-group-size-selector
             [currentGroup]="currentGroup"
             [totalGroups]="totalGroups"
-            [size]="150"
+            [size]="${groupSize}"
             (groupChange)="onGroupChanged($event)"
             (sizeSelect)="onSizeSelected($event)">
         </app-group-size-selector>
@@ -35,94 +37,101 @@ class TestComponent {
 }
 
 describe('GroupSizeSelectorComponent', () => {
+
     let fixture: ComponentFixture<TestComponent>;
-    let testComponent: TestComponent;
+    let component: TestComponent;
     let selectorDebugElement: DebugElement;
     let selector: GroupSizeSelectorComponent;
 
     beforeEach(async(() => {
+
         TestBed.configureTestingModule({
+
             imports: [FormsModule],
             declarations: [GroupSizeSelectorComponent, TestComponent]
+
         }).compileComponents();
     }));
 
     beforeEach(() => {
+
         fixture = TestBed.createComponent(TestComponent);
-        testComponent = fixture.componentInstance;
-        selectorDebugElement = QueryByDirective(fixture.debugElement, GroupSizeSelectorComponent);
+        component = fixture.componentInstance;
+        selectorDebugElement = queryByDirective(fixture.debugElement, GroupSizeSelectorComponent);
         selector = selectorDebugElement.componentInstance;
         fixture.detectChanges();
     });
 
     it('should create', () => {
-        expect(testComponent).toBeTruthy();
+
+        expect(component).toBeTruthy();
     });
 
     it('should bind values properly', () => {
 
-        expect(selector.currentGroup).toEqual(testComponent.currentGroup);
-        expect(selector.totalGroups).toEqual(testComponent.totalGroups);
-        expect(selector.size).toEqual(150);
+        expect(selector.currentGroup).toEqual(component.currentGroup);
+        expect(selector.totalGroups).toEqual(component.totalGroups);
+        expect(selector.size).toEqual(groupSize);
     });
 
     it('should indicate group changes properly', () => {
 
         const currentGroup = selector.currentGroup;
-        const previous = QueryByCss(selectorDebugElement, '.previous');
-        const next = QueryByCss(selectorDebugElement, '.next');
+        const previousGroup = queryByCss(selectorDebugElement, '.previous');
+        const nextGroup = queryByCss(selectorDebugElement, '.next');
 
-        next.triggerEventHandler('click', null);
-        expect(testComponent.currentGroup).toEqual(currentGroup + 1);
+        nextGroup.triggerEventHandler('click', null);
+        expect(component.currentGroup).toEqual(currentGroup + 1);
 
-        next.triggerEventHandler('click', null);
-        expect(testComponent.currentGroup).toEqual(currentGroup + 2);
+        nextGroup.triggerEventHandler('click', null);
+        expect(component.currentGroup).toEqual(currentGroup + 2);
 
-        previous.triggerEventHandler('click', null);
-        expect(testComponent.currentGroup).toEqual(currentGroup + 1);
+        previousGroup.triggerEventHandler('click', null);
+        expect(component.currentGroup).toEqual(currentGroup + 1);
     });
 
     it('should report valid size when enter is pressed while text box is selected', () => {
 
-        expect(testComponent.selected).toBeFalsy();
-        expect(testComponent.size).not.toEqual(150);
+        expect(component.selected).toBeFalsy();
+        expect(component.size).not.toEqual(groupSize);
 
-        TriggerEventByCss(selectorDebugElement, '.sizeInput', 'keyup.enter');
+        triggerEventByCss(selectorDebugElement, '.sizeInput', 'keyup.enter');
 
-        expect(testComponent.selected).toBeTruthy();
-        expect(testComponent.size).toEqual(150);
+        expect(component.selected).toBeTruthy();
+        expect(component.size).toEqual(groupSize);
     });
 
     it('should report valid size when "show" button is clicked', () => {
 
-        expect(testComponent.selected).toBeFalsy();
-        expect(testComponent.size).not.toEqual(150);
+        expect(component.selected).toBeFalsy();
+        expect(component.size).not.toEqual(groupSize);
 
-        TriggerEventByCss(selectorDebugElement, '.showSize', 'click');
+        triggerEventByCss(selectorDebugElement, '.showSize', 'click');
 
-        expect(testComponent.selected).toBeTruthy();
-        expect(testComponent.size).toEqual(150);
+        expect(component.selected).toBeTruthy();
+        expect(component.size).toEqual(groupSize);
     });
 
     it('should not report invalid size when "show" button or enter key is pressed', () => {
 
         selector.size = NaN;
-        expect(testComponent.selected).toBeFalsy();
+        expect(component.selected).toBeFalsy();
 
-        TriggerEventByCss(selectorDebugElement, '.sizeInput', 'keyup.enter');
-        TriggerEventByCss(selectorDebugElement, '.showSize', 'click');
+        triggerEventByCss(selectorDebugElement, '.sizeInput', 'keyup.enter');
+        expect(component.selected).toBeFalsy();
 
-        expect(testComponent.selected).toBeFalsy();
+        triggerEventByCss(selectorDebugElement, '.showSize', 'click');
+        expect(component.selected).toBeFalsy();
     });
 
     it('should always report size when "all" button is clicked', () => {
 
-        expect(testComponent.selected).toBeFalsy();
-        expect(testComponent.size).not.toEqual(150);
+        expect(component.selected).toBeFalsy();
+        expect(component.size).not.toEqual(groupSize);
 
-        TriggerEventByCss(selectorDebugElement, '.showAll', 'click');
+        triggerEventByCss(selectorDebugElement, '.showAll', 'click');
 
-        expect(testComponent.selected).toBeTruthy();
-        expect(testComponent.size).toEqual(-1);
+        expect(component.selected).toBeTruthy();
+        expect(component.size).toEqual(-1);
     });
 });
