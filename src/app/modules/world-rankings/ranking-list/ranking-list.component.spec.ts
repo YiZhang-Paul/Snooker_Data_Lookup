@@ -176,8 +176,8 @@ describe('RankingListComponent', () => {
         for (let i = 0; i < routerLinks.length; i++) {
 
             const actualParameters = JSON.stringify(routerLinks[i].linkParams);
-            const expectedParameters = ['../../players', players[i].id];
-            expect(actualParameters).toEqual(JSON.stringify(expectedParameters));
+            const expectedParameters = JSON.stringify(['../../players', players[i].id]);
+            expect(actualParameters).toEqual(expectedParameters);
         }
     });
 
@@ -286,7 +286,9 @@ describe('RankingListComponent', () => {
 
         playerLookup.getPlayer.and.callFake(targetId => {
 
-            if (!new Set(rankData.map(data => data.playerId)).has(targetId)) {
+            const ids = rankData.map(data => data.playerId);
+
+            if (!ids.includes(targetId)) {
 
                 return of(null);
             }

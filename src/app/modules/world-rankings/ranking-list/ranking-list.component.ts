@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { of, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
 import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.interface';
 import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
-import { Router, ActivatedRoute } from '@angular/router';
-import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
+import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 
 @Component({
     selector: 'app-ranking-list',
