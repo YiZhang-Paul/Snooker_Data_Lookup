@@ -1,14 +1,14 @@
 # Overview
 
-[1. Display World Ranking](#1.-display-world-ranking)  
-&nbsp;&nbsp;&nbsp;&nbsp;[- rankings by year](#1.1-display-by-year)  
-&nbsp;&nbsp;&nbsp;&nbsp;[- show all/part of rankings](#1.2-display-all/part-of-rankings-per-page)  
+[1. Display World Ranking](#1-display-world-ranking)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- rankings by year](#11-display-by-year)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- show all/part of rankings](#12-display-allpart-of-rankings-per-page)  
 
-[2. Player Wiki](#2.-player-wiki)  
-&nbsp;&nbsp;&nbsp;&nbsp;[- basic information](#2.1-player-basic-information)  
-&nbsp;&nbsp;&nbsp;&nbsp;[- statistics](#2.2-player-statistics)  
-&nbsp;&nbsp;&nbsp;&nbsp;[- tournament history](#2.3-player-tournament-history)  
-&nbsp;&nbsp;&nbsp;&nbsp;[- graphs](#2.4-player-graphs)  
+[2. Player Wiki](#2-player-wiki)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- basic information](#21-player-basic-information)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- statistics](#22-player-statistics)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- tournament history](#23-player-tournament-history)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- graphs](#24-player-graphs)  
 
 # 1. Display World Ranking
 
