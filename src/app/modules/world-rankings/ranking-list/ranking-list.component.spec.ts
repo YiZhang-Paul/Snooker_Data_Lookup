@@ -8,8 +8,8 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { worldRankingRoutes } from '../world-rankings-routing.module';
 import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
 import { compareTextContent, queryAllByCss, triggerEventByCss } from '../../../../testing/custom-test-utilities';
+import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
-import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
 import { RankingListComponent } from './ranking-list.component';
 
 @Component({ selector: 'app-group-size-selector', template: '' })
@@ -28,9 +28,9 @@ describe('RankingListComponent', () => {
     let component: RankingListComponent;
     let linkDebugElements: DebugElement[];
     let routerLinks: RouterLinkStubDirective[];
+    let rankingLookup: jasmine.SpyObj<RankingLookupService>;
+    let getRankingsSpy: jasmine.Spy;
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
-    let fetcher: jasmine.SpyObj<LiveRankingFetcherService>;
-    let fetchSpy: jasmine.Spy;
     let routes: ActivatedRoute;
     let router: Router;
     let paramMapSpy: jasmine.Spy;
@@ -82,9 +82,8 @@ describe('RankingListComponent', () => {
 
     beforeEach(() => {
 
+        setupRankingLookup(rankData);
         setupPlayerLookup(players);
-        fetcher = jasmine.createSpyObj('LiveRankingFetcherService', ['fetch']);
-        fetchSpy = fetcher.fetch.and.returnValue(of(rankData));
 
         TestBed.configureTestingModule({
 
@@ -97,8 +96,8 @@ describe('RankingListComponent', () => {
             ],
             providers: [
 
-                { provide: PlayerLookupService, useValue: playerLookup },
-                { provide: LiveRankingFetcherService, useValue: fetcher }
+                { provide: RankingLookupService, useValue: rankingLookup },
+                { provide: PlayerLookupService, useValue: playerLookup }
             ]
         });
 
@@ -117,11 +116,11 @@ describe('RankingListComponent', () => {
 
     it('fetcher should be invoked on ngOnInit', () => {
 
-        expect(fetchSpy).not.toHaveBeenCalled();
+        expect(getRankingsSpy).not.toHaveBeenCalled();
 
         fixture.detectChanges();
 
-        expect(fetchSpy).toHaveBeenCalled();
+        expect(getRankingsSpy).toHaveBeenCalled();
     });
 
     it('should default to current year', () => {
@@ -184,7 +183,7 @@ describe('RankingListComponent', () => {
 
     it('should have empty ranking list when data is not available', () => {
 
-        fetchSpy = fetcher.fetch.and.returnValue(of(null));
+        getRankingsSpy.and.returnValue(of(null));
         expect(component.rankings.length).toEqual(0);
 
         fixture.detectChanges();
@@ -262,6 +261,12 @@ describe('RankingListComponent', () => {
         component.onGroupChanged(1);
         expect(component.groupIndex).toEqual(1);
     });
+
+    function setupRankingLookup(data: IRankData[]): void {
+
+        rankingLookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
+        getRankingsSpy = rankingLookup.getRankings.and.returnValue(of(data));
+    }
 
     function getPlayerLookupMap(input: IPlayer[]): Map<number, IPlayer> {
 

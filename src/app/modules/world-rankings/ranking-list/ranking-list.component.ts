@@ -7,7 +7,7 @@ import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.inte
 import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
-import { LiveRankingFetcherService } from '../../data-providers/rankings-data/live-ranking-fetcher.service';
+import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 
 @Component({
     selector: 'app-ranking-list',
@@ -25,8 +25,8 @@ export class RankingListComponent implements OnInit {
 
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private fetcher: LiveRankingFetcherService,
-        private lookup: PlayerLookupService
+        private rankingLookup: RankingLookupService,
+        private playerLookup: PlayerLookupService
 
     ) { }
 
@@ -106,7 +106,7 @@ export class RankingListComponent implements OnInit {
 
     private updateRankDetails(rankData: IRankData[]): void {
 
-        this.lookup.getPlayers(this._selectedYear).pipe(
+        this.playerLookup.getPlayers(this._selectedYear).pipe(
 
             switchMap(players => this.getRankDetails(rankData, players))
 
@@ -124,7 +124,7 @@ export class RankingListComponent implements OnInit {
 
     private fetchRankings(): void {
 
-        this.fetcher.fetch(this._selectedYear).subscribe(rankings => {
+        this.rankingLookup.getRankings(this._selectedYear).subscribe(rankings => {
 
             if (rankings !== null) {
 
