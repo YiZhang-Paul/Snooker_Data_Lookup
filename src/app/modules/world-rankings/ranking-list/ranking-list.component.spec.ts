@@ -7,7 +7,7 @@ import { IRankData } from '../../data-providers/rankings-data/rank-data.interfac
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { worldRankingRoutes } from '../world-rankings-routing.module';
 import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
-import { compareTextContent, queryAllByCss, triggerEventByCss } from '../../../../testing/custom-test-utilities';
+import { queryAllByCss, triggerEventByCss } from '../../../../testing/custom-test-utilities';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { RankingListComponent } from './ranking-list.component';
@@ -160,10 +160,10 @@ describe('RankingListComponent', () => {
 
         const player = players[0];
         const data = rankData[0];
-        compareTextContent(columns[0], `${data.position}`);
-        compareTextContent(columns[1], `${player.firstName} ${player.lastName}`);
-        compareTextContent(columns[2], `${player.nationality}`);
-        compareTextContent(columns[3], `${data.earnings}`);
+        compareText(columns[0], `${data.position}`);
+        compareText(columns[1], `${player.firstName} ${player.lastName}`);
+        compareText(columns[2], `${player.nationality}`);
+        compareText(columns[3], `${data.earnings}`);
     });
 
     it('should setup links to player wiki pages through player names on ranking table', () => {
@@ -303,5 +303,10 @@ describe('RankingListComponent', () => {
 
         paramMapSpy = spyOnProperty(routes, 'paramMap').and.returnValue(of(map));
         navigateSpy = spyOn(router, 'navigate');
+    }
+
+    function compareText(debugElement: DebugElement, expected: string): void {
+
+        expect(debugElement.nativeElement.textContent).toEqual(expected);
     }
 });

@@ -15,7 +15,7 @@ export class PlayerInformationComponent implements OnInit {
 
     constructor(
 
-        private route: ActivatedRoute,
+        private routes: ActivatedRoute,
         private lookup: PlayerLookupService
 
     ) { }
@@ -27,7 +27,7 @@ export class PlayerInformationComponent implements OnInit {
 
     ngOnInit() {
 
-        this.route.parent.paramMap.pipe(
+        this.routes.parent.paramMap.pipe(
 
             switchMap(params => {
 

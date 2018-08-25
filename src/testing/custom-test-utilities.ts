@@ -2,11 +2,6 @@ import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-export function compareTextContent(debugElement: DebugElement, expected: string): void {
-
-    expect(debugElement.nativeElement.textContent).toEqual(expected);
-}
-
 export function fakeRequest<T>(url: string, method: 'GET' | 'DELETE' = 'GET'): HttpRequest<T> {
 
     return new HttpRequest<T>(method, url);

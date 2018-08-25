@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
-import { compareTextContent, queryByCss } from '../../../../testing/custom-test-utilities';
+import { queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerInformationComponent } from './player-information.component';
 
@@ -129,6 +129,7 @@ describe('PlayerInformationComponent', () => {
 
     function compareText(css: string, expected: string): void {
 
-        compareTextContent(queryByCss(fixture.debugElement, css), expected);
+        const element = queryByCss(fixture.debugElement, css);
+        expect(element.nativeElement.textContent).toEqual(expected);
     }
 });

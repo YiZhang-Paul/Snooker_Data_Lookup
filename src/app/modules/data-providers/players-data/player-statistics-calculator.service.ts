@@ -11,33 +11,25 @@ export class PlayerStatisticsCalculatorService {
 
     private _startYear = 2013;
 
-    constructor(
-
-        private rankingLookup: RankingLookupService
-
-    ) { }
+    constructor(private lookup: RankingLookupService) { }
 
     get currentYear(): number {
 
         return new Date().getFullYear();
     }
 
-    private getRank(rankings: IRankData[], id: number): number {
+    private getRanking(rankings: IRankData[], id: number): number {
 
-        const rankData = rankings.find(data => data.playerId === id);
+        const data = rankings.find(ranking => ranking.playerId === id);
 
-        return rankData ? rankData.position : null;
+        return data ? data.position : null;
     }
 
-    public getCurrentRanking(id: number): Observable<number> {
+    private getEarnings(rankings: IRankData[], id: number): number {
 
-        return this.rankingLookup.getRankings(this.currentYear).pipe(
+        const data = rankings.find(ranking => ranking.playerId === id);
 
-            switchMap(rankings => {
-
-                return of(rankings ? this.getRank(rankings, id) : null);
-            })
-        );
+        return data ? data.earnings : 0;
     }
 
     private getRankingSince(startYear: number): Observable<IRankData[]>[] {
@@ -46,13 +38,19 @@ export class PlayerStatisticsCalculatorService {
 
         for (let i = startYear; i <= this.currentYear; i++) {
 
-            rankings.push(this.rankingLookup.getRankings(i));
+            rankings.push(this.lookup.getRankings(i));
         }
 
         return rankings;
     }
 
-    private getMaxOrMinRanking(id: number, callback: (a: number, b: number) => number): Observable<number> {
+    private getStatistics(
+
+        id: number,
+        extractData: (rankings: IRankData[], id: number) => number,
+        transformData: (current: number, newData: number) => number
+
+    ): Observable<number> {
 
         return combineLatest(this.getRankingSince(this._startYear)).pipe(
 
@@ -62,12 +60,7 @@ export class PlayerStatisticsCalculatorService {
 
                 rankings.filter(ranking => ranking).forEach(ranking => {
 
-                    const rank = this.getRank(ranking, id);
-
-                    if (rank) {
-
-                        result = result ? callback(result, rank) : rank;
-                    }
+                    result = transformData(result, extractData(ranking, id));
                 });
 
                 return of(result);
@@ -75,13 +68,54 @@ export class PlayerStatisticsCalculatorService {
         );
     }
 
-    public getLowestRanking(id: number): Observable<number> {
+    private pickHigherRank(current: number, newRank: number): number {
 
-        return this.getMaxOrMinRanking(id, Math.max);
+        if (newRank) {
+
+            current = current ? Math.min(current, newRank) : newRank;
+        }
+
+        return current;
+    }
+
+    private pickLowerRank(current: number, newRank: number): number {
+
+        if (newRank) {
+
+            current = current ? Math.max(current, newRank) : newRank;
+        }
+
+        return current;
+    }
+
+    private addEarnings(current: number, newEarnings: number): number {
+
+        return (isNaN(current) ? 0 : current) + newEarnings;
+    }
+
+    public getCurrentRanking(id: number): Observable<number> {
+
+        return this.lookup.getRankings(this.currentYear).pipe(
+
+            switchMap(rankings => {
+
+                return of(rankings ? this.getRanking(rankings, id) : null);
+            })
+        );
     }
 
     public getHighestRanking(id: number): Observable<number> {
 
-        return this.getMaxOrMinRanking(id, Math.min);
+        return this.getStatistics(id, this.getRanking, this.pickHigherRank);
+    }
+
+    public getLowestRanking(id: number): Observable<number> {
+
+        return this.getStatistics(id, this.getRanking, this.pickLowerRank);
+    }
+
+    public getTotalEarnings(id: number): Observable<number> {
+
+        return this.getStatistics(id, this.getEarnings, this.addEarnings);
     }
 }

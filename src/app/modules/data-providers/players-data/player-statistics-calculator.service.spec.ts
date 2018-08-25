@@ -30,7 +30,7 @@ describe('PlayerStatisticsCalculatorService', () => {
         website: '',
         twitter: '',
         turnedPro: 2016,
-        lastSeasonPlayed: currentYear
+        lastSeasonPlayed: currentYear // not retired
     };
 
     const retired: IPlayer = {
@@ -48,41 +48,36 @@ describe('PlayerStatisticsCalculatorService', () => {
         website: '',
         twitter: '',
         turnedPro: 2016,
-        lastSeasonPlayed: currentYear - 1
+        lastSeasonPlayed: currentYear - 1 // retired
     };
 
     const rankings: { [year: number]: IRankData[] } = {
 
-        [currentYear - 3]: [{ position: highestRank, playerId: active.id, earnings: 1, type: 'm' }],
-        [currentYear - 2]: [{ position: lowestRank, playerId: active.id, earnings: 2, type: 'm' }],
+        [currentYear - 3]: [{ position: highestRank, playerId: active.id, earnings: 100, type: 'm' }],
+        [currentYear - 2]: [{ position: lowestRank, playerId: active.id, earnings: 150, type: 'm' }],
         // active player not included in this year
-        [currentYear - 1]: [{ position: retiredRank, playerId: retired.id, earnings: 1, type: 'm' }],
-        [currentYear - 0]: [{ position: currentRank, playerId: active.id, earnings: 3, type: 'm' }]
+        [currentYear - 1]: [{ position: retiredRank, playerId: retired.id, earnings: 200, type: 'm' }],
+        [currentYear - 0]: [{ position: currentRank, playerId: active.id, earnings: 50, type: 'm' }]
     };
 
-    let rankingLookup: jasmine.SpyObj<RankingLookupService>;
+    let lookup: jasmine.SpyObj<RankingLookupService>;
     let getRankingsSpy: jasmine.Spy;
-    let calculator: PlayerStatisticsCalculatorService;
+    let statistics: PlayerStatisticsCalculatorService;
 
     beforeEach(() => {
 
-        rankingLookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
-
-        getRankingsSpy = rankingLookup.getRankings.and.callFake(targetYear => {
-
-            return of(rankings[targetYear] ? rankings[targetYear] : null);
-        });
+        setupRankingLookup();
 
         TestBed.configureTestingModule({
 
             providers: [
 
                 PlayerStatisticsCalculatorService,
-                { provide: RankingLookupService, useValue: rankingLookup }
+                { provide: RankingLookupService, useValue: lookup }
             ]
         });
 
-        calculator = TestBed.get(PlayerStatisticsCalculatorService);
+        statistics = TestBed.get(PlayerStatisticsCalculatorService);
     });
 
     it('should be created', inject([PlayerStatisticsCalculatorService], (service: PlayerStatisticsCalculatorService) => {
@@ -92,7 +87,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('current ranking should be null when player is retired', () => {
 
-        calculator.getCurrentRanking(retired.id).subscribe(data => {
+        statistics.getCurrentRanking(retired.id).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -102,14 +97,14 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('current ranking should be null when rankings for current year are not available', () => {
 
-        rankingLookup.getRankings.and.callFake(targetYear => {
+        lookup.getRankings.and.callFake(targetYear => {
 
-            const hasValue = targetYear !== currentYear && rankings[targetYear];
+            const isValid = targetYear !== currentYear && rankings[targetYear];
 
-            return of(hasValue ? rankings[targetYear] : null);
+            return of(isValid ? rankings[targetYear] : null);
         });
 
-        calculator.getCurrentRanking(active.id).subscribe(data => {
+        statistics.getCurrentRanking(active.id).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -119,7 +114,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('should return current ranking when possible', () => {
 
-        calculator.getCurrentRanking(active.id).subscribe(data => {
+        statistics.getCurrentRanking(active.id).subscribe(data => {
 
             expect(data).toEqual(currentRank);
         });
@@ -131,7 +126,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
         const fictitiousId = active.id + retired.id + 1;
 
-        calculator.getLowestRanking(fictitiousId).subscribe(data => {
+        statistics.getLowestRanking(fictitiousId).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -141,12 +136,12 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('should calculate lowest ranking when possible', () => {
 
-        calculator.getLowestRanking(active.id).subscribe(data => {
+        statistics.getLowestRanking(active.id).subscribe(data => {
 
             expect(data).toEqual(lowestRank);
         });
 
-        calculator.getLowestRanking(retired.id).subscribe(data => {
+        statistics.getLowestRanking(retired.id).subscribe(data => {
 
             expect(data).toEqual(retiredRank);
         });
@@ -158,7 +153,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
         const fictitiousId = active.id + retired.id + 1;
 
-        calculator.getHighestRanking(fictitiousId).subscribe(data => {
+        statistics.getHighestRanking(fictitiousId).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -168,18 +163,63 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('should calculate highest ranking when possible', () => {
 
-        calculator.getHighestRanking(active.id).subscribe(data => {
+        statistics.getHighestRanking(active.id).subscribe(data => {
 
             expect(data).toEqual(highestRank);
         });
 
-        calculator.getHighestRanking(retired.id).subscribe(data => {
+        statistics.getHighestRanking(retired.id).subscribe(data => {
 
             expect(data).toEqual(retiredRank);
         });
 
         checkGetRankingsSpy();
     });
+
+    it('should return 0 total earnings for invalid id', () => {
+
+        const fictitiousId = active.id + retired.id + 1;
+
+        statistics.getTotalEarnings(fictitiousId).subscribe(data => {
+
+            expect(data).toEqual(0);
+        });
+
+        checkGetRankingsSpy();
+    });
+
+    it('should properly calculate total earnings for valid ids', () => {
+
+        const years = [currentYear, currentYear - 2, currentYear - 3];
+
+        const totalEarnings = years.reduce((total, year) => {
+
+            return total + rankings[year][0].earnings;
+
+        }, 0);
+
+        statistics.getTotalEarnings(active.id).subscribe(data => {
+
+            expect(data).toEqual(totalEarnings);
+        });
+
+        statistics.getTotalEarnings(retired.id).subscribe(data => {
+
+            expect(data).toEqual(rankings[currentYear - 1][0].earnings);
+        });
+
+        checkGetRankingsSpy();
+    });
+
+    function setupRankingLookup(): void {
+
+        lookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
+
+        getRankingsSpy = lookup.getRankings.and.callFake(targetYear => {
+
+            return of(rankings[targetYear] ? rankings[targetYear] : null);
+        });
+    }
 
     function checkGetRankingsSpy(): void {
 
