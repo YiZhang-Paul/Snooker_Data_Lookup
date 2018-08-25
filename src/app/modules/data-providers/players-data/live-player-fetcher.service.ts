@@ -31,7 +31,7 @@ export class LivePlayerFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(record => of(recordToPlayer(record))),
+            switchMap(record => of(recordToPlayer(record[0]))),
             catchError(() => of(null))
         );
     }

@@ -7,7 +7,7 @@ describe('LivePlayerFetcherService', () => {
 
     let httpTestingController: HttpTestingController;
     let fetcher: LivePlayerFetcherService;
-    const id = 107;
+    const id = 109;
     const year = 2017;
     const urlById = `http://api.snooker.org/?p=${id}`;
     const urlByYear = `http://api.snooker.org/?t=10&st=p&s=${year}`;
@@ -77,7 +77,7 @@ describe('LivePlayerFetcherService', () => {
             expect(JSON.stringify(data)).toEqual(JSON.stringify(response[0]));
         });
 
-        httpTestingController.expectOne(urlById).flush(rawData[0]);
+        httpTestingController.expectOne(urlById).flush([rawData[0]]);
     });
 
     it('fetchById() should retry 2 times before returning null on failure', () => {
