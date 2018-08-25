@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IRankData } from '../rankings-data/rank-data.interface';
 import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
@@ -52,7 +52,7 @@ export class PlayerStatisticsCalculatorService {
 
     ): Observable<number> {
 
-        return combineLatest(this.getRankingSince(this._startYear)).pipe(
+        return forkJoin(this.getRankingSince(this._startYear)).pipe(
 
             switchMap(rankings => {
 

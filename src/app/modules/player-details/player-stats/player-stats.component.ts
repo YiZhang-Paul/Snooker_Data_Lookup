@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
@@ -12,6 +13,7 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 export class PlayerStatsComponent implements OnInit {
 
     private _player: IPlayer = null;
+    private _careerEarnings: number;
     private _currentRanking: number;
     private _highestRanking: number;
     private _lowestRanking: number;
@@ -19,8 +21,8 @@ export class PlayerStatsComponent implements OnInit {
     constructor(
 
         private routes: ActivatedRoute,
-        private playerLookup: PlayerLookupService,
-        private statsCalculator: PlayerStatisticsCalculatorService
+        private lookup: PlayerLookupService,
+        private statistics: PlayerStatisticsCalculatorService
 
     ) { }
 
@@ -40,6 +42,11 @@ export class PlayerStatsComponent implements OnInit {
         const isActive = this._player.lastSeasonPlayed === currentYear;
 
         return isActive ? 'Active' : 'Currently Retired';
+    }
+
+    get careerEarnings(): number {
+
+        return this._careerEarnings;
     }
 
     get currentRanking(): number {
@@ -63,7 +70,7 @@ export class PlayerStatsComponent implements OnInit {
 
             const id = Number(params.get('id'));
 
-            this.playerLookup.getPlayer(id).subscribe(player => {
+            this.lookup.getPlayer(id).subscribe(player => {
 
                 this._player = player;
                 this.setStatistics(id);
@@ -73,19 +80,19 @@ export class PlayerStatsComponent implements OnInit {
 
     private setStatistics(id: number): void {
 
-        this.statsCalculator.getCurrentRanking(id).subscribe(ranking => {
+        forkJoin([
 
-            this._currentRanking = ranking;
-        });
+            this.statistics.getTotalEarnings(id),
+            this.statistics.getCurrentRanking(id),
+            this.statistics.getHighestRanking(id),
+            this.statistics.getLowestRanking(id)
 
-        this.statsCalculator.getHighestRanking(id).subscribe(ranking => {
+        ]).subscribe(results => {
 
-            this._highestRanking = ranking;
-        });
-
-        this.statsCalculator.getLowestRanking(id).subscribe(ranking => {
-
-            this._lowestRanking = ranking;
+            this._careerEarnings = results[0];
+            this._currentRanking = results[1];
+            this._highestRanking = results[2];
+            this._lowestRanking = results[3];
         });
     }
 }
