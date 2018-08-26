@@ -5,6 +5,7 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
 import { queryAllByCss, triggerNativeEventByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { PlayerFilterService } from './player-filter.service';
 import { PlayerListComponent } from './player-list.component';
 
 describe('PlayerListComponent', () => {
@@ -68,16 +69,22 @@ describe('PlayerListComponent', () => {
     let lookup: PlayerLookupService;
     let players$Spy: jasmine.Spy;
     let getPlayersSpy: jasmine.Spy;
+    let filter: jasmine.SpyObj<PlayerFilterService>;
     const sortedPlayers = players.slice().sort((a, b) => a.id - b.id);
 
     beforeEach(async(() => {
 
         setupPlayerLookup(players);
+        setupPlayerFilter();
 
         TestBed.configureTestingModule({
 
             declarations: [PlayerListComponent, RouterLinkStubDirective],
-            providers: [{ provide: PlayerLookupService, useValue: lookup }]
+            providers: [
+
+                { provide: PlayerLookupService, useValue: lookup },
+                { provide: PlayerFilterService, useValue: filter }
+            ]
 
         }).compileComponents();
     }));
@@ -275,5 +282,35 @@ describe('PlayerListComponent', () => {
         getPlayersSpy = spyOn(lookup, 'getPlayers');
         players$Spy.and.returnValue(of(toMap(data)));
         getPlayersSpy.and.returnValue(of(toMap(data.slice(1))));
+    }
+
+    function setupPlayerFilter(): void {
+
+        filter = jasmine.createSpyObj('PlayerFilterService', ['filterByName', 'filterByNationality']);
+
+        filter.filterByName.and.callFake((input: IPlayer[], pattern: string) => {
+
+            if (pattern === '') {
+
+                return input;
+            }
+
+            return pattern === 'no' ? input.slice(0, 2) : input.slice(2);
+        });
+
+        filter.filterByNationality.and.callFake((input: IPlayer[], pattern: string) => {
+
+            if (pattern === '') {
+
+                return input;
+            }
+
+            return input.filter(player => {
+
+                return pattern === 'china' ?
+                    player.nationality === 'china' :
+                    player.nationality !== 'china';
+            });
+        });
     }
 });
