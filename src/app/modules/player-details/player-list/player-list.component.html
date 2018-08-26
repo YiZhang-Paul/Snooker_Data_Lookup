@@ -1,4 +1,14 @@
 <h2>Players</h2>
+<select (change)="onYearSelected($event.target.value)" class="years">
+    <option *ngFor="let year of years"
+        [selected]="year === selectedYear"
+        value="{{ year }}">{{ year === -1 ? 'All' : year }}</option>
+</select>
+<select (change)="onNationalitySelected($event.target.value)" class="nationalities">
+    <option *ngFor="let nationality of nationalities"
+        [selected]="nationality === selectedNationality"
+        value="{{ nationality }}">{{ nationality ? nationality : 'All' }}</option>
+</select>
 <ng-container *ngIf="players.length > 0">
     <div *ngFor="let player of players; trackBy: trackById">
         <a routerLink="{{ player.id }}">{{ player.firstName }} {{ player.lastName }}</a>

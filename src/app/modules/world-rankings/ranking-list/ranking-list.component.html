@@ -1,5 +1,6 @@
 <select (change)="onYearSelected($event.target.value)">
-    <option *ngFor="let year of validYears" [selected]="year === selectedYear"
+    <option *ngFor="let year of validYears"
+        [selected]="year === selectedYear"
         value="{{ year }}">{{ year }}</option>
 </select>
 <h1>World Rankings {{ selectedYear }}</h1>
