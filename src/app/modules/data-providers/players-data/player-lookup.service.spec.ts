@@ -86,6 +86,11 @@ describe('PlayerLookupService', () => {
 
             expect(data).toEqual(targetPlayer);
 
+            lookup.players$.subscribe(allData => {
+
+                expect(allData.size).toEqual(1);
+            });
+
             lookup.getPlayer(targetPlayer.id).subscribe(cachedData => {
 
                 expect(cachedData).toEqual(data);
@@ -140,6 +145,11 @@ describe('PlayerLookupService', () => {
 
             expect(data.size).toEqual(players.length);
             expect(data.get(targetPlayer.id)).toEqual(targetPlayer);
+
+            lookup.players$.subscribe(allData => {
+
+                expect(allData.size).toEqual(players.length);
+            });
 
             lookup.getPlayers(targetYear).subscribe(cachedData => {
 

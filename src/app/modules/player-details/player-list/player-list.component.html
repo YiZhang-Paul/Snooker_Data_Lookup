@@ -1,0 +1,6 @@
+<h2>Players</h2>
+<ng-container *ngIf="players.length > 0">
+    <div *ngFor="let player of players; trackBy: trackById">
+        <a routerLink="{{ player.id }}">{{ player.firstName }} {{ player.lastName }}</a>
+    </div>
+</ng-container>

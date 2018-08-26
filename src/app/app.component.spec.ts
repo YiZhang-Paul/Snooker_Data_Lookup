@@ -62,9 +62,10 @@ describe('AppComponent', () => {
 
     it('should bind to corresponding links', () => {
 
-        expect(routerLinks.length).toEqual(2);
+        expect(routerLinks.length).toEqual(3);
         expect(routerLinks[0].linkParams).toEqual('');
-        expect(routerLinks[1].linkParams).toEqual('/rankings');
+        expect(routerLinks[1].linkParams).toEqual('/players');
+        expect(routerLinks[2].linkParams).toEqual('/rankings');
     });
 
     it('should navigate to binding links on click', () => {
