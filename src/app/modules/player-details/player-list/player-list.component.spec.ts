@@ -3,7 +3,7 @@ import { DebugElement } from '@angular/core';
 import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
-import { queryAllByCss } from '../../../../testing/custom-test-utilities';
+import { queryAllByCss, triggerNativeEventByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerListComponent } from './player-list.component';
 
@@ -227,6 +227,28 @@ describe('PlayerListComponent', () => {
         tick();
 
         expect(component.players.length).toEqual(1);
+    }));
+
+    it('should display all players when search box is empty', fakeAsync(() => {
+
+        fixture.detectChanges();
+
+        const target = { value: '' };
+        triggerNativeEventByCss(fixture.debugElement, '#search', 'keyup', target);
+        tick(component.debounceTime);
+
+        expect(component.players.length).toEqual(players.length);
+    }));
+
+    it('should properly filter players with search term', fakeAsync(() => {
+
+        fixture.detectChanges();
+
+        const target = { value: 'N o' };
+        triggerNativeEventByCss(fixture.debugElement, '#search', 'keyup', target);
+        tick(component.debounceTime);
+
+        expect(component.players.length).toEqual(2);
     }));
 
     function compareText(debugElement: DebugElement, expected: string): void {

@@ -27,14 +27,28 @@ export function queryByDirective(element: DebugElement, directive: any): DebugEl
     return element.query(By.directive(directive));
 }
 
+export function triggerNativeEventByCss(
+
+    element: DebugElement,
+    css: string,
+    type: string,
+    target: object = null
+
+): void {
+
+    const event = new Event(type);
+    Object.defineProperty(event, 'target', { writable: false, value: target });
+    queryByCss(element, css).nativeElement.dispatchEvent(event);
+}
+
 export function triggerEventByCss(
 
     element: DebugElement,
     css: string,
-    event: string,
-    eventArgs: any = null
+    type: string,
+    payload: any = null
 
 ): void {
 
-    queryByCss(element, css).triggerEventHandler(event, eventArgs);
+    queryByCss(element, css).triggerEventHandler(type, payload);
 }
