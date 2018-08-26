@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { PlayerLookupService } from './modules/data-providers/players-data/player-lookup.service';
 import { RankingLookupService } from './modules/data-providers/rankings-data/ranking-lookup.service';
+import { APP_CONFIG } from './app-config';
 
 @Component({
     selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent implements OnInit {
 
     constructor(
 
+        @Inject(APP_CONFIG) private configuration,
         private playerLookup: PlayerLookupService,
         private rankingLookup: RankingLookupService
 
@@ -23,7 +25,7 @@ export class AppComponent implements OnInit {
 
     private loadData(): void {
 
-        const startYear = 2013;
+        const startYear = this.configuration.startYear;
         const currentYear = new Date().getFullYear();
 
         for (let i = currentYear; i >= startYear; i--) {

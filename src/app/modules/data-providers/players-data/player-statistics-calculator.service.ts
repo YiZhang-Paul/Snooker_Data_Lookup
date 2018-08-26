@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IRankData } from '../rankings-data/rank-data.interface';
 import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
+import { APP_CONFIG } from '../../../app-config';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlayerStatisticsCalculatorService {
 
-    private _startYear = 2013;
+    constructor(
 
-    constructor(private lookup: RankingLookupService) { }
+        @Inject(APP_CONFIG) private configuration,
+        private lookup: RankingLookupService
+
+    ) { }
 
     get currentYear(): number {
 
@@ -52,7 +56,7 @@ export class PlayerStatisticsCalculatorService {
 
     ): Observable<number> {
 
-        return forkJoin(this.getRankingSince(this._startYear)).pipe(
+        return forkJoin(this.getRankingSince(this.configuration.startYear)).pipe(
 
             switchMap(rankings => {
 

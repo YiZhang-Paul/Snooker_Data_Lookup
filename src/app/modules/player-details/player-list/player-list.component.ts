@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Observable, fromEvent } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerFilterService } from './player-filter.service';
+import { APP_CONFIG } from '../../../app-config';
 
 @Component({
     selector: 'app-player-list',
@@ -21,6 +22,7 @@ export class PlayerListComponent implements OnInit {
 
     constructor(
 
+        @Inject(APP_CONFIG) private configuration,
         private lookup: PlayerLookupService,
         private filter: PlayerFilterService
 
@@ -38,7 +40,7 @@ export class PlayerListComponent implements OnInit {
 
     get years(): number[] {
 
-        const startYear = 2013;
+        const startYear = this.configuration.startYear;
         const currentYear = new Date().getFullYear();
         const totalYears = currentYear - startYear + 1;
         const result = new Array(totalYears + 1).fill(-1);
