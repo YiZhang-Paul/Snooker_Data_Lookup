@@ -5,6 +5,7 @@ import { PlayerListComponent } from './player-list/player-list.component';
 import { PlayerWikiComponent } from '../player-details/player-wiki/player-wiki.component';
 import { PlayerInformationComponent } from './player-information/player-information.component';
 import { PlayerStatsComponent } from './player-stats/player-stats.component';
+import { PlayerGraphsComponent } from './player-graphs/player-graphs.component';
 
 const playerDetailsRoutes: Routes = [
     {
@@ -18,6 +19,10 @@ const playerDetailsRoutes: Routes = [
             {
                 path: 'stats',
                 component: PlayerStatsComponent
+            },
+            {
+                path: 'graphs',
+                component: PlayerGraphsComponent
             },
             {
                 path: '',
