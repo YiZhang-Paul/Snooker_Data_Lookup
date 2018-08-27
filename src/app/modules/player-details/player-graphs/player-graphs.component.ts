@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
+import { ActivatedRoute } from '@angular/router';
+import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
+import { Chart, ChartDataSets } from 'chart.js';
 
 @Component({
     selector: 'app-player-graphs',
@@ -8,11 +10,17 @@ import { Chart } from 'chart.js';
 })
 export class PlayerGraphsComponent implements OnInit {
 
+    private _id: number;
     private _chart: string;
     private _rankingChartTitle = 'World Ranking';
     private _earningChartTitle = 'Earnings';
 
-    constructor() { }
+    constructor(
+
+        private routes: ActivatedRoute,
+        private statistics: PlayerStatisticsCalculatorService
+
+    ) { }
 
     get chart(): string {
 
@@ -21,12 +29,10 @@ export class PlayerGraphsComponent implements OnInit {
 
     ngOnInit() {
 
-        const timeout = setTimeout(() => {
+        this.routes.parent.paramMap.subscribe(params => {
 
+            this._id = Number(params.get('id'));
             this.showRankingChart();
-            this._chart = this._rankingChartTitle;
-
-            clearTimeout(timeout);
         });
     }
 
@@ -35,9 +41,44 @@ export class PlayerGraphsComponent implements OnInit {
         return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
     }
 
-    private createLineChart(
+    private setLineChartColor(dataset: ChartDataSets, rgb: { r, g, b }): ChartDataSets {
+
+        dataset.backgroundColor = [this.getRgbaColor(rgb, 0.2)];
+        dataset.borderColor = [this.getRgbaColor(rgb)];
+
+        return dataset;
+    }
+
+    private setBarChartColor(dataset: ChartDataSets, rgb: { r, g, b }, items: number): ChartDataSets {
+
+        const backgroundColor = [];
+        const borderColor = [];
+        const hoverBackgroundColor = [];
+        const hoverBorderColor = [];
+
+        const random = () => Math.floor(Math.random() * 256);
+
+        for (let i = 0; i < items; i++) {
+
+            const randomRgb = { r: random(), g: random(), b: random() };
+            backgroundColor.push(this.getRgbaColor(randomRgb, 0.2));
+            borderColor.push(this.getRgbaColor(randomRgb));
+            hoverBackgroundColor.push(this.getRgbaColor(rgb, 0.2));
+            hoverBorderColor.push(this.getRgbaColor(rgb));
+        }
+
+        dataset.backgroundColor = backgroundColor;
+        dataset.borderColor = borderColor;
+        dataset.hoverBackgroundColor = hoverBackgroundColor;
+        dataset.hoverBorderColor = hoverBorderColor;
+
+        return dataset;
+    }
+
+    private createChart(
 
         canvas: string,
+        type: string,
         title: string,
         labels: string[],
         values: number[],
@@ -46,18 +87,22 @@ export class PlayerGraphsComponent implements OnInit {
 
     ): Chart {
 
+        const dataset = {
+            label: title,
+            data: values,
+            borderWidth: 1
+        };
+
         return new Chart(canvas, {
 
-            type: 'line',
+            type,
             data: {
                 labels,
-                datasets: [{
-                    label: title,
-                    data: values,
-                    backgroundColor: [this.getRgbaColor(mainRgb, 0.2)],
-                    borderColor: [this.getRgbaColor(mainRgb)],
-                    borderWidth: 1
-                }]
+                datasets: [
+                    type === 'line' ?
+                        this.setLineChartColor(dataset, mainRgb) :
+                        this.setBarChartColor(dataset, mainRgb, labels.length)
+                ]
             },
             options: {
                 scales: {
@@ -68,6 +113,9 @@ export class PlayerGraphsComponent implements OnInit {
                     }],
                     yAxes: [{
                         stacked: true,
+                        ticks: {
+                            callback: value => { if (Number.isInteger(value)) { return value; } }
+                        },
                         gridLines: {
                             color: this.getRgbaColor(gridRgb, 0.7)
                         }
@@ -84,36 +132,48 @@ export class PlayerGraphsComponent implements OnInit {
 
     private showRankingChart(): void {
 
-        this.createLineChart(
+        this.statistics.getRankHistory(this._id).subscribe(rankings => {
 
-            'canvas',
-            'World Ranking per Year',
-            ['2013', '2014', '2015', '2016', '2017', '2018'],
-            [3, 7, 9, 6, 2, 4],
-            { r: 23, g: 190, b: 209 },
-            { r: 86, g: 89, b: 94}
-        );
+            this.createChart(
+
+                'canvas',
+                'line',
+                'World Ranking per Year',
+                this.statistics.supportedYears.map(year => String(year)),
+                rankings.map(ranking => ranking.rank),
+                { r: 23, g: 190, b: 209 },
+                { r: 86, g: 89, b: 94}
+            );
+
+            this._chart = this._rankingChartTitle;
+        });
     }
 
     private showEarningChart(): void {
 
-        this.createLineChart(
+        this.statistics.getEarningHistory(this._id).subscribe(earnings => {
 
-            'canvas',
-            'Earnings per Year',
-            ['2013', '2014', '2015', '2016', '2017', '2018'],
-            [100, 200, 250, 175, 300, 310],
-            { r: 255, g: 99, b: 132 },
-            { r: 86, g: 89, b: 94}
-        );
+            this.createChart(
+
+                'canvas',
+                'bar',
+                'Earnings per Year',
+                this.statistics.supportedYears.map(year => String(year)),
+                earnings.map(earning => earning.earning),
+                { r: 255, g: 99, b: 132 },
+                { r: 86, g: 89, b: 94}
+            );
+
+            this._chart = this._earningChartTitle;
+        });
     }
 
     public toggleChart(): void {
 
         const isRanking = this._chart === this._rankingChartTitle;
-        this._chart = isRanking ? this._earningChartTitle : this._rankingChartTitle;
+        const chart = isRanking ? this._earningChartTitle : this._rankingChartTitle;
 
-        if (this._chart === this._earningChartTitle) {
+        if (chart === this._earningChartTitle) {
 
             this.showEarningChart();
 
