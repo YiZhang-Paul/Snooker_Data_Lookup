@@ -4,10 +4,12 @@ import { IPlayer } from './player.interface';
 import { IRankData } from '../rankings-data/rank-data.interface';
 import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
 import { PlayerStatisticsCalculatorService } from './player-statistics-calculator.service';
+import { startYear } from '../../../app-config';
 
 describe('PlayerStatisticsCalculatorService', () => {
 
     const currentYear = new Date().getFullYear();
+    const totalYears = currentYear - startYear + 1;
     // ranks for active player
     const highestRank = 2;
     const lowestRank = 7;
@@ -85,9 +87,96 @@ describe('PlayerStatisticsCalculatorService', () => {
         expect(service).toBeTruthy();
     }));
 
+    it('should return all supported years for player statistics', () => {
+
+        const supportedYears = statistics.supportedYears;
+        expect(supportedYears.length).toEqual(totalYears);
+
+        for (let i = startYear, j = 0; i <= currentYear; i++, j++) {
+
+            expect(i).toEqual(supportedYears[j]);
+        }
+    });
+
+    it('should properly retrieve ranking history for active player', () => {
+
+        statistics.getRankHistory(active.id).subscribe(data => {
+
+            expect(data.length).toEqual(totalYears);
+            expect(data.filter(year => year.rank).length).toEqual(3);
+
+            const actualRanks = [
+
+                data[data.length - 1].rank,
+                data[data.length - 3].rank,
+                data[data.length - 4].rank
+            ];
+
+            const expectedRanks = [
+
+                rankings[currentYear][0].position,
+                rankings[currentYear - 2][0].position,
+                rankings[currentYear - 3][0].position
+            ];
+
+            expect(actualRanks).toEqual(expectedRanks);
+        });
+    });
+
+    it('should properly retrieve ranking history for retired player', () => {
+
+        statistics.getRankHistory(retired.id).subscribe(data => {
+
+            expect(data.length).toEqual(totalYears);
+            expect(data.filter(year => year.rank).length).toEqual(1);
+
+            const actualRank = data[data.length - 2].rank;
+            const expectedRank = rankings[currentYear - 1][0].position;
+            expect(actualRank).toEqual(expectedRank);
+        });
+    });
+
+    it('should properly retrieve earning history for active player', () => {
+
+        statistics.getEarningHistory(active.id).subscribe(data => {
+
+            expect(data.length).toEqual(totalYears);
+            expect(data.filter(year => year.earning).length).toEqual(3);
+
+            const actualEarnings = [
+
+                data[data.length - 1].earning,
+                data[data.length - 3].earning,
+                data[data.length - 4].earning
+            ];
+
+            const expectedEarnings = [
+
+                rankings[currentYear][0].earnings,
+                rankings[currentYear - 2][0].earnings,
+                rankings[currentYear - 3][0].earnings
+            ];
+
+            expect(actualEarnings).toEqual(expectedEarnings);
+        });
+    });
+
+    it('should properly retrieve earning history for retired player', () => {
+
+        statistics.getEarningHistory(retired.id).subscribe(data => {
+
+            expect(data.length).toEqual(totalYears);
+            expect(data.filter(year => year.earning).length).toEqual(1);
+
+            const actualEarning = data[data.length - 2].earning;
+            const expectedEarning = rankings[currentYear - 1][0].earnings;
+            expect(actualEarning).toEqual(expectedEarning);
+        });
+    });
+
     it('current ranking should be null when player is retired', () => {
 
-        statistics.getCurrentRanking(retired.id).subscribe(data => {
+        statistics.getCurrentRank(retired.id).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -104,7 +193,7 @@ describe('PlayerStatisticsCalculatorService', () => {
             return of(isValid ? rankings[targetYear] : null);
         });
 
-        statistics.getCurrentRanking(active.id).subscribe(data => {
+        statistics.getCurrentRank(active.id).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -114,7 +203,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('should return current ranking when possible', () => {
 
-        statistics.getCurrentRanking(active.id).subscribe(data => {
+        statistics.getCurrentRank(active.id).subscribe(data => {
 
             expect(data).toEqual(currentRank);
         });
@@ -126,7 +215,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
         const fictitiousId = active.id + retired.id + 1;
 
-        statistics.getLowestRanking(fictitiousId).subscribe(data => {
+        statistics.getLowestRank(fictitiousId).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -136,12 +225,12 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('should calculate lowest ranking when possible', () => {
 
-        statistics.getLowestRanking(active.id).subscribe(data => {
+        statistics.getLowestRank(active.id).subscribe(data => {
 
             expect(data).toEqual(lowestRank);
         });
 
-        statistics.getLowestRanking(retired.id).subscribe(data => {
+        statistics.getLowestRank(retired.id).subscribe(data => {
 
             expect(data).toEqual(retiredRank);
         });
@@ -153,7 +242,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
         const fictitiousId = active.id + retired.id + 1;
 
-        statistics.getHighestRanking(fictitiousId).subscribe(data => {
+        statistics.getHighestRank(fictitiousId).subscribe(data => {
 
             expect(data).toBeNull();
         });
@@ -163,12 +252,12 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     it('should calculate highest ranking when possible', () => {
 
-        statistics.getHighestRanking(active.id).subscribe(data => {
+        statistics.getHighestRank(active.id).subscribe(data => {
 
             expect(data).toEqual(highestRank);
         });
 
-        statistics.getHighestRanking(retired.id).subscribe(data => {
+        statistics.getHighestRank(retired.id).subscribe(data => {
 
             expect(data).toEqual(retiredRank);
         });
@@ -180,7 +269,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
         const fictitiousId = active.id + retired.id + 1;
 
-        statistics.getTotalEarnings(fictitiousId).subscribe(data => {
+        statistics.getTotalEarning(fictitiousId).subscribe(data => {
 
             expect(data).toEqual(0);
         });
@@ -198,12 +287,12 @@ describe('PlayerStatisticsCalculatorService', () => {
 
         }, 0);
 
-        statistics.getTotalEarnings(active.id).subscribe(data => {
+        statistics.getTotalEarning(active.id).subscribe(data => {
 
             expect(data).toEqual(totalEarnings);
         });
 
-        statistics.getTotalEarnings(retired.id).subscribe(data => {
+        statistics.getTotalEarning(retired.id).subscribe(data => {
 
             expect(data).toEqual(rankings[currentYear - 1][0].earnings);
         });

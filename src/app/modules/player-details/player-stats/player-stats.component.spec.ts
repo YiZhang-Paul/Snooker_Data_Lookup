@@ -55,11 +55,11 @@ describe('PlayerStatsComponent', () => {
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
     let getPlayerSpy: jasmine.Spy;
     let statistics: jasmine.SpyObj<PlayerStatisticsCalculatorService>;
-    let getCurrentRankingSpy: jasmine.Spy;
-    let getHighestRankingSpy: jasmine.Spy;
-    let getLowestRankingSpy: jasmine.Spy;
-    let getTotalEarningsSpy: jasmine.Spy;
-    const totalEarnings = 1300;
+    let getCurrentRankSpy: jasmine.Spy;
+    let getHighestRankSpy: jasmine.Spy;
+    let getLowestRankSpy: jasmine.Spy;
+    let getTotalEarningSpy: jasmine.Spy;
+    const totalEarning = 1300;
     const currentRanking = 5;
     const highestRanking = 2;
     const lowestRanking = 9;
@@ -120,22 +120,22 @@ describe('PlayerStatsComponent', () => {
 
     it('should properly set ranking data when player is available', () => {
 
-        expect(component.careerEarnings).toBeUndefined();
-        expect(component.currentRanking).toBeUndefined();
-        expect(component.highestRanking).toBeUndefined();
-        expect(component.lowestRanking).toBeUndefined();
+        expect(component.careerEarning).toBeUndefined();
+        expect(component.currentRank).toBeUndefined();
+        expect(component.highestRank).toBeUndefined();
+        expect(component.lowestRank).toBeUndefined();
 
         fixture.detectChanges();
 
-        expect(component.careerEarnings).toEqual(totalEarnings);
-        expect(component.currentRanking).toEqual(currentRanking);
-        expect(component.highestRanking).toEqual(highestRanking);
-        expect(component.lowestRanking).toEqual(lowestRanking);
+        expect(component.careerEarning).toEqual(totalEarning);
+        expect(component.currentRank).toEqual(currentRanking);
+        expect(component.highestRank).toEqual(highestRanking);
+        expect(component.lowestRank).toEqual(lowestRanking);
 
-        expect(getTotalEarningsSpy).toHaveBeenCalledTimes(1);
-        expect(getCurrentRankingSpy).toHaveBeenCalledTimes(1);
-        expect(getHighestRankingSpy).toHaveBeenCalledTimes(1);
-        expect(getLowestRankingSpy).toHaveBeenCalledTimes(1);
+        expect(getTotalEarningSpy).toHaveBeenCalledTimes(1);
+        expect(getCurrentRankSpy).toHaveBeenCalledTimes(1);
+        expect(getHighestRankSpy).toHaveBeenCalledTimes(1);
+        expect(getLowestRankSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should properly display player statistics on page', () => {
@@ -145,10 +145,10 @@ describe('PlayerStatsComponent', () => {
         compareText('.status', 'Status: Active');
         compareText('.turnedPro', `Turned Professional: ${active.turnedPro}`);
         compareText('.lastSeason', `Last Season Played: ${active.lastSeasonPlayed}`);
-        compareText('.careerEarnings', `Career Earnings: ${component.careerEarnings}`);
-        compareText('.currentRank', `Current Ranking: ${component.currentRanking}`);
-        compareText('.highestRank', `Highest Ranking: ${component.highestRanking}`);
-        compareText('.lowestRank', `Lowest Ranking: ${component.lowestRanking}`);
+        compareText('.careerEarnings', `Career Earnings: ${component.careerEarning}`);
+        compareText('.currentRank', `Current Ranking: ${component.currentRank}`);
+        compareText('.highestRank', `Highest Ranking: ${component.highestRank}`);
+        compareText('.lowestRank', `Lowest Ranking: ${component.lowestRank}`);
     });
 
     it('should properly display status for retired player', () => {
@@ -174,13 +174,13 @@ describe('PlayerStatsComponent', () => {
         statistics = jasmine.createSpyObj(
 
             'PlayerStatisticsCalculatorService',
-            ['getTotalEarnings', 'getCurrentRanking', 'getHighestRanking', 'getLowestRanking']
+            ['getTotalEarning', 'getCurrentRank', 'getHighestRank', 'getLowestRank']
         );
 
-        getTotalEarningsSpy = statistics.getTotalEarnings.and.returnValue(of(totalEarnings));
-        getCurrentRankingSpy = statistics.getCurrentRanking.and.returnValue(of(currentRank));
-        getHighestRankingSpy = statistics.getHighestRanking.and.returnValue(of(highestRank));
-        getLowestRankingSpy = statistics.getLowestRanking.and.returnValue(of(lowestRank));
+        getTotalEarningSpy = statistics.getTotalEarning.and.returnValue(of(totalEarning));
+        getCurrentRankSpy = statistics.getCurrentRank.and.returnValue(of(currentRank));
+        getHighestRankSpy = statistics.getHighestRank.and.returnValue(of(highestRank));
+        getLowestRankSpy = statistics.getLowestRank.and.returnValue(of(lowestRank));
     }
 
     function setupParamMapSpy(map: object): void {

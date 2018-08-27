@@ -13,10 +13,10 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 export class PlayerStatsComponent implements OnInit {
 
     private _player: IPlayer = null;
-    private _careerEarnings: number;
-    private _currentRanking: number;
-    private _highestRanking: number;
-    private _lowestRanking: number;
+    private _careerEarning: number;
+    private _currentRank: number;
+    private _highestRank: number;
+    private _lowestRank: number;
 
     constructor(
 
@@ -44,24 +44,24 @@ export class PlayerStatsComponent implements OnInit {
         return isActive ? 'Active' : 'Currently Retired';
     }
 
-    get careerEarnings(): number {
+    get careerEarning(): number {
 
-        return this._careerEarnings;
+        return this._careerEarning;
     }
 
-    get currentRanking(): number {
+    get currentRank(): number {
 
-        return this._currentRanking;
+        return this._currentRank;
     }
 
-    get highestRanking(): number {
+    get highestRank(): number {
 
-        return this._highestRanking;
+        return this._highestRank;
     }
 
-    get lowestRanking(): number {
+    get lowestRank(): number {
 
-        return this._lowestRanking;
+        return this._lowestRank;
     }
 
     ngOnInit() {
@@ -82,17 +82,17 @@ export class PlayerStatsComponent implements OnInit {
 
         forkJoin([
 
-            this.statistics.getTotalEarnings(id),
-            this.statistics.getCurrentRanking(id),
-            this.statistics.getHighestRanking(id),
-            this.statistics.getLowestRanking(id)
+            this.statistics.getTotalEarning(id),
+            this.statistics.getCurrentRank(id),
+            this.statistics.getHighestRank(id),
+            this.statistics.getLowestRank(id)
 
         ]).subscribe(results => {
 
-            this._careerEarnings = results[0];
-            this._currentRanking = results[1];
-            this._highestRanking = results[2];
-            this._lowestRanking = results[3];
+            this._careerEarning = results[0];
+            this._currentRank = results[1];
+            this._highestRank = results[2];
+            this._lowestRank = results[3];
         });
     }
 }

@@ -22,104 +22,165 @@ export class PlayerStatisticsCalculatorService {
         return new Date().getFullYear();
     }
 
-    private getRanking(rankings: IRankData[], id: number): number {
+    get supportedYears(): number[] {
+
+        const supported: number[] = [];
+        const start = this.configuration.startYear;
+        const end = this.currentYear;
+
+        for (let i = start; i <= end; i++) {
+
+            supported.push(i);
+        }
+
+        return supported;
+    }
+
+    private getRank(rankings: IRankData[], id: number): number {
 
         const data = rankings.find(ranking => ranking.playerId === id);
 
         return data ? data.position : null;
     }
 
-    private getEarnings(rankings: IRankData[], id: number): number {
+    private getEarning(rankings: IRankData[], id: number): number {
 
         const data = rankings.find(ranking => ranking.playerId === id);
 
         return data ? data.earnings : 0;
     }
 
-    private getRankingSince(startYear: number): Observable<IRankData[]>[] {
+    private getRankingSince(year: number): Observable<IRankData[][]> {
 
         const rankings: Observable<IRankData[]>[] = [];
 
-        for (let i = startYear; i <= this.currentYear; i++) {
+        for (let i = year; i <= this.currentYear; i++) {
 
             rankings.push(this.lookup.getRankings(i));
         }
 
-        return rankings;
+        return forkJoin(rankings);
     }
 
-    private getStatistics(
+    public getRankHistory(id: number): Observable<{ year: number, rank: number }[]> {
 
-        id: number,
-        extractData: (rankings: IRankData[], id: number) => number,
-        transformData: (current: number, newData: number) => number
-
-    ): Observable<number> {
-
-        return forkJoin(this.getRankingSince(this.configuration.startYear)).pipe(
+        return this.getRankingSince(this.configuration.startYear).pipe(
 
             switchMap(rankings => {
 
-                let result: number = null;
+                const history = rankings.map((ranking, index) => {
 
-                rankings.filter(ranking => ranking).forEach(ranking => {
+                    const year = this.configuration.startYear + index;
+                    const rank = ranking ? this.getRank(ranking, id) : null;
 
-                    result = transformData(result, extractData(ranking, id));
+                    return { year, rank };
                 });
 
-                return of(result);
+                return of(history);
             })
         );
     }
 
-    private pickHigherRank(current: number, newRank: number): number {
+    public getEarningHistory(id: number): Observable<{ year: number, earning: number }[]> {
 
-        if (newRank) {
+        return this.getRankingSince(this.configuration.startYear).pipe(
 
-            current = current ? Math.min(current, newRank) : newRank;
-        }
+            switchMap(rankings => {
 
-        return current;
+                const history = rankings.map((ranking, index) => {
+
+                    const year = this.configuration.startYear + index;
+                    const earning = ranking ? this.getEarning(ranking, id) : 0;
+
+                    return { year, earning };
+                });
+
+                return of(history);
+            })
+        );
     }
 
-    private pickLowerRank(current: number, newRank: number): number {
-
-        if (newRank) {
-
-            current = current ? Math.max(current, newRank) : newRank;
-        }
-
-        return current;
-    }
-
-    private addEarnings(current: number, newEarnings: number): number {
-
-        return (isNaN(current) ? 0 : current) + newEarnings;
-    }
-
-    public getCurrentRanking(id: number): Observable<number> {
+    public getCurrentRank(id: number): Observable<number> {
 
         return this.lookup.getRankings(this.currentYear).pipe(
 
             switchMap(rankings => {
 
-                return of(rankings ? this.getRanking(rankings, id) : null);
+                return of(rankings ? this.getRank(rankings, id) : null);
             })
         );
     }
 
-    public getHighestRanking(id: number): Observable<number> {
+    private compareRank(
 
-        return this.getStatistics(id, this.getRanking, this.pickHigherRank);
+        current: number,
+        toCompare: number,
+        compare: (a: number, b: number) => number
+
+    ): number {
+
+        if (toCompare) {
+
+            current = current ? compare(current, toCompare) : toCompare;
+        }
+
+        return current;
     }
 
-    public getLowestRanking(id: number): Observable<number> {
+    public getHighestRank(id: number): Observable<number> {
 
-        return this.getStatistics(id, this.getRanking, this.pickLowerRank);
+        return this.getRankingSince(this.configuration.startYear).pipe(
+
+            switchMap(rankings => {
+
+                const result = rankings.reduce((rank, current) => {
+
+                    const toCompare = current ? this.getRank(current, id) : null;
+
+                    return this.compareRank(rank, toCompare, Math.min);
+
+                }, 0);
+
+                return of(result === 0 ? null : result);
+            })
+        );
     }
 
-    public getTotalEarnings(id: number): Observable<number> {
+    public getLowestRank(id: number): Observable<number> {
 
-        return this.getStatistics(id, this.getEarnings, this.addEarnings);
+        return this.getRankingSince(this.configuration.startYear).pipe(
+
+            switchMap(rankings => {
+
+                const result = rankings.reduce((rank, current) => {
+
+                    const toCompare = current ? this.getRank(current, id) : null;
+
+                    return this.compareRank(rank, toCompare, Math.max);
+
+                }, 0);
+
+                return of(result === 0 ? null : result);
+            })
+        );
+    }
+
+    public getTotalEarning(id: number): Observable<number> {
+
+        return this.getRankingSince(this.configuration.startYear).pipe(
+
+            switchMap(rankings => {
+
+                const result = rankings.reduce((total, current) => {
+
+                    const earning = current ? this.getEarning(current, id) : 0;
+
+                    return total + earning;
+
+                }, 0);
+
+                return of(result);
+            })
+        );
     }
 }
