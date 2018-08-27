@@ -12,6 +12,7 @@ export class PlayerGraphsComponent implements OnInit {
 
     private _id: number;
     private _chart: string;
+    private _activeChart: Chart;
     private _rankingChartTitle = 'World Ranking';
     private _earningChartTitle = 'Earnings';
 
@@ -75,6 +76,14 @@ export class PlayerGraphsComponent implements OnInit {
         return dataset;
     }
 
+    private clearChart(): void {
+
+        if (this._activeChart) {
+
+            this._activeChart.destroy();
+        }
+    }
+
     private createChart(
 
         canvas: string,
@@ -134,7 +143,10 @@ export class PlayerGraphsComponent implements OnInit {
 
         this.statistics.getRankHistory(this._id).subscribe(rankings => {
 
-            this.createChart(
+            this.clearChart();
+            this._chart = this._rankingChartTitle;
+
+            this._activeChart = this.createChart(
 
                 'canvas',
                 'line',
@@ -144,8 +156,6 @@ export class PlayerGraphsComponent implements OnInit {
                 { r: 23, g: 190, b: 209 },
                 { r: 86, g: 89, b: 94}
             );
-
-            this._chart = this._rankingChartTitle;
         });
     }
 
@@ -153,7 +163,10 @@ export class PlayerGraphsComponent implements OnInit {
 
         this.statistics.getEarningHistory(this._id).subscribe(earnings => {
 
-            this.createChart(
+            this.clearChart();
+            this._chart = this._earningChartTitle;
+
+            this._activeChart = this.createChart(
 
                 'canvas',
                 'bar',
@@ -163,8 +176,6 @@ export class PlayerGraphsComponent implements OnInit {
                 { r: 255, g: 99, b: 132 },
                 { r: 86, g: 89, b: 94}
             );
-
-            this._chart = this._earningChartTitle;
         });
     }
 
