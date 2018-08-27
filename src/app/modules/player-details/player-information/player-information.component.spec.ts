@@ -104,8 +104,6 @@ describe('PlayerInformationComponent', () => {
         compareText('.bio', `Bio Page: ${player.bioPage}`);
         compareText('.website', `Website: ${player.website}`);
         compareText('.twitter', `Twitter: @${player.twitter}`);
-        compareText('.turnedPro', `Year Turned Pro: ${player.turnedPro}`);
-        compareText('.lastSeason', `Last Season Played: ${player.lastSeasonPlayed}`);
     });
 
     function setupParamMapSpy(map: object): void {

@@ -8,5 +8,3 @@
 <p *ngIf="player?.bioPage" class="bio">Bio Page: <a [href]="player?.bioPage | urlFormatter">{{ player?.bioPage }}</a></p>
 <p *ngIf="player?.website" class="website">Website: <a [href]="player?.website | urlFormatter">{{ player?.website }}</a></p>
 <p *ngIf="player?.twitter" class="twitter">Twitter: @{{ player?.twitter }}</p>
-<p class="turnedPro">Year Turned Pro: {{ player?.turnedPro }}</p>
-<p class="lastSeason">Last Season Played: {{ player?.lastSeasonPlayed }}</p>
