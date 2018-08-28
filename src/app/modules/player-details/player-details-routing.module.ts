@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { PlayerCenterComponent } from './player-center/player-center.component';
 import { PlayerListComponent } from './player-list/player-list.component';
+import { PlayerAllStatsComponent } from './player-all-stats/player-all-stats.component';
 import { PlayerWikiComponent } from '../player-details/player-wiki/player-wiki.component';
 import { PlayerInformationComponent } from './player-information/player-information.component';
 import { PlayerStatsComponent } from './player-stats/player-stats.component';
@@ -9,29 +11,47 @@ import { PlayerGraphsComponent } from './player-graphs/player-graphs.component';
 
 const playerDetailsRoutes: Routes = [
     {
-        path: ':id',
-        component: PlayerWikiComponent,
+        path: '',
+        component: PlayerCenterComponent,
         children: [
             {
-                path: 'details',
-                component: PlayerInformationComponent
+                path: 'allstats',
+                component: PlayerAllStatsComponent
             },
             {
-                path: 'stats',
-                component: PlayerStatsComponent
+                path: 'list',
+                component: PlayerListComponent
             },
             {
-                path: 'graphs',
-                component: PlayerGraphsComponent
+                path: ':id',
+                component: PlayerWikiComponent,
+                children: [
+                    {
+                        path: 'details',
+                        component: PlayerInformationComponent
+                    },
+                    {
+                        path: 'stats',
+                        component: PlayerStatsComponent
+                    },
+                    {
+                        path: 'graphs',
+                        component: PlayerGraphsComponent
+                    },
+                    {
+                        path: '',
+                        redirectTo: 'details',
+                        pathMatch: 'full'
+                    }
+                ]
             },
             {
                 path: '',
-                redirectTo: 'details',
+                redirectTo: 'list',
                 pathMatch: 'full'
             }
         ]
-    },
-    { path: '', component: PlayerListComponent }
+    }
 ];
 
 @NgModule({

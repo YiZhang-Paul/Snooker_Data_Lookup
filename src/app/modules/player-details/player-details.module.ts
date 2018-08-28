@@ -7,6 +7,8 @@ import { PlayerWikiComponent } from './player-wiki/player-wiki.component';
 import { PlayerInformationComponent } from './player-information/player-information.component';
 import { PlayerStatsComponent } from './player-stats/player-stats.component';
 import { PlayerGraphsComponent } from './player-graphs/player-graphs.component';
+import { PlayerCenterComponent } from './player-center/player-center.component';
+import { PlayerAllStatsComponent } from './player-all-stats/player-all-stats.component';
 
 @NgModule({
     imports: [
@@ -19,7 +21,9 @@ import { PlayerGraphsComponent } from './player-graphs/player-graphs.component';
         PlayerWikiComponent,
         PlayerInformationComponent,
         PlayerStatsComponent,
-        PlayerGraphsComponent
+        PlayerGraphsComponent,
+        PlayerCenterComponent,
+        PlayerAllStatsComponent
     ]
 })
 export class PlayerDetailsModule { }

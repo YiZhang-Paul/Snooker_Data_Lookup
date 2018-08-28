@@ -12,6 +12,6 @@
 <input type="text" id="search" class="search" max="50" />
 <ng-container *ngIf="players.length > 0">
     <div *ngFor="let player of players; trackBy: trackById">
-        <a routerLink="{{ player.id }}">{{ player.firstName }} {{ player.lastName }}</a>
+        <a routerLink="{{ '../' + player.id }}">{{ player.firstName }} {{ player.lastName }}</a>
     </div>
 </ng-container>

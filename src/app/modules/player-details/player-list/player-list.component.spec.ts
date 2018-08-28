@@ -134,7 +134,7 @@ describe('PlayerListComponent', () => {
 
         for (let i = 0; i < routerLinks.length; i++) {
 
-            expect(routerLinks[i].linkParams).toEqual(`${sortedPlayers[i].id}`);
+            expect(routerLinks[i].linkParams).toEqual(`../${sortedPlayers[i].id}`);
         }
     });
 
