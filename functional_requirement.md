@@ -10,6 +10,14 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[- tournament history](#23-player-tournament-history)  
 &nbsp;&nbsp;&nbsp;&nbsp;[- graphs](#24-player-graphs)  
 
+[3. Player Center](#3-player-center)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- players list](#31-list-all-players)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- list by year](#32-list-players-by-year)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- list by nationality](#33-list-players-by-nationality)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- search by name](#34-search-players-by-name)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- players statistics](#35-players-statistics)  
+&nbsp;&nbsp;&nbsp;&nbsp;[- statistics by year](#36-show-players-statistics-by-year)  
+
 # 1. Display World Ranking
 
 > a word ranking table should contain following information for every ranked player:
@@ -148,3 +156,124 @@
 ### _2.4.3 requirement details_
 
 > ranking/earning graphs will show player's world ranking/earning in every season in the form of a linear graph.
+
+# 3. Player Center
+
+> player center should present a list of all professional players available. Users will have the additional options to filter/search players of their interest, including:
+> * filter players by year
+> * filter players by nationality
+> * search players by name
+>
+> in addition to player list, a statistics page will be available to users as well, which includes:
+> * nationality distribution
+> * age distribution
+> * status distribution (currently active/retired)
+> * earnings distribution
+>
+> users will have additional options to fine tune the statistics results.
+
+## 3.1 List all players
+
+### _3.1.1 description_
+
+> show a list of all players across all available ranking seasons.
+
+### _3.1.2 request/response flow_
+
+* user clicks player center page link or access player center page through browser address bar
+
+  * user will be automatically redirected to all players list
+
+### _3.1.3 requirement details_
+
+> the list should contain all players, retired or not, across all supported ranking seasons. Each list item should contain player's first name and last name, and preferably contains a photo of player as well.
+>
+> when photo is not available for a player, a default placeholder image should be displayed instead.
+
+## 3.2 List players by year
+
+### _3.2.1 description_
+
+> show list of all players from a selected year.
+
+### _3.2.2 request/response flow_
+
+* user chooses a year from a list of all available years
+
+  * only players in chosen year will be listed
+
+### _3.2.3 requirement details_
+
+> users will be able to view players from a predefined list of years. This functionality can be used in conjunction with list by nationality feature. (e.g. list all Chinese players during 2014/2015 season)
+
+## 3.3 List players by nationality
+
+### _3.3.1 description_
+
+> show list of all players with selected nationality
+
+### _3.3.2 request/response flow_
+
+* user selects nationality from a list of all available nationalities
+
+  * only players with chosen nationality will be listed
+
+### _3.3.3 requirement details_
+
+> users can filter players base on their nationalities. This feature can be used in conjunction with list by year feature. (e.g. list all England players during 2016/2017 season)
+>
+> nationality list is predefined and only nationalities that will yield results should be listed.
+
+## 3.4 Search players by name
+
+### _3.4.1 description_
+
+> users will be given the freedom to search for interested players base on player names.
+
+### _3.4.2 request/response flow_
+
+* user types a search item in search box and stops typing
+
+    * list of all players whose name match search item will appear automatically
+
+### _3.4.3 requirement details_
+
+> user can type player names in a search box and all possible search results will show up when user stops typing.
+>
+> the search ignores white spaces and letter casing.
+
+## 3.5 Players statistics
+
+### _3.5.1 description_
+
+> statistics for all players will be displayed in the form of charts (pie chart, doughnut chart, etc.) which compile following information:
+> * nationality distribution
+> * age distribution
+> * status distribution (active/retried)
+> * career earning distribution
+
+### _3.5.2 request/response flow_
+
+* user clicks on statistics tab in player center page
+
+  * statistics page for all players will be loaded on default
+
+### _3.5.3 requirement details_
+
+> separate chart for each distribution will be displayed with proper captions/titles. When user hover over the chart, information for corresponding group will be displayed. (e.g. for nationalities - 'China 30%')
+
+## 3.6 Show players statistics by year
+
+### _3.6.1 description_
+
+> users can view statistics for all players from a specific year should they choose to do so.
+
+### _3.6.2 request/response flow_
+
+* user selects a year from a list
+
+  * all charts will be reloaded to reflect statistics for players in selected year
+
+### _3.6.3 requirement details_
+
+> the feature is an extension to show all players statistics feature.
