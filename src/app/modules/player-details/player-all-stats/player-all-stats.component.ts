@@ -47,6 +47,11 @@ export class PlayerAllStatsComponent implements OnInit {
         this.loadCharts(this._year);
     }
 
+    private getRangedLabel(label: number, step: number): string {
+
+        return `${label}-${label + step}`;
+    }
+
     private loadNationalityChart(year: number): void {
 
         this.statistics.groupByNationality(year).subscribe(percentages => {
@@ -66,6 +71,8 @@ export class PlayerAllStatsComponent implements OnInit {
 
     private loadAgeChart(year: number): void {
 
+        const getLabel = (key: number) => `${key}-${key + this.statistics.ageStep}`;
+
         this.statistics.groupByAge(year).subscribe(percentages => {
 
             this.doughnutChartFactory.clear(this._ageChart);
@@ -74,7 +81,7 @@ export class PlayerAllStatsComponent implements OnInit {
 
                 canvas: 'ageCanvas',
                 title: 'Age Groups',
-                labels: percentages.map(percentage => `${percentage.key}-${percentage.key + 10}`),
+                labels: percentages.map(percentage => getLabel(percentage.key)),
                 values: percentages.map(percentage => percentage.size),
                 mainRgb: { r: 255, g: 99, b: 132 }
             });
@@ -100,6 +107,8 @@ export class PlayerAllStatsComponent implements OnInit {
 
     private loadEarningsChart(year: number): void {
 
+        const getLabel = (key: number) => `${key}-${key + this.statistics.earningStep}`;
+
         this.statistics.groupByEarnings(year).subscribe(percentages => {
 
             this.doughnutChartFactory.clear(this._earningsChart);
@@ -108,7 +117,7 @@ export class PlayerAllStatsComponent implements OnInit {
 
                 canvas: 'earningsCanvas',
                 title: 'Earnings',
-                labels: percentages.map(percentage => `${percentage.key}-${percentage.key + 400000}`),
+                labels: percentages.map(percentage => getLabel(percentage.key)),
                 values: percentages.map(percentage => percentage.size),
                 mainRgb: { r: 255, g: 99, b: 132 }
             });

@@ -23,6 +23,16 @@ export class PlayerAllStatisticsCalculatorService {
 
     ) { }
 
+    get ageStep(): number {
+
+        return this._ageStep;
+    }
+
+    get earningStep(): number {
+
+        return this._earningStep;
+    }
+
     private roundBy(value: number, step: number): number {
 
         return Math.floor(value / step) * step;
