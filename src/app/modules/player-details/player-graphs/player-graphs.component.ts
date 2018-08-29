@@ -33,7 +33,7 @@ export class PlayerGraphsComponent implements OnInit {
         this.routes.parent.paramMap.subscribe(paramMap => {
 
             this._id = Number(paramMap.get('id'));
-            this.showRankingChart();
+            this.loadRankingChart();
         });
     }
 
@@ -138,7 +138,7 @@ export class PlayerGraphsComponent implements OnInit {
         });
     }
 
-    private showRankingChart(): void {
+    private loadRankingChart(): void {
 
         this.statistics.getRankHistory(this._id).subscribe(rankings => {
 
@@ -156,7 +156,7 @@ export class PlayerGraphsComponent implements OnInit {
         });
     }
 
-    private showEarningChart(): void {
+    private loadEarningChart(): void {
 
         this.statistics.getEarningHistory(this._id).subscribe(earnings => {
 
@@ -178,11 +178,11 @@ export class PlayerGraphsComponent implements OnInit {
 
         if (this._chartTitle === this._rankingChartTitle) {
 
-            this.showEarningChart();
+            this.loadEarningChart();
 
             return;
         }
 
-        this.showRankingChart();
+        this.loadRankingChart();
     }
 }

@@ -147,7 +147,7 @@ describe('PlayerAllStatisticsCalculatorService', () => {
 
     it('should calculate percentage by status for all players', () => {
 
-        allStatistics.groupByRetired(-1).subscribe(data => {
+        allStatistics.groupByStatus(-1).subscribe(data => {
 
             expect(data.length).toEqual(2);
 
@@ -160,7 +160,7 @@ describe('PlayerAllStatisticsCalculatorService', () => {
 
     it('should calculate percentage by status for players in selected year', () => {
 
-        allStatistics.groupByRetired(currentYear).subscribe(data => {
+        allStatistics.groupByStatus(currentYear).subscribe(data => {
 
             expect(data.length).toEqual(1);
 

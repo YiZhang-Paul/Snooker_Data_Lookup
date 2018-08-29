@@ -113,7 +113,7 @@ export class PlayerAllStatisticsCalculatorService {
         );
     }
 
-    public groupByRetired(year: number): Observable<IGroupValue<boolean>[]> {
+    public groupByStatus(year: number): Observable<IGroupValue<boolean>[]> {
 
         return this.getPlayers(year).pipe(
 

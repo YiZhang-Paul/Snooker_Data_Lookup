@@ -7,6 +7,7 @@ import { queryAllByCss, triggerNativeEventByCss } from '../../../../testing/cust
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerFilterService } from './player-filter.service';
 import { PlayerListComponent } from './player-list.component';
+import { startYear } from '../../../app-config';
 
 describe('PlayerListComponent', () => {
 
@@ -160,14 +161,14 @@ describe('PlayerListComponent', () => {
         fixture.detectChanges();
 
         const options = queryAllByCss(fixture.debugElement, '.years option');
-        const totalYears = new Date().getFullYear() - 2013 + 1;
+        const totalYears = new Date().getFullYear() - startYear + 1;
 
         expect(options.length).toEqual(totalYears + 1);
         compareText(options[0], 'All');
 
         for (let i = 1; i < options.length; i++) {
 
-            compareText(options[i], `${2013 + (i - 1)}`);
+            compareText(options[i], `${startYear + (i - 1)}`);
         }
     });
 
