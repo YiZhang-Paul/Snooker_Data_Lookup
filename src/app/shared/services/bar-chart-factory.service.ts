@@ -22,7 +22,7 @@ export class BarChartFactoryService extends ChartFactory {
             borderWidth: 1
         };
 
-        return this.setColor(dataSet, data.mainRgb, data.labels.length);
+        return this.setColor(dataSet, data.mainRgb, data.labels.length, 0.55);
     }
 
     protected configureOptions(data: IGridChartData): ChartOptions {

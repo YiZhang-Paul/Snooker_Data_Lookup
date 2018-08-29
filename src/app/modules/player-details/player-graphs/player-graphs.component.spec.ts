@@ -3,21 +3,32 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
+import { LineChartFactoryService } from '../../../shared/services/line-chart-factory.service';
+import { BarChartFactoryService } from '../../../shared/services/bar-chart-factory.service';
 import { PlayerGraphsComponent } from './player-graphs.component';
 
 describe('PlayerGraphsComponent', () => {
 
-    let component: PlayerGraphsComponent;
     let fixture: ComponentFixture<PlayerGraphsComponent>;
+    let component: PlayerGraphsComponent;
     let routes: ActivatedRoute;
     let routesParentSpy: jasmine.Spy;
     let statistics: PlayerStatisticsCalculatorService;
     let getRankHistorySpy: jasmine.Spy;
+    let getEarningHistorySpy: jasmine.Spy;
+    let lineChartFactory: jasmine.SpyObj<LineChartFactoryService>;
+    let lineChartClearSpy: jasmine.Spy;
+    let lineChartCreateSpy: jasmine.Spy;
+    let barChartFactory: jasmine.SpyObj<BarChartFactoryService>;
+    let barChartClearSpy: jasmine.Spy;
+    let barChartCreateSpy: jasmine.Spy;
     const id = 35;
 
     beforeEach(async(() => {
 
         setupStatisticsCalculator();
+        setupLineChartFactory();
+        setupBarChartFactory();
 
         TestBed.configureTestingModule({
 
@@ -25,7 +36,9 @@ describe('PlayerGraphsComponent', () => {
             declarations: [PlayerGraphsComponent],
             providers: [
 
-                { provide: PlayerStatisticsCalculatorService, useValue: statistics }
+                { provide: PlayerStatisticsCalculatorService, useValue: statistics },
+                { provide: LineChartFactoryService, useValue: lineChartFactory },
+                { provide: BarChartFactoryService, useValue: barChartFactory }
             ]
 
         }).compileComponents();
@@ -72,6 +85,8 @@ describe('PlayerGraphsComponent', () => {
 
         expect(component.chartTitle).toEqual('World Ranking');
         expect(getRankHistorySpy).toHaveBeenCalledTimes(1);
+        expect(lineChartClearSpy).toHaveBeenCalledTimes(1);
+        expect(lineChartCreateSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle charts', () => {
@@ -84,14 +99,44 @@ describe('PlayerGraphsComponent', () => {
 
         component.toggleChart();
         expect(component.chartTitle).toEqual('World Ranking');
+
+        expect(getRankHistorySpy).toHaveBeenCalledTimes(2);
+        expect(lineChartClearSpy).toHaveBeenCalledTimes(2);
+        expect(lineChartCreateSpy).toHaveBeenCalledTimes(2);
+
+        expect(getEarningHistorySpy).toHaveBeenCalledTimes(1);
+        expect(barChartClearSpy).toHaveBeenCalledTimes(1);
+        expect(barChartCreateSpy).toHaveBeenCalledTimes(1);
     });
 
     function setupStatisticsCalculator(): void {
 
         statistics = new PlayerStatisticsCalculatorService(null, null);
         spyOnProperty(statistics, 'supportedYears').and.returnValue([]);
-        spyOn(statistics, 'getEarningHistory').and.returnValue(of([]));
         getRankHistorySpy = spyOn(statistics, 'getRankHistory').and.returnValue(of([]));
+        getEarningHistorySpy = spyOn(statistics, 'getEarningHistory').and.returnValue(of([]));
+    }
+
+    function setupLineChartFactory(): void {
+
+        lineChartFactory = jasmine.createSpyObj(
+
+            'LineChartFactoryService', ['clear', 'create']
+        );
+
+        lineChartClearSpy = lineChartFactory.clear;
+        lineChartCreateSpy = lineChartFactory.create;
+    }
+
+    function setupBarChartFactory(): void {
+
+        barChartFactory = jasmine.createSpyObj(
+
+            'BarChartFactoryService', ['clear', 'create']
+        );
+
+        barChartClearSpy = barChartFactory.clear;
+        barChartCreateSpy = barChartFactory.create;
     }
 
     function setupRoutesParentParamMap(data: object): void {

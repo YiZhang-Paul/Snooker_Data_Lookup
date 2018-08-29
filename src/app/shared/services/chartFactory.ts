@@ -49,12 +49,13 @@ export abstract class ChartFactory {
 
         dataSet: ChartDataSets,
         rgb: { r, g, b },
-        total: number = 1
+        total: number = 1,
+        alpha: number = 1
 
     ): ChartDataSets {
 
         const mainColors = new Array(total).fill(this.getColor(rgb, 0.7));
-        const randomColors = this.getRandomColors(total);
+        const randomColors = this.getRandomColors(total, 0, 255, alpha);
 
         dataSet.backgroundColor = randomColors;
         dataSet.borderColor = randomColors;
