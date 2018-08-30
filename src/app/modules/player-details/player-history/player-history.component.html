@@ -1,0 +1,6 @@
+<h2>Tournament History</h2>
+<select (change)="onYearSelected($event.target.value)" class="years">
+    <option *ngFor="let year of years"
+        [selected]="year === selectedYear"
+        value="{{ year }}">{{ year }}</option>
+</select>

@@ -9,6 +9,7 @@ import { PlayerStatsComponent } from './player-stats/player-stats.component';
 import { PlayerGraphsComponent } from './player-graphs/player-graphs.component';
 import { PlayerCenterComponent } from './player-center/player-center.component';
 import { PlayerAllStatsComponent } from './player-all-stats/player-all-stats.component';
+import { PlayerHistoryComponent } from './player-history/player-history.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { PlayerAllStatsComponent } from './player-all-stats/player-all-stats.com
         PlayerStatsComponent,
         PlayerGraphsComponent,
         PlayerCenterComponent,
-        PlayerAllStatsComponent
+        PlayerAllStatsComponent,
+        PlayerHistoryComponent
     ]
 })
 export class PlayerDetailsModule { }
