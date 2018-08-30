@@ -7,13 +7,17 @@ import { DataProvidersModule } from './modules/data-providers/data-providers.mod
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { HomeComponent } from './layouts/home/home.component';
+import { SiteComponent } from './layouts/site/site.component';
 
 import { DataCacheService } from './shared/services/data-cache.service';
 import { CachingInterceptorService } from './shared/interceptors/caching-interceptor.service';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        HomeComponent,
+        SiteComponent
     ],
     imports: [
         BrowserModule,
