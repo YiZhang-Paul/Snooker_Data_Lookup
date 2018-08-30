@@ -64,6 +64,7 @@ describe('PlayerStatisticsCalculatorService', () => {
 
     let lookup: jasmine.SpyObj<RankingLookupService>;
     let getRankingsSpy: jasmine.Spy;
+    let getRankingsSinceSpy: jasmine.Spy;
     let statistics: PlayerStatisticsCalculatorService;
 
     beforeEach(() => {
@@ -121,6 +122,8 @@ describe('PlayerStatisticsCalculatorService', () => {
 
             expect(actualRanks).toEqual(expectedRanks);
         });
+
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should properly retrieve ranking history for retired player', () => {
@@ -134,6 +137,8 @@ describe('PlayerStatisticsCalculatorService', () => {
             const expectedRank = rankings[currentYear - 1][0].position;
             expect(actualRank).toEqual(expectedRank);
         });
+
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should properly retrieve earning history for active player', () => {
@@ -159,6 +164,8 @@ describe('PlayerStatisticsCalculatorService', () => {
 
             expect(actualEarnings).toEqual(expectedEarnings);
         });
+
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should properly retrieve earning history for retired player', () => {
@@ -172,6 +179,8 @@ describe('PlayerStatisticsCalculatorService', () => {
             const expectedEarning = rankings[currentYear - 1][0].earnings;
             expect(actualEarning).toEqual(expectedEarning);
         });
+
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('current ranking should be null when player is retired', () => {
@@ -220,7 +229,7 @@ describe('PlayerStatisticsCalculatorService', () => {
             expect(data).toBeNull();
         });
 
-        checkGetRankingsSpy();
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should calculate lowest ranking when possible', () => {
@@ -235,7 +244,7 @@ describe('PlayerStatisticsCalculatorService', () => {
             expect(data).toEqual(retiredRank);
         });
 
-        checkGetRankingsSpy();
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(2);
     });
 
     it('highest ranking should be null when player is never ranked', () => {
@@ -247,7 +256,7 @@ describe('PlayerStatisticsCalculatorService', () => {
             expect(data).toBeNull();
         });
 
-        checkGetRankingsSpy();
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should calculate highest ranking when possible', () => {
@@ -262,7 +271,7 @@ describe('PlayerStatisticsCalculatorService', () => {
             expect(data).toEqual(retiredRank);
         });
 
-        checkGetRankingsSpy();
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(2);
     });
 
     it('should return 0 total earnings for invalid id', () => {
@@ -274,7 +283,7 @@ describe('PlayerStatisticsCalculatorService', () => {
             expect(data).toEqual(0);
         });
 
-        checkGetRankingsSpy();
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should properly calculate total earnings for valid ids', () => {
@@ -297,24 +306,28 @@ describe('PlayerStatisticsCalculatorService', () => {
             expect(data).toEqual(rankings[currentYear - 1][0].earnings);
         });
 
-        checkGetRankingsSpy();
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(2);
     });
 
     function setupRankingLookup(): void {
 
-        lookup = jasmine.createSpyObj('RankingLookupService', ['getRankings']);
+        lookup = jasmine.createSpyObj('RankingLookupService', ['getRankings', 'getRankingsSince']);
 
         getRankingsSpy = lookup.getRankings.and.callFake(targetYear => {
 
             return of(rankings[targetYear] ? rankings[targetYear] : null);
         });
-    }
 
-    function checkGetRankingsSpy(): void {
+        getRankingsSinceSpy = lookup.getRankingsSince.and.callFake(targetYear => {
 
-        for (let i = 0; i < Object.keys(rankings).length; i++) {
+            const result: IRankData[][] = [];
 
-            expect(getRankingsSpy).toHaveBeenCalledWith(currentYear - i);
-        }
+            for (let i = targetYear; i <= currentYear; i++) {
+
+                result.push(rankings[i] ? rankings[i] : null);
+            }
+
+            return of(result);
+        });
     }
 });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IRankData } from './rank-data.interface';
 import { LiveRankingFetcherService } from './live-ranking-fetcher.service';
@@ -10,6 +10,7 @@ import { LiveRankingFetcherService } from './live-ranking-fetcher.service';
 export class RankingLookupService {
 
     private _storage = new Map<number, IRankData[]>();
+    private _currentYear = new Date().getFullYear();
 
     constructor(private fetcher: LiveRankingFetcherService) { }
 
@@ -30,5 +31,17 @@ export class RankingLookupService {
                 }
             })
         );
+    }
+
+    public getRankingsSince(year: number): Observable<IRankData[][]> {
+
+        const rankings: Observable<IRankData[]>[] = [];
+
+        for (let i = year; i <= this._currentYear; i++) {
+
+            rankings.push(this.getRankings(i));
+        }
+
+        return forkJoin(rankings);
     }
 }

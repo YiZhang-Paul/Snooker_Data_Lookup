@@ -47,11 +47,6 @@ export class PlayerAllStatsComponent implements OnInit {
         this.loadCharts(this._year);
     }
 
-    private getRangedLabel(label: number, step: number): string {
-
-        return `${label}-${label + step}`;
-    }
-
     private loadNationalityChart(year: number): void {
 
         this.statistics.groupByNationality(year).subscribe(percentages => {

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IRankData } from '../rankings-data/rank-data.interface';
 import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
@@ -50,21 +50,9 @@ export class PlayerStatisticsCalculatorService {
         return data ? data.earnings : 0;
     }
 
-    private getRankingSince(year: number): Observable<IRankData[][]> {
-
-        const rankings: Observable<IRankData[]>[] = [];
-
-        for (let i = year; i <= this.currentYear; i++) {
-
-            rankings.push(this.lookup.getRankings(i));
-        }
-
-        return forkJoin(rankings);
-    }
-
     public getRankHistory(id: number): Observable<{ year: number, rank: number }[]> {
 
-        return this.getRankingSince(this.configuration.startYear).pipe(
+        return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
             switchMap(rankings => {
 
@@ -83,7 +71,7 @@ export class PlayerStatisticsCalculatorService {
 
     public getEarningHistory(id: number): Observable<{ year: number, earning: number }[]> {
 
-        return this.getRankingSince(this.configuration.startYear).pipe(
+        return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
             switchMap(rankings => {
 
@@ -129,7 +117,7 @@ export class PlayerStatisticsCalculatorService {
 
     public getHighestRank(id: number): Observable<number> {
 
-        return this.getRankingSince(this.configuration.startYear).pipe(
+        return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
             switchMap(rankings => {
 
@@ -148,7 +136,7 @@ export class PlayerStatisticsCalculatorService {
 
     public getLowestRank(id: number): Observable<number> {
 
-        return this.getRankingSince(this.configuration.startYear).pipe(
+        return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
             switchMap(rankings => {
 
@@ -167,7 +155,7 @@ export class PlayerStatisticsCalculatorService {
 
     public getTotalEarning(id: number): Observable<number> {
 
-        return this.getRankingSince(this.configuration.startYear).pipe(
+        return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
             switchMap(rankings => {
 
