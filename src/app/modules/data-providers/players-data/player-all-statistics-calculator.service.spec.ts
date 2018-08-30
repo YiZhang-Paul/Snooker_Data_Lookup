@@ -2,6 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { IPlayer } from './player.interface';
 import { IGroupValue } from './group-value.interface';
+import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from './player-lookup.service';
 import { PlayerStatisticsCalculatorService } from './player-statistics-calculator.service';
 import { PlayerAllStatisticsCalculatorService } from './player-all-statistics-calculator.service';
@@ -62,7 +63,9 @@ describe('PlayerAllStatisticsCalculatorService', () => {
         }
     ];
 
-    let lookup: PlayerLookupService;
+    let rankingLookup: jasmine.SpyObj<RankingLookupService>;
+    let getRankingsSinceSpy: jasmine.Spy;
+    let playerLookup: PlayerLookupService;
     let players$Spy: jasmine.Spy;
     let getPlayersSpy: jasmine.Spy;
     let playerStatistics: jasmine.SpyObj<PlayerStatisticsCalculatorService>;
@@ -71,6 +74,7 @@ describe('PlayerAllStatisticsCalculatorService', () => {
 
     beforeEach(() => {
 
+        setupRankingLookup();
         setupPlayerLookup();
         setupStatisticsCalculator();
 
@@ -79,7 +83,8 @@ describe('PlayerAllStatisticsCalculatorService', () => {
             providers: [
 
                 PlayerAllStatisticsCalculatorService,
-                { provide: PlayerLookupService, useValue: lookup },
+                { provide: RankingLookupService, useValue: rankingLookup },
+                { provide: PlayerLookupService, useValue: playerLookup },
                 { provide: PlayerStatisticsCalculatorService, useValue: playerStatistics }
             ]
         });
@@ -181,6 +186,7 @@ describe('PlayerAllStatisticsCalculatorService', () => {
             compareGroupValue(data[2], 1200000, 1, 1 / 3);
         });
 
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
         expect(players$Spy).toHaveBeenCalledTimes(1);
         expect(getTotalEarningSpy).toHaveBeenCalledTimes(players.length);
     });
@@ -195,9 +201,16 @@ describe('PlayerAllStatisticsCalculatorService', () => {
             compareGroupValue(data[1], 1200000, 1, 1 / 2);
         });
 
+        expect(getRankingsSinceSpy).toHaveBeenCalledTimes(1);
         expect(getPlayersSpy).toHaveBeenCalledTimes(1);
         expect(getTotalEarningSpy).toHaveBeenCalledTimes(2);
     });
+
+    function setupRankingLookup(): void {
+
+        rankingLookup = jasmine.createSpyObj('RankingLookupService', ['getRankingsSince']);
+        getRankingsSinceSpy = rankingLookup.getRankingsSince.and.returnValue(of(null));
+    }
 
     function toMap(input: IPlayer[]): Map<number, IPlayer> {
 
@@ -213,10 +226,10 @@ describe('PlayerAllStatisticsCalculatorService', () => {
 
     function setupPlayerLookup(): void {
 
-        lookup = new PlayerLookupService(null);
-        players$Spy = spyOnProperty(lookup, 'players$').and.returnValue(of(toMap(players)));
+        playerLookup = new PlayerLookupService(null);
+        players$Spy = spyOnProperty(playerLookup, 'players$').and.returnValue(of(toMap(players)));
 
-        getPlayersSpy = spyOn(lookup, 'getPlayers').and.callFake(targetYear => {
+        getPlayersSpy = spyOn(playerLookup, 'getPlayers').and.callFake(targetYear => {
 
             const result = targetYear === currentYear ? players.slice(1) : players.slice(0, 1);
 

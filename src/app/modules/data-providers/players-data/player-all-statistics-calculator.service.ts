@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { IGroupValue } from './group-value.interface';
 import { GroupValue } from './group-value';
+import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from './player-lookup.service';
 import { PlayerStatisticsCalculatorService } from './player-statistics-calculator.service';
+import { APP_CONFIG } from '../../../app-config';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +20,9 @@ export class PlayerAllStatisticsCalculatorService {
 
     constructor(
 
-        private lookup: PlayerLookupService,
+        @Inject(APP_CONFIG) private configuration,
+        private rankingLookup: RankingLookupService,
+        private playerLookup: PlayerLookupService,
         private statistics: PlayerStatisticsCalculatorService
 
     ) { }
@@ -66,7 +70,7 @@ export class PlayerAllStatisticsCalculatorService {
 
     private getPlayers(year: number): Observable<Map<number, IPlayer>> {
 
-        return year === -1 ? this.lookup.players$ : this.lookup.getPlayers(year);
+        return year === -1 ? this.playerLookup.players$ : this.playerLookup.getPlayers(year);
     }
 
     private getEarnings(players: Map<number, IPlayer>): Observable<number[]> {
@@ -144,8 +148,11 @@ export class PlayerAllStatisticsCalculatorService {
 
     public groupByEarnings(year: number): Observable<IGroupValue<number>[]> {
 
-        return this.getPlayers(year).pipe(
+        const since = Math.max(this.configuration.startYear, year);
 
+        return this.rankingLookup.getRankingsSince(since).pipe(
+
+            switchMap(() => this.getPlayers(year)),
             switchMap(players => this.getEarnings(players)),
             switchMap(earnings => {
 
