@@ -31,7 +31,7 @@ export class LiveMatchFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(record => of(this.toMatches(<object[]>record))),
+            switchMap(records => of(this.toMatches(<object[]>records))),
             catchError(() => of(null))
         );
     }
