@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 import { IMatch } from '../match-data/match.interface';
 import { IMatchHistory } from './match-history.interface';
 import { MatchHistory } from './match-history';
@@ -40,7 +40,7 @@ export class PlayerMatchHistoryLookupService {
 
         return this.eventLookup.getEvent(eventId).pipe(
 
-            switchMap(event => of(new MatchHistory(event, matches)))
+            map(event => new MatchHistory(event, matches))
         );
     }
 
@@ -60,9 +60,9 @@ export class PlayerMatchHistoryLookupService {
 
         return this.matchLookup.getMatchesOfPlayer(id, year).pipe(
 
-            switchMap(matches => of(this.groupByEvent(matches))),
-            switchMap(groups => this.toHistories(groups)),
-            switchMap(histories => of(histories.filter(history => history.event))),
+            map(matches => this.groupByEvent(matches)),
+            mergeMap(groups => this.toHistories(groups)),
+            map(histories => histories.filter(history => history.event)),
             catchError(() => of(new Array<IMatchHistory>()))
         );
     }

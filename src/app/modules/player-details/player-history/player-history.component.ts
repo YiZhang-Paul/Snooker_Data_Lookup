@@ -1,4 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { IMatchHistory } from '../../data-providers/players-data/match-history.interface';
+import { PlayerMatchHistoryLookupService } from '../../data-providers/players-data/player-match-history-lookup.service';
 import { APP_CONFIG } from '../../../app-config';
 
 @Component({
@@ -8,14 +11,27 @@ import { APP_CONFIG } from '../../../app-config';
 })
 export class PlayerHistoryComponent implements OnInit {
 
+    private _id: number;
     private _currentYear = new Date().getFullYear();
     private _selectedYear: number;
+    private _histories: IMatchHistory[];
 
-    constructor(@Inject(APP_CONFIG) private configuration) { }
+    constructor(
+
+        @Inject(APP_CONFIG) private configuration,
+        private routes: ActivatedRoute,
+        private historyLookup: PlayerMatchHistoryLookupService
+
+    ) { }
 
     get selectedYear(): number {
 
         return this._selectedYear;
+    }
+
+    get histories(): IMatchHistory[] {
+
+        return this._histories;
     }
 
     get years(): number[] {
@@ -29,18 +45,25 @@ export class PlayerHistoryComponent implements OnInit {
 
     ngOnInit() {
 
-        this._selectedYear = this._currentYear;
-        this.loadHistory(this._selectedYear);
+        this.routes.parent.paramMap.subscribe(paramMap => {
+
+            this._id = Number(paramMap.get('id'));
+            this._selectedYear = this._currentYear;
+            this.loadHistory(this._id, this._selectedYear);
+        });
     }
 
-    private loadHistory(year: number): void {
+    private loadHistory(id: number, year: number): void {
 
+        this.historyLookup.getMatchHistories(id, year).subscribe(histories => {
 
+            this._histories = histories;
+        });
     }
 
     public onYearSelected(year: string): void {
 
         this._selectedYear = Number(year);
-        this.loadHistory(this._selectedYear);
+        this.loadHistory(this._id, this._selectedYear);
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { retry, switchMap, catchError } from 'rxjs/operators';
+import { retry, map, catchError } from 'rxjs/operators';
 import { IMatch } from './match.interface';
 import { recordToMatch } from './match';
 
@@ -31,7 +31,7 @@ export class LiveMatchFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(records => of(this.toMatches(<object[]>records))),
+            map(records => this.toMatches(<object[]>records)),
             catchError(() => of(null))
         );
     }
