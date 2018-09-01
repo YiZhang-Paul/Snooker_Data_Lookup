@@ -1,0 +1,4 @@
+<h3>{{ history.event.name }}</h3>
+<ul>
+    <li *ngFor="let match of matches$ | async">{{ match }}</li>
+</ul>

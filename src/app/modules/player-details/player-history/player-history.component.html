@@ -4,3 +4,8 @@
         [selected]="year === selectedYear"
         value="{{ year }}">{{ year }}</option>
 </select>
+<ng-container *ngIf="histories">
+    <div *ngFor="let history of histories">
+        <app-match-history-listing [history]="history"></app-match-history-listing>
+    </div>
+</ng-container>

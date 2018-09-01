@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -7,6 +8,12 @@ import { IMatch } from '../../data-providers/match-data/match.interface';
 import { IMatchHistory } from '../../data-providers/players-data/match-history.interface';
 import { PlayerMatchHistoryLookupService } from '../../data-providers/players-data/player-match-history-lookup.service';
 import { PlayerHistoryComponent } from './player-history.component';
+
+@Component({ selector: 'app-match-history-listing', template: '' })
+class MatchHistoryListingComponent {
+
+    @Input() history: IMatchHistory;
+}
 
 describe('PlayerHistoryComponent', () => {
 
@@ -55,7 +62,7 @@ describe('PlayerHistoryComponent', () => {
         TestBed.configureTestingModule({
 
             imports: [RouterTestingModule],
-            declarations: [PlayerHistoryComponent],
+            declarations: [PlayerHistoryComponent, MatchHistoryListingComponent],
             providers: [{ provide: PlayerMatchHistoryLookupService, useValue: historyLookup }]
 
         }).compileComponents();
