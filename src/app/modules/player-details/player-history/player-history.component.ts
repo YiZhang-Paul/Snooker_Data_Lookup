@@ -24,6 +24,11 @@ export class PlayerHistoryComponent implements OnInit {
 
     ) { }
 
+    get id(): number {
+
+        return this._id;
+    }
+
     get selectedYear(): number {
 
         return this._selectedYear;

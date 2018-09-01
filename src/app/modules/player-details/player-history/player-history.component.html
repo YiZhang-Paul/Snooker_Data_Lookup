@@ -6,6 +6,8 @@
 </select>
 <ng-container *ngIf="histories">
     <div *ngFor="let history of histories">
-        <app-match-history-listing [history]="history"></app-match-history-listing>
+        <app-match-history-listing
+            [history]="history" [id]="id">
+        </app-match-history-listing>
     </div>
 </ng-container>
