@@ -44,39 +44,17 @@ describe('RankingListComponent', () => {
         { position: 2, playerId: 200, earnings: 250, type: 'MoneyRankings' }
     ];
 
-    const players: IPlayer[] = [
+    const players = <IPlayer[]>[
 
         {
             id: 100,
-            firstName: 'Jane',
-            middleName: '',
-            lastName: 'Doe',
-            shortName: '',
-            dateOfBirth: '',
-            sex: '',
             nationality: 'three-body',
-            photo: '',
-            bioPage: '',
-            website: '',
-            twitter: '',
-            turnedPro: null,
-            lastSeasonPlayed: null
+            get fullName(): string { return 'Jane M Doe'; }
         },
         {
             id: 200,
-            firstName: 'John',
-            middleName: '',
-            lastName: 'Doe',
-            shortName: '',
-            dateOfBirth: '',
-            sex: '',
             nationality: 'three-body',
-            photo: '',
-            bioPage: '',
-            website: '',
-            twitter: '',
-            turnedPro: null,
-            lastSeasonPlayed: null
+            get fullName(): string { return 'John Doe'; }
         }
     ];
 
@@ -143,8 +121,7 @@ describe('RankingListComponent', () => {
 
         for (let i = 0; i < component.rankings.length; i++) {
 
-            const expectedName = `${players[i].firstName} ${players[i].lastName}`;
-            expect(component.rankings[i].name).toEqual(expectedName);
+            expect(component.rankings[i].name).toEqual(players[i].fullName);
         }
     });
 
@@ -161,7 +138,7 @@ describe('RankingListComponent', () => {
         const player = players[0];
         const data = rankData[0];
         compareText(columns[0], `${data.position}`);
-        compareText(columns[1], `${player.firstName} ${player.lastName}`);
+        compareText(columns[1], player.fullName);
         compareText(columns[2], `${player.nationality}`);
         compareText(columns[3], `${data.earnings}`);
     });

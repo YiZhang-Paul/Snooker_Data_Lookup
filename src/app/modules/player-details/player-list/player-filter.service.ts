@@ -18,16 +18,11 @@ export class PlayerFilterService {
         return players.filter(player => player.nationality === nationality);
     }
 
-    private getFullName(player: IPlayer): string {
-
-        return `${player.firstName}${player.lastName}`;
-    }
-
     public filterByName(players: IPlayer[], name: string): IPlayer[] {
 
         return players.filter(player => {
 
-            const fullName = this.getFullName(player).toLowerCase();
+            const fullName = player.shortFullName.toLowerCase();
 
             for (let i = 0, j = 0; i < name.length; i++) {
 

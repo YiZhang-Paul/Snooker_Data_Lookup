@@ -16,13 +16,12 @@ class UrlFormatterPipe implements PipeTransform {
 
 describe('PlayerInformationComponent', () => {
 
-    const player: IPlayer = {
+    const player = <IPlayer>{
 
         id: 293,
         firstName: 'John',
         middleName: 'K',
         lastName: 'Doe',
-        shortName: 'John Doe',
         dateOfBirth: '1999-12-12',
         sex: 'M',
         nationality: 'three-body',
@@ -30,8 +29,7 @@ describe('PlayerInformationComponent', () => {
         bioPage: 'bio.com',
         website: 'site.com',
         twitter: '@kDoe',
-        turnedPro: 2016,
-        lastSeasonPlayed: 2018
+        get shortFullName(): string { return 'John Doe'; }
     };
 
     let fixture: ComponentFixture<PlayerInformationComponent>;
@@ -94,7 +92,7 @@ describe('PlayerInformationComponent', () => {
 
         fixture.detectChanges();
 
-        compareText('h2', `${player.firstName} ${player.lastName}`);
+        compareText('h2', player.shortFullName);
         compareText('.firstName', `First Name: ${player.firstName}`);
         compareText('.middleName', `Middle Name: ${player.middleName}`);
         compareText('.lastName', `Last Name: ${player.lastName}`);

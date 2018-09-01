@@ -4,56 +4,11 @@ import { PlayerFilterService } from './player-filter.service';
 
 describe('PlayerFilterService', () => {
 
-    const players: IPlayer[] = [
+    const players = <IPlayer[]>[
 
-        {
-            id: 293,
-            firstName: 'John',
-            middleName: 'K',
-            lastName: 'Doe',
-            shortName: 'John Doe',
-            dateOfBirth: '1999-12-12',
-            sex: 'M',
-            nationality: 'three-body',
-            photo: 'photo.jpg',
-            bioPage: 'bio.com',
-            website: 'site.com',
-            twitter: '@kDoe',
-            turnedPro: 2013,
-            lastSeasonPlayed: 2018
-        },
-        {
-            id: 130,
-            firstName: 'Jane',
-            middleName: '',
-            lastName: 'Doe',
-            shortName: 'Jane Doe',
-            dateOfBirth: '1993-04-17',
-            sex: 'F',
-            nationality: 'three-body',
-            photo: 'photo.jpg',
-            bioPage: 'bio.com',
-            website: 'site.com',
-            twitter: '@NDoe',
-            turnedPro: 2012,
-            lastSeasonPlayed: 2018
-        },
-        {
-            id: 15,
-            firstName: 'Jim',
-            middleName: '',
-            lastName: 'Moe',
-            shortName: 'Jim Moe',
-            dateOfBirth: '1985-08-25',
-            sex: 'M',
-            nationality: 'china',
-            photo: 'photo.jpg',
-            bioPage: 'bio.com',
-            website: 'site.com',
-            twitter: '@Moe',
-            turnedPro: 2009,
-            lastSeasonPlayed: 2018
-        }
+        { nationality: 'three-body', get shortFullName(): string { return 'John Doe'; } },
+        { nationality: 'three-body', get shortFullName(): string { return 'Jane Doe'; } },
+        { nationality: 'china', get shortFullName(): string { return 'Jim Moe'; } }
     ];
 
     let filter: PlayerFilterService;

@@ -7,8 +7,8 @@ import { MatchSummaryService } from './match-summary.service';
 
 describe('MatchSummaryService', () => {
 
-    const playerOne = <IPlayer>{ id: 1, firstName: 'John', lastName: 'Doe' };
-    const playerTwo = <IPlayer>{ id: 17, firstName: 'Jane', lastName: 'Doe' };
+    const playerOne = <IPlayer>{ id: 1, get shortFullName(): string { return 'John Doe'; } };
+    const playerTwo = <IPlayer>{ id: 17, get shortFullName(): string { return 'Jane Doe'; } };
     const match = <IMatch>{ player1: 1, player2: 17, score1: 4, score2: 1 };
 
     let lookup: jasmine.SpyObj<PlayerLookupService>;

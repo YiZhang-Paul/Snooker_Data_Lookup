@@ -3,6 +3,8 @@ export interface IPlayer {
     readonly id: number;
     readonly firstName: string;
     readonly middleName: string;
+    readonly shortFullName: string;
+    readonly fullName: string;
     readonly lastName: string;
     readonly shortName: string;
     readonly dateOfBirth: string;

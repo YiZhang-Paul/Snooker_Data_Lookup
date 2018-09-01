@@ -20,6 +20,18 @@ export class Player implements IPlayer {
         readonly lastSeasonPlayed: number
 
     ) { }
+
+    get shortFullName(): string {
+
+        return `${this.firstName} ${this.lastName}`;
+    }
+
+    get fullName(): string {
+
+        const middleName = this.middleName ? ` ${this.middleName} ` : ' ';
+
+        return `${this.firstName}${middleName}${this.lastName}`;
+    }
 }
 
 export function recordToPlayer(record: object): IPlayer {

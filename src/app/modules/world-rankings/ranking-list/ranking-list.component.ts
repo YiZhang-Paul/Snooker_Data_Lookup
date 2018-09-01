@@ -86,10 +86,7 @@ export class RankingListComponent implements OnInit {
             return new RankDetail(rank, 'N/A', 'N/A', earnings, player);
         }
 
-        const middleName = player.middleName ? ` ${player.middleName} ` : ' ';
-        const name = `${player.firstName}${middleName}${player.lastName}`;
-
-        return new RankDetail(rank, name, player.nationality, earnings, player);
+        return new RankDetail(rank, player.fullName, player.nationality, earnings, player);
     }
 
     private getRankDetails(rankData: IRankData[], players: Map<number, IPlayer>): Observable<IRankDetail[]> {
