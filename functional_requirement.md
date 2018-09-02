@@ -131,15 +131,13 @@
 
 * user chooses the option to display history for a given year
 
-  * history for all/chosen event(__participated__) in chosen year will be displayed
-
-* user chooses the option to display history for a given event
-
-  * history for chosen event(__participated__) in all/chosen years will be displayed
+  * history for events(__participated__) in chosen year will be displayed
 
 ### _2.3.3 requirement details_
 
-> tournament history for a player should be grouped by participated events, and under each participated events, match results for every participated year should be listed in an organized way.
+> tournament history for current season will be loaded and displayed on default;
+>
+> tournament history for a player should be grouped by participated events, and under each participated events, related match results should be listed in an organized way.
 
 ## 2.4 Player graphs
 
@@ -152,6 +150,10 @@
 * user clicks on player graphs tab after wiki loads
 
   * player graphs page appears
+
+* user clicks on toggle button
+
+  * toggles graph from ranking graph to earning graph and vice versa
 
 ### _2.4.3 requirement details_
 
