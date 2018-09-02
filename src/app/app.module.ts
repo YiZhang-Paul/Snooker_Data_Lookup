@@ -24,9 +24,9 @@ import { CachingInterceptorService } from './shared/interceptors/caching-interce
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        SharedModule,
         DataProvidersModule,
-        AppRoutingModule
+        AppRoutingModule,
+        SharedModule,
     ],
     providers: [
         DataCacheService,

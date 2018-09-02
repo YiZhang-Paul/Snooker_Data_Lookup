@@ -1,9 +1,31 @@
-<nav>
-    <a>Contact</a>
-    <a>About</a>
-</nav>
-<main>
-    <section><a routerLink="../site/players" class="players">Players</a></section>
-    <section><a routerLink="../site/rankings" class="rankings">Rankings</a></section>
-    <section><a>Events</a></section>
-</main>
+<div class="background">
+    <mat-toolbar color="primary" class="mat-typography">
+        <span class="long-title">Snooker Data Query</span>
+        <span class="short-title">Snooker Query</span>
+        <span class="stretch"></span>
+        <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-button">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <button mat-mini-fab [matMenuTriggerFor]="mainMenu" class="menu-fab">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <div class="expanded-buttons">
+            <a mat-button>Contact</a>
+            <a mat-button>About</a>
+        </div>
+    </mat-toolbar>
+
+    <mat-menu #mainMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent>
+            <button mat-menu-item>Contact</button>
+            <button mat-menu-item>About</button>
+        </ng-template>
+    </mat-menu>
+
+    <main class="content">
+        <section class="introduction"></section>
+        <section class="players"></section>
+        <section class="rankings"></section>
+        <section class="events"></section>
+    </main>
+</div>

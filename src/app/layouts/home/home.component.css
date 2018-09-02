@@ -1,0 +1,114 @@
+.background {
+
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-image: url(http://www.snookercanada.ca/wp-content/uploads/snooker-pic.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.background:after {
+
+    content: '';
+    width: calc(100% + 80px);
+    height: calc(100% + 80px);
+    position: absolute;
+    background: inherit;
+    left: -40px;
+    right: 0;
+    top: -40px;
+    bottom: 0;
+    box-shadow: inset 0 0 0 2000px rgba(25, 25, 25, 0.45);
+    filter: blur(10px);
+}
+
+mat-toolbar, mat-menu {
+
+    position: relative;
+    z-index: 1;
+}
+
+.introduction {
+
+    grid-area: introduction;
+    background-color: red;
+}
+
+.players {
+
+    grid-area: players;
+    background-color: blue;
+}
+
+.rankings {
+
+    grid-area: rankings;
+    background-color: green;
+}
+
+.events {
+
+    grid-area: events;
+    background-color: yellow;
+}
+
+.content {
+
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr 7fr 7fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        '. introduction introduction .'
+        '. players rankings .'
+        '. events events .';
+}
+
+@media screen and (max-width: 320px) {
+
+    .long-title { display: none; }
+    .menu-button { display: none; }
+    .expanded-buttons { display: none; }
+}
+
+@media screen and (min-width: 321px) and (max-width: 750px) {
+
+    .short-title { display: none; }
+    .menu-fab { display: none; }
+    .expanded-buttons { display: none; }
+}
+
+@media screen and (min-width: 751px) {
+
+    .short-title { display: none; }
+    .menu-button { display: none; }
+    .menu-fab { display: none; }
+    .mat-typography { font-size: 1.7em; }
+
+    .background {
+
+        background-image: url(http://www.snookerbacker.com/wp-content/uploads/2010/08/paul-hunter-snooker.jpg);
+    }
+
+    .overlay:after {
+
+        box-shadow: inset 0 0 0 2000px rgba(7, 7, 7, 0.8);
+        filter: blur(25px);
+    }
+
+    .content {
+
+        grid-gap: 0.5em;
+        grid-template-columns: 2fr 2fr 2fr;
+        grid-template-areas:
+            'introduction introduction introduction'
+            'players rankings events';
+    }
+}
