@@ -12,38 +12,18 @@ describe('LivePlayerFetcherService', () => {
     const urlById = `http://api.snooker.org/?p=${id}`;
     const urlByYear = `http://api.snooker.org/?t=10&st=p&s=${year}`;
 
-    const rawData: object[] = [{
+    const rawData = [{
 
         ID: id,
-        FirstName: '',
-        MiddleName: '',
-        LastName: '',
-        ShortName: 'John Doe',
-        Born: '',
-        Sex: '',
         Nationality: 'three-body',
-        Photo: '',
-        BioPage: '',
-        URL: '',
-        Twitter: '',
         FirstSeasonAsPro: 2017,
         LastSeasonAsPro: 2018
     }];
 
-    const response: IPlayer[] = [{
+    const response = <IPlayer[]>[{
 
         id,
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        shortName: 'John Doe',
-        dateOfBirth: '',
-        sex: '',
         nationality: 'three-body',
-        photo: '',
-        bioPage: '',
-        website: '',
-        twitter: '',
         turnedPro: 2017,
         lastSeasonPlayed: 2018
     }];

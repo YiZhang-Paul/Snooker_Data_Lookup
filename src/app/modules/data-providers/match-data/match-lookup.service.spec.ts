@@ -6,30 +6,14 @@ import { MatchLookupService } from './match-lookup.service';
 
 describe('MatchLookupService', () => {
 
-    const matches: IMatch[] = [
+    const matches = <IMatch[]>[
 
         {
             matchId: 3420410,
-            eventId: 397,
-            worldSnookerId: 386770,
-            startDate: '2015-08-01T09:39:59Z',
-            endDate: '2015-08-01T12:34:24Z',
-            scheduledDate: '2015-08-01T09:30:00Z',
-            round: 7,
-            session: '',
-            tableNumber: 0,
-            frameScores: '',
             player1: 1,
             score1: 4,
             player2: 6,
-            score2: 1,
-            walkover: null,
-            winner: 1,
-            ongoing: false,
-            onBreak: false,
-            liveUrl: '',
-            vodUrl: '',
-            detailsUrl: ''
+            score2: 1
         }
     ];
 

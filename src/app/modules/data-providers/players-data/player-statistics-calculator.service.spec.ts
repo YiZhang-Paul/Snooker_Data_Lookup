@@ -17,39 +17,19 @@ describe('PlayerStatisticsCalculatorService', () => {
     // rank for retired player
     const retiredRank = 100;
 
-    const active: IPlayer = {
+    const active = <IPlayer>{
 
         id: 207,
-        firstName: 'John',
-        middleName: 'M',
-        lastName: 'Doe',
         shortName: 'John Doe',
-        dateOfBirth: '1992-03-01',
-        sex: 'M',
         nationality: 'three-body',
-        photo: '',
-        bioPage: '',
-        website: '',
-        twitter: '',
-        turnedPro: 2016,
         lastSeasonPlayed: currentYear // not retired
     };
 
-    const retired: IPlayer = {
+    const retired = <IPlayer>{
 
         id: 147,
-        firstName: 'Jane',
-        middleName: '',
-        lastName: 'Doe',
         shortName: 'Jane Doe',
-        dateOfBirth: '1996-12-25',
-        sex: 'F',
         nationality: 'three-body',
-        photo: '',
-        bioPage: '',
-        website: '',
-        twitter: '',
-        turnedPro: 2016,
         lastSeasonPlayed: currentYear - 1 // retired
     };
 

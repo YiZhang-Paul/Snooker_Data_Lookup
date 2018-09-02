@@ -6,34 +6,7 @@ import { EventLookupService } from './event-lookup.service';
 
 describe('EventLookupService', () => {
 
-    const event: ITournamentEvent = {
-
-        eventId: 410,
-        previousEventId: 353,
-        mainEventId: 410,
-        worldSnookerId: 13853,
-        name: 'UK Championship',
-        stage: 'F',
-        type: 'Ranking',
-        participants: 128,
-        defendingChampion: 5,
-        season: 2015,
-        sponsor: 'Betway',
-        startDate: '2015-11-24',
-        endDate: '2015-12-06',
-        stops: 0,
-        venue: 'Barbican Centre',
-        city: 'York',
-        country: 'England',
-        sex: 'Both',
-        ageGroup: 'O',
-        url: '',
-        twitter: '',
-        photos: '',
-        hashTag: 'UKChampionship',
-        related: 'uk'
-    };
-
+    const event = <ITournamentEvent>{ eventId: 410, name: 'UK Championship' };
     const id = event.eventId;
     let fetcher: jasmine.SpyObj<LiveEventFetcherService>;
     let fetchByIdSpy: jasmine.Spy;

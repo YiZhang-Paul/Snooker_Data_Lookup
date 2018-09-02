@@ -6,6 +6,7 @@ import { IRankData } from './modules/data-providers/rankings-data/rank-data.inte
 import { PlayerLookupService } from './modules/data-providers/players-data/player-lookup.service';
 import { RankingLookupService } from './modules/data-providers/rankings-data/ranking-lookup.service';
 import { AppComponent } from './app.component';
+import { startYear } from './app-config';
 
 // tslint:disable:component-selector
 @Component({ selector: 'router-outlet', template: '' })
@@ -19,7 +20,7 @@ describe('AppComponent', () => {
     let getPlayersSpy: jasmine.Spy;
     let rankingLookup: jasmine.SpyObj<RankingLookupService>;
     let getRankingsSpy: jasmine.Spy;
-    const totalYears = countYears(2013);
+    const totalYears = countYears(startYear);
 
     beforeEach(async(() => {
 
@@ -64,9 +65,9 @@ describe('AppComponent', () => {
         expect(getRankingsSpy).toHaveBeenCalledTimes(totalYears);
     });
 
-    function countYears(startYear: number = 2013): number {
+    function countYears(start: number = 2013): number {
 
-        return new Date().getFullYear() - startYear + 1;
+        return new Date().getFullYear() - start + 1;
     }
 
     function setupPlayerLookup(response: IPlayer[] = null): void {

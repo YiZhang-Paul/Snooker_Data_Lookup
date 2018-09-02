@@ -25,12 +25,12 @@ describe('PlayerInformationComponent', () => {
         dateOfBirth: '1999-12-12',
         sex: 'M',
         nationality: 'three-body',
-        photo: 'photo.jpg',
         bioPage: 'bio.com',
         website: 'site.com',
         twitter: '@kDoe',
         get shortFullName(): string { return 'John Doe'; }
     };
+
 
     let fixture: ComponentFixture<PlayerInformationComponent>;
     let component: PlayerInformationComponent;

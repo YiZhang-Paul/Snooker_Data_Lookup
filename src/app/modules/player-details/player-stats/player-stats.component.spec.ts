@@ -12,44 +12,22 @@ describe('PlayerStatsComponent', () => {
 
     const currentYear = new Date().getFullYear();
 
-    const active: IPlayer = {
+    const active = <IPlayer>{
 
         id: 293,
-        firstName: 'John',
-        middleName: 'K',
-        lastName: 'Doe',
-        shortName: 'John Doe',
-        dateOfBirth: '1999-12-12',
-        sex: 'M',
-        nationality: 'three-body',
-        photo: 'photo.jpg',
-        bioPage: 'bio.com',
-        website: 'site.com',
-        twitter: '@kDoe',
         turnedPro: 2016,
         lastSeasonPlayed: currentYear
     };
 
-    const retired: IPlayer = {
+    const retired = <IPlayer>{
 
         id: 130,
-        firstName: 'Jane',
-        middleName: '',
-        lastName: 'Doe',
-        shortName: 'Jane Doe',
-        dateOfBirth: '1993-04-17',
-        sex: 'F',
-        nationality: 'three-body',
-        photo: 'photo.jpg',
-        bioPage: 'bio.com',
-        website: 'site.com',
-        twitter: '@NDoe',
         turnedPro: 2017,
         lastSeasonPlayed: currentYear - 1
     };
 
-    let component: PlayerStatsComponent;
     let fixture: ComponentFixture<PlayerStatsComponent>;
+    let component: PlayerStatsComponent;
     let routes: ActivatedRoute;
     let routesParentSpy: jasmine.Spy;
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;

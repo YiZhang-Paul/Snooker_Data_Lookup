@@ -6,37 +6,19 @@ import { PlayerLookupService } from './player-lookup.service';
 
 describe('PlayerLookupService', () => {
 
-    const players: IPlayer[] = [
+    const players = <IPlayer[]>[
 
         {
             id: 207,
-            firstName: 'John',
-            middleName: 'M',
-            lastName: 'Doe',
             shortName: 'John Doe',
-            dateOfBirth: '1992-03-01',
-            sex: 'M',
             nationality: 'three-body',
-            photo: '',
-            bioPage: '',
-            website: '',
-            twitter: '',
             turnedPro: 2016,
             lastSeasonPlayed: 2018
         },
         {
             id: 53,
-            firstName: 'Jane',
-            middleName: '',
-            lastName: 'Doe',
             shortName: 'Jane Doe',
-            dateOfBirth: '',
-            sex: 'F',
             nationality: 'three-body',
-            photo: '',
-            bioPage: '',
-            website: '',
-            twitter: '',
             turnedPro: 2013,
             lastSeasonPlayed: 2017
         }

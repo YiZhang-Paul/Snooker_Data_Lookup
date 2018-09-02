@@ -11,54 +11,24 @@ describe('PlayerAllStatisticsCalculatorService', () => {
 
     const currentYear = new Date().getFullYear();
 
-    const players: IPlayer[] = [
+    const players = <IPlayer[]>[
 
         {
             id: 293,
-            firstName: 'John',
-            middleName: 'K',
-            lastName: 'Doe',
-            shortName: 'John Doe',
             dateOfBirth: `${currentYear - 20}-12-12`,
-            sex: 'M',
             nationality: 'three-body',
-            photo: 'photo.jpg',
-            bioPage: 'bio.com',
-            website: 'site.com',
-            twitter: '@kDoe',
-            turnedPro: 2013,
             lastSeasonPlayed: currentYear - 3
         },
         {
             id: 130,
-            firstName: 'Jane',
-            middleName: '',
-            lastName: 'Doe',
-            shortName: 'Jane Doe',
             dateOfBirth: `${currentYear - 17}-04-17`,
-            sex: 'F',
             nationality: 'three-body',
-            photo: 'photo.jpg',
-            bioPage: 'bio.com',
-            website: 'site.com',
-            twitter: '@NDoe',
-            turnedPro: 2012,
             lastSeasonPlayed: currentYear
         },
         {
             id: 15,
-            firstName: 'Jim',
-            middleName: '',
-            lastName: 'Moe',
-            shortName: 'Jim Moe',
             dateOfBirth: `${currentYear - 40}-08-25`,
-            sex: 'M',
             nationality: 'china',
-            photo: 'photo.jpg',
-            bioPage: 'bio.com',
-            website: 'site.com',
-            twitter: '@Moe',
-            turnedPro: 2009,
             lastSeasonPlayed: currentYear
         }
     ];

@@ -17,31 +17,12 @@ class MatchHistoryListingComponent {
 
 describe('PlayerHistoryComponent', () => {
 
-    const event: ITournamentEvent = {
+    const event = <ITournamentEvent>{ eventId: 397, name: 'UK Championship' };
 
-        eventId: 397, previousEventId: 0, mainEventId: 397, worldSnookerId: 13853,
-        name: 'UK Championship', stage: 'f', type: 'r', participants: 128,
-        defendingChampion: 5, season: 2018, sponsor: '', startDate: '', endDate: '',
-        stops: 0, venue: '', city: '', country: '', sex: '', ageGroup: '',
-        url: '', twitter: '', photos: '', hashTag: '', related: ''
-    };
+    const matches = <IMatch[]>[
 
-    const matches: IMatch[] = [
-
-        {
-            matchId: 3420410, eventId: 397, worldSnookerId: 386770,
-            startDate: '', endDate: '', scheduledDate: '',
-            round: 7, session: '', tableNumber: 0, frameScores: '',
-            player1: 1, score1: 4, player2: 6, score2: 1, walkover: null, winner: 1,
-            ongoing: false, onBreak: false, liveUrl: '', vodUrl: '', detailsUrl: ''
-        },
-        {
-            matchId: 3420415, eventId: 397, worldSnookerId: 386791,
-            startDate: '', endDate: '', scheduledDate: '',
-            round: 8, session: '', tableNumber: 0, frameScores: '',
-            player1: 1, score1: 5, player2: 15, score2: 2, walkover: null, winner: 1,
-            ongoing: false, onBreak: false, liveUrl: '', vodUrl: '', detailsUrl: ''
-        }
+        { player1: 1, score1: 4, player2: 6, score2: 1 },
+        { player1: 1, score1: 5, player2: 15, score2: 2 }
     ];
 
     let fixture: ComponentFixture<PlayerHistoryComponent>;

@@ -68,7 +68,7 @@ describe('DataCacheService', () => {
         jasmine.clock().install();
         jasmine.clock().mockDate(new Date());
         jasmine.clock().tick(dataCache.lifeTime + 1000);
-        // requesting expired cached data will cause data to be removed
+        // * requesting expired cached data will cause data to be removed
         expect(dataCache.get(request)).toBeNull();
         expect(dataCache.totalCached).toEqual(totalCached);
 

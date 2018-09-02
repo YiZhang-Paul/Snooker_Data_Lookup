@@ -8,47 +8,17 @@ import { PlayerMatchHistoryLookupService } from './player-match-history-lookup.s
 
 describe('PlayerMatchHistoryLookupService', () => {
 
-    const matches: IMatch[] = [
-        // only eventId matters here
-        {
-            matchId: 3420410, eventId: 397, worldSnookerId: 386770,
-            startDate: '', endDate: '', scheduledDate: '',
-            round: 7, session: '', tableNumber: 0, frameScores: '',
-            player1: 1, score1: 4, player2: 6, score2: 1, walkover: null, winner: 1,
-            ongoing: false, onBreak: false, liveUrl: '', vodUrl: '', detailsUrl: ''
-        },
-        {
-            matchId: 3421024, eventId: 397, worldSnookerId: 387100,
-            startDate: '', endDate: '', scheduledDate: '',
-            round: 8, session: '', tableNumber: 1, frameScores: '',
-            player1: 15, score1: 2, player2: 1, score2: 5, walkover: null, winner: 1,
-            ongoing: false, onBreak: false, liveUrl: '', vodUrl: '', detailsUrl: ''
-        },
-        {
-            matchId: 3421201, eventId: 403, worldSnookerId: 387098,
-            startDate: '', endDate: '', scheduledDate: '',
-            round: 2, session: '', tableNumber: 5, frameScores: '',
-            player1: 1, score1: 1, player2: 97, score2: 3, walkover: null, winner: 97,
-            ongoing: false, onBreak: false, liveUrl: '', vodUrl: '', detailsUrl: ''
-        }
+    const matches = <IMatch[]>[
+
+        { eventId: 397, player1: 1, score1: 4, player2: 6, score2: 1 },
+        { eventId: 397, player1: 15, score1: 2, player2: 1, score2: 5 },
+        { eventId: 403, player1: 1, score1: 1, player2: 97, score2: 3 }
     ];
 
-    const events: ITournamentEvent[] = [
-        // only eventId matters here
-        {
-            eventId: 397, previousEventId: 0, mainEventId: 397, worldSnookerId: 13853,
-            name: 'UK Championship', stage: 'f', type: 'r', participants: 128,
-            defendingChampion: 5, season: 2018, sponsor: '', startDate: '', endDate: '',
-            stops: 0, venue: '', city: '', country: '', sex: '', ageGroup: '',
-            url: '', twitter: '', photos: '', hashTag: '', related: ''
-        },
-        {
-            eventId: 403, previousEventId: 0, mainEventId: 403, worldSnookerId: 13910,
-            name: 'Shanghai Masters', stage: 'f', type: 'r', participants: 32,
-            defendingChampion: 5, season: 2018, sponsor: '', startDate: '', endDate: '',
-            stops: 0, venue: '', city: '', country: '', sex: '', ageGroup: '',
-            url: '', twitter: '', photos: '', hashTag: '', related: ''
-        }
+    const events = <ITournamentEvent[]>[
+
+        { eventId: 397, name: 'UK Championship' },
+        { eventId: 403, name: 'Shanghai Masters' }
     ];
 
     let matchLookup: jasmine.SpyObj<MatchLookupService>;
