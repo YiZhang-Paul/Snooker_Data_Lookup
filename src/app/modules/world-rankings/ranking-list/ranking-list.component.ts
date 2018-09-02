@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
 import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.interface';
@@ -89,7 +88,7 @@ export class RankingListComponent implements OnInit {
         return new RankDetail(rank, player.fullName, player.nationality, earnings, player);
     }
 
-    private getRankDetails(rankData: IRankData[], players: Map<number, IPlayer>): Observable<IRankDetail[]> {
+    private getRankDetails(rankData: IRankData[], players: Map<number, IPlayer>): IRankDetail[] {
 
         const details = rankData.map(data => {
 
@@ -98,14 +97,14 @@ export class RankingListComponent implements OnInit {
             return this.getRankDetail(data, player);
         });
 
-        return of(details);
+        return details;
     }
 
     private updateRankDetails(rankData: IRankData[]): void {
 
         this.playerLookup.getPlayers(this._selectedYear).pipe(
 
-            switchMap(players => this.getRankDetails(rankData, players))
+            map(players => this.getRankDetails(rankData, players))
 
         ).subscribe(rankDetails => {
 

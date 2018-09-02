@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { LivePlayerFetcherService } from './live-player-fetcher.service';
 
@@ -22,14 +22,14 @@ export class PlayerLookupService {
 
     private toMap(players: IPlayer[]): Map<number, IPlayer> {
 
-        const map = new Map<number, IPlayer>();
+        const result = new Map<number, IPlayer>();
 
         players.forEach(player => {
 
-            map.set(player.id, player);
+            result.set(player.id, player);
         });
 
-        return map;
+        return result;
     }
 
     private savePlayer(player: IPlayer): void {
@@ -84,10 +84,7 @@ export class PlayerLookupService {
                 this.savePlayers(year, players);
                 this.players$.next(this._storageById);
             }),
-            switchMap(players => {
-
-                return of(players !== null ? this.toMap(players) : null);
-            })
+            map(players => players !== null ? this.toMap(players) : null)
         );
     }
 }

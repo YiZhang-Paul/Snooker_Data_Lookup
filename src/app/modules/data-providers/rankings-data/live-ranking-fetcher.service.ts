@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, retry, switchMap } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 import { IRankData } from './rank-data.interface';
 import { RankData } from './rank-data';
 
@@ -34,7 +34,7 @@ export class LiveRankingFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(items => of(this.toRankItems(<object[]>items))),
+            map(items => this.toRankItems(<object[]>items)),
             catchError(error => of(null))
         );
     }

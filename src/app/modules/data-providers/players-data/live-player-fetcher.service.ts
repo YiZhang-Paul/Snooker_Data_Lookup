@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, retry, switchMap } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { recordToPlayer } from './player';
 
@@ -31,7 +31,7 @@ export class LivePlayerFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(record => of(recordToPlayer(record[0]))),
+            map(record => recordToPlayer(record[0])),
             catchError(() => of(null))
         );
     }
@@ -43,7 +43,7 @@ export class LivePlayerFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(records => of(this.toPlayers(<object[]>records))),
+            map(records => this.toPlayers(<object[]>records)),
             catchError(() => of(null))
         );
     }

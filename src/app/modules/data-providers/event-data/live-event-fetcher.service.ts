@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { retry, switchMap, catchError } from 'rxjs/operators';
+import { retry, map, catchError } from 'rxjs/operators';
 import { ITournamentEvent } from './tournament-event.interface';
 import { recordToTournamentEvent } from './tournament-event';
 
@@ -19,7 +19,7 @@ export class LiveEventFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            switchMap(record => of(recordToTournamentEvent(record[0]))),
+            map(record => recordToTournamentEvent(record[0])),
             catchError(() => of(null))
         );
     }

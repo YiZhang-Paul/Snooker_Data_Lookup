@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { IRankData } from '../rankings-data/rank-data.interface';
 import { RankingLookupService } from '../rankings-data/ranking-lookup.service';
 import { APP_CONFIG } from '../../../app-config';
@@ -54,17 +54,15 @@ export class PlayerStatisticsCalculatorService {
 
         return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
-            switchMap(rankings => {
+            map(rankings => {
 
-                const history = rankings.map((ranking, index) => {
+                return rankings.map((ranking, index) => {
 
                     const year = this.configuration.startYear + index;
                     const rank = ranking ? this.getRank(ranking, id) : null;
 
                     return { year, rank };
                 });
-
-                return of(history);
             })
         );
     }
@@ -73,17 +71,15 @@ export class PlayerStatisticsCalculatorService {
 
         return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
-            switchMap(rankings => {
+            map(rankings => {
 
-                const history = rankings.map((ranking, index) => {
+                return rankings.map((ranking, index) => {
 
                     const year = this.configuration.startYear + index;
                     const earning = ranking ? this.getEarning(ranking, id) : 0;
 
                     return { year, earning };
                 });
-
-                return of(history);
             })
         );
     }
@@ -92,10 +88,7 @@ export class PlayerStatisticsCalculatorService {
 
         return this.lookup.getRankings(this.currentYear).pipe(
 
-            switchMap(rankings => {
-
-                return of(rankings ? this.getRank(rankings, id) : null);
-            })
+            map(rankings => rankings ? this.getRank(rankings, id) : null)
         );
     }
 
@@ -119,7 +112,7 @@ export class PlayerStatisticsCalculatorService {
 
         return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
-            switchMap(rankings => {
+            map(rankings => {
 
                 const result = rankings.reduce((rank, current) => {
 
@@ -129,7 +122,7 @@ export class PlayerStatisticsCalculatorService {
 
                 }, 0);
 
-                return of(result === 0 ? null : result);
+                return result === 0 ? null : result;
             })
         );
     }
@@ -138,7 +131,7 @@ export class PlayerStatisticsCalculatorService {
 
         return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
-            switchMap(rankings => {
+            map(rankings => {
 
                 const result = rankings.reduce((rank, current) => {
 
@@ -148,7 +141,7 @@ export class PlayerStatisticsCalculatorService {
 
                 }, 0);
 
-                return of(result === 0 ? null : result);
+                return result === 0 ? null : result;
             })
         );
     }
@@ -157,17 +150,15 @@ export class PlayerStatisticsCalculatorService {
 
         return this.lookup.getRankingsSince(this.configuration.startYear).pipe(
 
-            switchMap(rankings => {
+            map(rankings => {
 
-                const result = rankings.reduce((total, current) => {
+                return rankings.reduce((total, current) => {
 
                     const earning = current ? this.getEarning(current, id) : 0;
 
                     return total + earning;
 
                 }, 0);
-
-                return of(result);
             })
         );
     }

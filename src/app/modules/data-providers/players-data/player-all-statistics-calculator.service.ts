@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, of, forkJoin } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { IGroupValue } from './group-value.interface';
 import { GroupValue } from './group-value';
@@ -94,7 +94,7 @@ export class PlayerAllStatisticsCalculatorService {
 
         return this.getPlayers(year).pipe(
 
-            switchMap(players => {
+            map(players => {
 
                 const groups = new Map<number, number>();
 
@@ -104,7 +104,7 @@ export class PlayerAllStatisticsCalculatorService {
                     this.trackGroups(groups, this.roundBy(age, this._ageStep));
                 });
 
-                return of(this.toGroupValues(groups, players.size));
+                return this.toGroupValues(groups, players.size);
             })
         );
     }
@@ -113,7 +113,7 @@ export class PlayerAllStatisticsCalculatorService {
 
         return this.getPlayers(year).pipe(
 
-            switchMap(players => {
+            map(players => {
 
                 const groups = new Map<string, number>();
 
@@ -122,7 +122,7 @@ export class PlayerAllStatisticsCalculatorService {
                     this.trackGroups(groups, player.nationality);
                 });
 
-                return of(this.toGroupValues(groups, players.size));
+                return this.toGroupValues(groups, players.size);
             })
         );
     }
@@ -131,7 +131,7 @@ export class PlayerAllStatisticsCalculatorService {
 
         return this.getPlayers(year).pipe(
 
-            switchMap(players => {
+            map(players => {
 
                 const groups = new Map<boolean, number>();
 
@@ -141,7 +141,7 @@ export class PlayerAllStatisticsCalculatorService {
                     this.trackGroups(groups, isActive);
                 });
 
-                return of(this.toGroupValues(groups, players.size));
+                return this.toGroupValues(groups, players.size);
             })
         );
     }
@@ -152,9 +152,9 @@ export class PlayerAllStatisticsCalculatorService {
 
         return this.rankingLookup.getRankingsSince(since).pipe(
 
-            switchMap(() => this.getPlayers(year)),
-            switchMap(players => this.getEarnings(players)),
-            switchMap(earnings => {
+            mergeMap(() => this.getPlayers(year)),
+            mergeMap(players => this.getEarnings(players)),
+            map(earnings => {
 
                 const groups = new Map<number, number>();
 
@@ -163,7 +163,7 @@ export class PlayerAllStatisticsCalculatorService {
                     this.trackGroups(groups, this.roundBy(earning, this._earningStep));
                 });
 
-                return of(this.toGroupValues(groups, earnings.length));
+                return this.toGroupValues(groups, earnings.length);
             })
         );
     }
