@@ -27,6 +27,9 @@ class TestMatMenu { }
 @Component({ selector: 'mat-menu-item', template: '' })
 class TestMatMenuItem { }
 
+@Component({ selector: 'app-option-card', template: '' })
+class TestOptionCardComponent { }
+
 describe('HomeComponent', () => {
 
     let fixture: ComponentFixture<HomeComponent>;
@@ -45,7 +48,8 @@ describe('HomeComponent', () => {
                 TestMatIcon,
                 TestMatMiniFab,
                 TestMatMenu,
-                TestMatMenuItem
+                TestMatMenuItem,
+                TestOptionCardComponent
             ]
 
         }).compileComponents();

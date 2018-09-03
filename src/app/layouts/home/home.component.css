@@ -1,114 +1,131 @@
-.background {
+.blurred-mask {
 
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: fixed;
-    background-image: url(http://www.snookercanada.ca/wp-content/uploads/snooker-pic.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    overflow: hidden;
-}
-
-.background:after {
-
-    content: '';
-    width: calc(100% + 80px);
-    height: calc(100% + 80px);
-    position: absolute;
     background: inherit;
-    left: -40px;
-    right: 0;
-    top: -40px;
-    bottom: 0;
-    box-shadow: inset 0 0 0 2000px rgba(25, 25, 25, 0.45);
+    transform: scale(1.1);
     filter: blur(10px);
 }
 
-mat-toolbar, mat-menu {
+.top-nav {
 
-    position: relative;
-    z-index: 1;
+    grid-area: top-nav;
 }
 
 .introduction {
 
     grid-area: introduction;
-    background-color: red;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.introduction h2 {
+
+    margin-top: 20%;
+    font-size: 1.3em;
 }
 
 .players {
 
     grid-area: players;
-    background-color: blue;
 }
 
 .rankings {
 
     grid-area: rankings;
-    background-color: green;
 }
 
 .events {
 
     grid-area: events;
-    background-color: yellow;
 }
 
-.content {
+.main-content {
+
+    grid-area: main-content;
+    background-color: rgba(66, 61, 61, 0.699);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        'players'
+        'rankings'
+        'events';
+}
+
+main {
+
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr 16fr 1fr;
+    grid-template-rows: 6vh 20vh auto;
+    grid-template-areas:
+        'top-nav top-nav top-nav'
+        '. introduction .'
+        '. main-content .';
+}
+
+mat-toolbar {
 
     width: 100%;
     height: 100%;
-    z-index: 1;
-    position: absolute;
-    display: grid;
-    grid-template-columns: 1fr 7fr 7fr 1fr;
-    grid-template-rows: auto;
-    grid-template-areas:
-        '. introduction introduction .'
-        '. players rankings .'
-        '. events events .';
+    background-color: rgba(55, 55, 55, 0.4) !important;
+    box-shadow: 0 0 30px 5px rgba(30, 30, 30, 0.55);
 }
+
+.short-title { display: none; }
+.menu-fab { display: none; }
+.expanded-buttons { display: none; }
+.menu-button { display: none; }
 
 @media screen and (max-width: 320px) {
 
     .long-title { display: none; }
-    .menu-button { display: none; }
-    .expanded-buttons { display: none; }
+    .short-title { display: inline; }
+    .menu-fab { display: inline; }
 }
 
 @media screen and (min-width: 321px) and (max-width: 750px) {
 
-    .short-title { display: none; }
-    .menu-fab { display: none; }
-    .expanded-buttons { display: none; }
+    .menu-button { display: inline; }
+
+    .introduction h2 {
+
+        margin-top: 15%;
+        font-size: 1.5em;
+    }
 }
 
 @media screen and (min-width: 751px) {
 
-    .short-title { display: none; }
-    .menu-button { display: none; }
-    .menu-fab { display: none; }
+    main {
+
+        grid-template-columns: 1fr 18fr 1fr;
+        grid-template-rows: 10vh 40vh auto;
+        grid-template-areas:
+            'top-nav top-nav top-nav'
+            '. introduction .'
+            '. main-content .';
+    }
+
+    .expanded-buttons { display: inline; }
     .mat-typography { font-size: 1.7em; }
 
-    .background {
+    .introduction h2 {
 
-        background-image: url(http://www.snookerbacker.com/wp-content/uploads/2010/08/paul-hunter-snooker.jpg);
+        margin-top: 12%;
+        font-size: 2.2em;
     }
 
-    .overlay:after {
+    .main-content {
 
-        box-shadow: inset 0 0 0 2000px rgba(7, 7, 7, 0.8);
-        filter: blur(25px);
-    }
-
-    .content {
-
-        grid-gap: 0.5em;
-        grid-template-columns: 2fr 2fr 2fr;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-template-areas:
-            'introduction introduction introduction'
             'players rankings events';
     }
 }

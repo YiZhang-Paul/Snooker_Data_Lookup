@@ -13,12 +13,14 @@ import { SiteComponent } from './layouts/site/site.component';
 
 import { DataCacheService } from './shared/services/data-cache.service';
 import { CachingInterceptorService } from './shared/interceptors/caching-interceptor.service';
+import { OptionCardComponent } from './layouts/option-card/option-card.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        SiteComponent
+        SiteComponent,
+        OptionCardComponent
     ],
     imports: [
         BrowserModule,

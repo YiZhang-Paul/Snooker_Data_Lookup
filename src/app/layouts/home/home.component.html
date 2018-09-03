@@ -1,31 +1,59 @@
-<div class="background">
-    <mat-toolbar color="primary" class="mat-typography">
-        <span class="long-title">Snooker Data Query</span>
-        <span class="short-title">Snooker Query</span>
-        <span class="stretch"></span>
-        <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-button">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <button mat-mini-fab [matMenuTriggerFor]="mainMenu" class="menu-fab">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <div class="expanded-buttons">
-            <a mat-button>Contact</a>
-            <a mat-button>About</a>
-        </div>
-    </mat-toolbar>
+<div class="blurred-mask"></div>
 
-    <mat-menu #mainMenu="matMenu" xPosition="before">
-        <ng-template matMenuContent>
-            <button mat-menu-item>Contact</button>
-            <button mat-menu-item>About</button>
-        </ng-template>
-    </mat-menu>
+<main>
+    <nav class="top-nav">
+        <mat-toolbar color="primary" class="mat-typography">
+            <span class="long-title">Snooker Data Query</span>
+            <span class="short-title">Snooker Query</span>
+            <span class="stretch"></span>
+            <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-button">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-mini-fab [matMenuTriggerFor]="mainMenu" class="menu-fab">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <div class="expanded-buttons">
+                <a mat-button>Contact</a>
+                <a mat-button>About</a>
+            </div>
+        </mat-toolbar>
 
-    <main class="content">
-        <section class="introduction"></section>
-        <section class="players"></section>
-        <section class="rankings"></section>
-        <section class="events"></section>
-    </main>
-</div>
+        <mat-menu #mainMenu="matMenu" xPosition="before">
+            <ng-template matMenuContent>
+                <button mat-menu-item>Contact</button>
+                <button mat-menu-item>About</button>
+            </ng-template>
+        </mat-menu>
+    </nav>
+    <section class="introduction">
+        <h2>A light weight, easy to use snooker data collection.</h2>
+    </section>
+    <section class="main-content">
+        <article class="players">
+            <app-option-card
+                title="Players"
+                link="../site/players"
+                image="https://i.eurosport.com/2018/02/27/2283151-47561815-2560-1440.jpg?w=1050">
+
+                <p>View Player Details & Statistics</p>
+            </app-option-card>
+        </article>
+        <article class="rankings">
+            <app-option-card
+                title="Rankings"
+                link="../site/rankings"
+                image="https://cdn.images.express.co.uk/img/dynamic/4/590x/Ronnie-O-Sullivan-994407.jpg?r=1532575948666">
+
+                <p>Check World Rankings Since 2013</p>
+            </app-option-card>
+        </article>
+        <article class="events">
+            <app-option-card
+                title="Tournaments & Events"
+                image="http://www.pix123.com/livesnooker//201604/Apr14/2016Apr14033317_112771310.jpg">
+
+                <p>Currently Under Construction</p>
+            </app-option-card>
+        </article>
+    </section>
+</main>

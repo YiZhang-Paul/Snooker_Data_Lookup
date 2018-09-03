@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     imports: [
@@ -16,7 +18,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
         MatButtonModule,
         MatMenuModule,
         MatToolbarModule,
-        MatGridListModule
+        MatGridListModule,
+        MatDividerModule,
+        MatCardModule
     ],
     declarations: [UrlFormatterPipe],
     providers: [DoughnutChartFactoryService],
@@ -26,7 +30,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
         MatButtonModule,
         MatMenuModule,
         MatToolbarModule,
-        MatGridListModule
+        MatGridListModule,
+        MatDividerModule,
+        MatCardModule
     ]
 })
 export class SharedModule { }
