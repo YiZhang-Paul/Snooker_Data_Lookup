@@ -5,12 +5,57 @@
     position: fixed;
     background: inherit;
     transform: scale(1.1);
-    filter: blur(10px);
+    filter: blur(10px) brightness(65%);
+}
+
+.mat-button:hover {
+
+    background-color: rgba(255, 115, 115, 0.658);
+}
+
+.mat-mini-fab {
+
+    background-color: rgb(39, 162, 233);
+}
+
+.mini-menu-button {
+
+    color: white;
+}
+
+.search {
+
+    background-color: red;
+}
+
+.search-icon {
+
+    color: white;
+}
+
+app-option-card {
+
+    background-color: rgba(39, 39, 39, 0.9);
+}
+
+mat-toolbar {
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(55, 55, 55, 0.4) !important;
+    -webkit-box-shadow: 0 0 30px 5px rgba(30, 30, 30, 0.55);
+    -moz-box-shadow: 0 0 30px 5px rgba(30, 30, 30, 0.55);
+    box-shadow: 0 0 30px 5px rgba(30, 30, 30, 0.55);
 }
 
 .top-nav {
 
     grid-area: top-nav;
+}
+
+.highlight {
+
+    color: rgb(39, 150, 190);
 }
 
 .introduction {
@@ -19,13 +64,12 @@
     color: white;
     text-align: center;
     font-weight: bold;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .introduction h2 {
 
     margin-top: 20%;
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .players {
@@ -46,7 +90,11 @@
 .main-content {
 
     grid-area: main-content;
-    background-color: rgba(66, 61, 61, 0.699);
+    border-top: 2px solid lightgrey;
+    background-color: rgba(55, 55, 55, 0.4);
+    -webkit-box-shadow: 0 -5px 30px 5px rgba(30, 30, 30, 0.55);
+    -moz-box-shadow: 0 -5px 30px 5px rgba(30, 30, 30, 0.55);
+    box-shadow: 0 -5px 30px 5px rgba(30, 30, 30, 0.55);
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -56,6 +104,28 @@
         'events';
 }
 
+.footer {
+
+    position: relative;
+    font-size: 0.8em;
+    grid-area: footer;
+    background-color: rgba(43, 44, 44, 0.705);
+    border-radius: 2px;
+    -webkit-box-shadow: 0px -5px 12px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px -5px 12px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px -5px 12px -1px rgba(0,0,0,0.75);
+}
+
+.author-short, .author-long {
+
+    position: absolute;
+    right: 1%;
+    bottom: 5%;
+    color: rgba(238, 235, 235, 0.904);
+    font-weight: bold;
+    font-style: italic;
+}
+
 main {
 
     width: 100%;
@@ -63,31 +133,27 @@ main {
     position: absolute;
     display: grid;
     grid-template-columns: 1fr 16fr 1fr;
-    grid-template-rows: 6vh 20vh auto;
+    grid-template-rows: 10vh 25vh auto 8vh;
     grid-template-areas:
         'top-nav top-nav top-nav'
         '. introduction .'
-        '. main-content .';
+        '. main-content .'
+        'footer footer footer';
 }
 
-mat-toolbar {
+.short-title, .menu-fab, .expanded-buttons, .menu-button, .author-short {
 
-    width: 100%;
-    height: 100%;
-    background-color: rgba(55, 55, 55, 0.4) !important;
-    box-shadow: 0 0 30px 5px rgba(30, 30, 30, 0.55);
+    display: none;
 }
-
-.short-title { display: none; }
-.menu-fab { display: none; }
-.expanded-buttons { display: none; }
-.menu-button { display: none; }
 
 @media screen and (max-width: 320px) {
 
     .long-title { display: none; }
+    .author-long { display: none; }
     .short-title { display: inline; }
     .menu-fab { display: inline; }
+    .author-short { display: inline; }
+    .introduction h2, .highlight { color: orange; }
 }
 
 @media screen and (min-width: 321px) and (max-width: 750px) {
@@ -96,7 +162,7 @@ mat-toolbar {
 
     .introduction h2 {
 
-        margin-top: 15%;
+        margin-top: 10%;
         font-size: 1.5em;
     }
 }
@@ -106,11 +172,19 @@ mat-toolbar {
     main {
 
         grid-template-columns: 1fr 18fr 1fr;
-        grid-template-rows: 10vh 40vh auto;
+        grid-template-rows: 10vh 40vh auto 10vh;
         grid-template-areas:
             'top-nav top-nav top-nav'
             '. introduction .'
-            '. main-content .';
+            'main-content main-content main-content'
+            'footer footer footer';
+    }
+
+    app-option-card {
+
+        position: relative;
+        top: -65px;
+        height: calc(100% + 65px);
     }
 
     .expanded-buttons { display: inline; }
@@ -118,14 +192,15 @@ mat-toolbar {
 
     .introduction h2 {
 
-        margin-top: 12%;
-        font-size: 2.2em;
+        margin-top: 6%;
+        font-size: 2.5em;
     }
 
     .main-content {
 
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 2em;
+        grid-template-columns: 1fr 3fr 3fr 3fr 1fr;
         grid-template-areas:
-            'players rankings events';
+            '. players rankings events .';
     }
 }

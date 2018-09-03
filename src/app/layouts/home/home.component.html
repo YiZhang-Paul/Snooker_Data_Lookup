@@ -10,11 +10,12 @@
                 <mat-icon>menu</mat-icon>
             </button>
             <button mat-mini-fab [matMenuTriggerFor]="mainMenu" class="menu-fab">
-                <mat-icon>menu</mat-icon>
+                <mat-icon class="mini-menu-button">menu</mat-icon>
             </button>
             <div class="expanded-buttons">
                 <a mat-button>Contact</a>
                 <a mat-button>About</a>
+                <a mat-button class="search"><mat-icon class="search-icon">search</mat-icon></a>
             </div>
         </mat-toolbar>
 
@@ -26,7 +27,7 @@
         </mat-menu>
     </nav>
     <section class="introduction">
-        <h2>A light weight, easy to use snooker data collection.</h2>
+        <h2>A <span class="highlight">light weight</span>, easy to use snooker data collection.</h2>
     </section>
     <section class="main-content">
         <article class="players">
@@ -50,10 +51,14 @@
         <article class="events">
             <app-option-card
                 title="Tournaments & Events"
-                image="http://www.pix123.com/livesnooker//201604/Apr14/2016Apr14033317_112771310.jpg">
+                image="https://www.telegraph.co.uk/content/dam/snooker/2017/04/14/TELEMMGLPICT000125854438_trans_NvBQzQNjv4BqIgboy7m2Vnp-xkpo1Nlwzv4cBevEAptvg3sn-Fm9TnE.jpeg?imwidth=350">
 
                 <p>Currently Under Construction</p>
             </app-option-card>
         </article>
     </section>
+    <footer class="footer">
+        <span class="author-short">By Yi, Zhang @2018</span>
+        <span class="author-long">Web Design by Yi, Zhang @2018</span>
+    </footer>
 </main>
