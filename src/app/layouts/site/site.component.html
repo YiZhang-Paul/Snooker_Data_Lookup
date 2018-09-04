@@ -1,6 +1,39 @@
-<nav>
-    <a routerLink="">Home</a>
-    <a routerLink="/site/players">Players</a>
-    <a routerLink="/site/rankings">Rankings</a>
-</nav>
-<router-outlet></router-outlet>
+<main>
+    <nav class="top-nav">
+        <mat-toolbar>
+            <a routerLink=""><span class="title">Snooker Data Query</span></a>
+            <a routerLink="" class="home-button">
+                <mat-icon class="home-icon">home</mat-icon>
+            </a>
+            <span class="stretch"></span>
+            <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-button">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-mini-fab [matMenuTriggerFor]="mainMenu" class="menu-fab">
+                <mat-icon class="mini-menu-button-icon">menu</mat-icon>
+            </button>
+            <div class="expanded-buttons">
+                <button mat-button routerLink="/site/players">Players</button>
+                <button mat-button routerLink="/site/rankings">Rankings</button>
+                <button mat-button>Contact</button>
+                <button mat-button>About</button>
+            </div>
+        </mat-toolbar>
+
+        <mat-menu #mainMenu="matMenu" xPosition="before">
+            <ng-template matMenuContent>
+                <button mat-menu-item routerLink="/site/players">Players</button>
+                <button mat-menu-item routerLink="/site/rankings">Rankings</button>
+                <button mat-menu-item>Contact</button>
+                <button mat-menu-item>About</button>
+            </ng-template>
+        </mat-menu>
+    </nav>
+    <section class="main-content">
+        <router-outlet></router-outlet>
+    </section>
+    <footer class="footer">
+        <span class="author-short">By Yi, Zhang @2018</span>
+        <span class="author-long">Web Design by Yi, Zhang @2018</span>
+    </footer>
+</main>
