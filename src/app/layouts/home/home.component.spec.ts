@@ -28,7 +28,7 @@ class TestMatMenu { }
 class TestMatMenuItem { }
 
 @Component({ selector: 'app-option-card', template: '' })
-class TestOptionCardComponent { }
+class TestOptionCardComponent { @Input() image: string; }
 
 describe('HomeComponent', () => {
 
