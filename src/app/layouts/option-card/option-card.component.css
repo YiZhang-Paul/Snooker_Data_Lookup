@@ -6,9 +6,6 @@ mat-card {
     -webkit-box-shadow: inherit !important;
     -moz-box-shadow: inherit !important;
     box-shadow: inherit !important;
-    border: 2px solid;
-    border-image: linear-gradient(to left, rgba(23, 122, 235, 0.7) 1%, rgba(41, 240, 247, 0.9) 100%);
-    border-image-slice: 1;
 }
 
 mat-card-header {
@@ -64,6 +61,13 @@ img {
 }
 
 @media screen and (min-width: 1025px) {
+
+    mat-card {
+
+        border: 2px solid;
+        border-image: linear-gradient(to left, rgba(23, 122, 235, 0.7) 1%, rgba(41, 240, 247, 0.9) 100%);
+        border-image-slice: 1;
+    }
 
     mat-card-content {
 
