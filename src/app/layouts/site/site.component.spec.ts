@@ -1,11 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 import { RouterLinkStubDirective, getLinkStubs } from '../../../testing/router-link-stub-directive';
 import { SiteComponent } from './site.component';
 
 // tslint:disable:component-selector
+// tslint:disable:component-class-suffix
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent { }
+
+@Component({ selector: 'mat-toolbar', template: '' })
+class TestMatToolbar { }
+
+@Component({ selector: 'mat-menu', template: '', exportAs: 'matMenu' })
+class TestMatMenu { }
+
+@Component({ selector: 'button', template: '' })
+class TestButton { @Input() matMenuTriggerFor: any; }
+
+@Component({ selector: 'mat-icon', template: '' })
+class TestMatIcon { }
 
 describe('SiteComponent', () => {
 
@@ -18,11 +32,16 @@ describe('SiteComponent', () => {
 
         TestBed.configureTestingModule({
 
+            imports: [RouterTestingModule],
             declarations: [
 
                 SiteComponent,
                 RouterOutletStubComponent,
-                RouterLinkStubDirective
+                RouterLinkStubDirective,
+                TestMatToolbar,
+                TestMatMenu,
+                TestButton,
+                TestMatIcon
             ]
 
         }).compileComponents();
@@ -40,26 +59,5 @@ describe('SiteComponent', () => {
     it('should create', () => {
 
         expect(component).toBeTruthy();
-    });
-
-    it('should bind to corresponding links', () => {
-
-        expect(routerLinks.length).toEqual(3);
-        expect(routerLinks[0].linkParams).toEqual('');
-        expect(routerLinks[1].linkParams).toEqual('/site/players');
-        expect(routerLinks[2].linkParams).toEqual('/site/rankings');
-    });
-
-    it('should navigate to binding links on click', () => {
-
-        for (let i = 0; i < routerLinks.length; i++) {
-
-            expect(routerLinks[i].navigatedTo).not.toEqual(routerLinks[i].linkParams);
-
-            linkDebugElements[i].triggerEventHandler('click', null);
-            fixture.detectChanges();
-
-            expect(routerLinks[i].navigatedTo).toEqual(routerLinks[i].linkParams);
-        }
     });
 });
