@@ -1,3 +1,4 @@
+/* frost glass effect overlay */
 .blurred-mask {
 
     width: 100%;
@@ -6,6 +7,17 @@
     background: inherit;
     transform: scale(1.1);
     filter: blur(10px) brightness(65%);
+}
+
+/* button effects */
+a {
+
+    color: white;
+}
+
+a:hover {
+
+    color: orange;
 }
 
 .mat-button:hover {
@@ -18,14 +30,14 @@
     background-color: rgb(39, 162, 233);
 }
 
-.mini-menu-button {
-
-    color: white;
-}
-
-.search {
+.search-button {
 
     background-color: red;
+}
+
+.mini-menu-button-icon {
+
+    color: white;
 }
 
 .search-icon {
@@ -33,9 +45,10 @@
     color: white;
 }
 
+/* material components */
 app-option-card {
 
-    background-color: rgba(39, 39, 39, 0.9);
+    background-color: rgba(39, 39, 39, 0.8);
 }
 
 mat-toolbar {
@@ -48,14 +61,15 @@ mat-toolbar {
     box-shadow: 0 0 30px 5px rgba(30, 30, 30, 0.55);
 }
 
+.card-back {
+
+    display: none;
+}
+
+/* grids */
 .top-nav {
 
     grid-area: top-nav;
-}
-
-.highlight {
-
-    color: rgb(39, 150, 190);
 }
 
 .introduction {
@@ -109,21 +123,11 @@ mat-toolbar {
     position: relative;
     font-size: 0.8em;
     grid-area: footer;
-    background-color: rgba(43, 44, 44, 0.705);
+    background-color: rgb(39, 39, 39);
     border-radius: 2px;
     -webkit-box-shadow: 0px -5px 12px -1px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px -5px 12px -1px rgba(0,0,0,0.75);
     box-shadow: 0px -5px 12px -1px rgba(0,0,0,0.75);
-}
-
-.author-short, .author-long {
-
-    position: absolute;
-    right: 1%;
-    bottom: 5%;
-    color: rgba(238, 235, 235, 0.904);
-    font-weight: bold;
-    font-style: italic;
 }
 
 main {
@@ -141,22 +145,36 @@ main {
         'footer footer footer';
 }
 
-.short-title, .menu-fab, .expanded-buttons, .menu-button, .author-short {
+/* text effects */
+.short-title, .menu-fab, .expanded-buttons, .menu-button, .author-short, .citation {
 
     display: none;
 }
 
+.highlight {
+
+    color: rgb(39, 150, 190);
+}
+
+.author-short, .author-long {
+
+    position: absolute;
+    right: 1%;
+    bottom: 10%;
+    color: rgba(238, 235, 235, 0.904);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* media queries */
 @media screen and (max-width: 320px) {
 
-    .long-title { display: none; }
-    .author-long { display: none; }
-    .short-title { display: inline; }
-    .menu-fab { display: inline; }
-    .author-short { display: inline; }
+    .long-title, .author-long { display: none; }
+    .short-title, .menu-fab, .author-short { display: inline; }
     .introduction h2, .highlight { color: orange; }
 }
 
-@media screen and (min-width: 321px) and (max-width: 750px) {
+@media screen and (min-width: 321px) and (max-width: 1024px) {
 
     .menu-button { display: inline; }
 
@@ -167,7 +185,7 @@ main {
     }
 }
 
-@media screen and (min-width: 751px) {
+@media screen and (min-width: 1025px) {
 
     main {
 
@@ -187,7 +205,7 @@ main {
         height: calc(100% + 65px);
     }
 
-    .expanded-buttons { display: inline; }
+    .expanded-buttons, .citation { display: inline; }
     .mat-typography { font-size: 1.7em; }
 
     .introduction h2 {
@@ -202,5 +220,60 @@ main {
         grid-template-columns: 1fr 3fr 3fr 3fr 1fr;
         grid-template-areas:
             '. players rankings events .';
+    }
+
+    /* flip card effects */
+    .players, .rankings, .events {
+
+        perspective: 1000px;
+    }
+
+    .players:hover .flip-card-container, .rankings:hover .flip-card-container, .events:hover .flip-card-container {
+
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-container {
+
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: 0.4s;
+        transform-style: preserve-3d;
+    }
+
+    .card-front {
+
+        height: 100%;
+        z-index: 2;
+        transform: rotateY(0deg);
+    }
+
+    .card-front, .card-back {
+
+        backface-visibility: hidden;
+        position: absolute;
+        width: 100%;
+        left: 0;
+    }
+
+    .card-back {
+
+        padding-top: 25%;
+        color: white;
+        text-align: center;
+        display: block;
+        top: -65px;
+        height: calc(100% + 65px);
+        background-color: rgb(39, 39, 39);
+        transform: rotateY(170deg);
+    }
+
+    .go-button {
+
+        border-radius: 20px;
+        background-color: tomato;
+        margin-top: 5%;
+        font-size: 1.2em;
     }
 }

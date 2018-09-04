@@ -12,19 +12,20 @@ mat-card-header {
 
 mat-card-content {
 
+    width: 80%;
+    margin: 0 auto;
     text-align: center;
-}
-
-.mat-button:hover {
-
-    color: lightblue;
-    background-color: rgba(38, 86, 219, 0.938);
+    border-radius: 20px;
+    background-color: rgba(167, 126, 14, 0.938);
+    padding: 2%;
+    font-size: 0.7em;
 }
 
 img {
 
     width: 90%;
     height: 90%;
+    border-bottom: 3px solid lightgrey;
 }
 
 .image-wrapper {
@@ -40,5 +41,26 @@ img {
     .mat-button {
 
         font-size: 1.5em;
+    }
+
+    mat-card-content {
+
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+
+    .mat-button:hover {
+
+        background-color: rgba(0, 140, 255, 0.863);
+    }
+}
+
+@media screen and (min-width: 1025px) {
+
+    mat-card-content {
+
+        background-color: rgba(8, 108, 155, 0.938);
     }
 }

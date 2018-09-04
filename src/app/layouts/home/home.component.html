@@ -10,12 +10,14 @@
                 <mat-icon>menu</mat-icon>
             </button>
             <button mat-mini-fab [matMenuTriggerFor]="mainMenu" class="menu-fab">
-                <mat-icon class="mini-menu-button">menu</mat-icon>
+                <mat-icon class="mini-menu-button-icon">menu</mat-icon>
             </button>
             <div class="expanded-buttons">
                 <a mat-button>Contact</a>
                 <a mat-button>About</a>
-                <a mat-button class="search"><mat-icon class="search-icon">search</mat-icon></a>
+                <a mat-button class="search-button" routerLink="../site/players">
+                    <mat-icon class="search-icon">search</mat-icon>
+                </a>
             </div>
         </mat-toolbar>
 
@@ -28,33 +30,69 @@
     </nav>
     <section class="introduction">
         <h2>A <span class="highlight">light weight</span>, easy to use snooker data collection.</h2>
+        <p class="citation">
+            <span class="highlight">- data retrieved from:</span><a href="http://api.snooker.org"> api.snooker.org</a>
+        </p>
     </section>
     <section class="main-content">
         <article class="players">
-            <app-option-card
-                title="Players"
-                link="../site/players"
-                image="https://i.eurosport.com/2018/02/27/2283151-47561815-2560-1440.jpg?w=1050">
+            <div class="flip-card-container">
+                <div class="card-front">
+                    <app-option-card
+                        title="Players"
+                        link="../site/players"
+                        image="https://i.eurosport.com/2018/02/27/2283151-47561815-2560-1440.jpg?w=1050">
 
-                <p>View Player Details & Statistics</p>
-            </app-option-card>
+                        <p>View Player Details & Statistics</p>
+                    </app-option-card>
+                </div>
+                <div class="card-back">
+                    <p>WPBSA Recognized Professional Players</p>
+                    <p>Player Details, Statistics & Earnings</p>
+                    <button mat-button routerLink="../site/players" class="go-button">
+                        <mat-icon>arrow_forward</mat-icon>Go
+                    </button>
+                </div>
+            </div>
         </article>
         <article class="rankings">
-            <app-option-card
-                title="Rankings"
-                link="../site/rankings"
-                image="https://cdn.images.express.co.uk/img/dynamic/4/590x/Ronnie-O-Sullivan-994407.jpg?r=1532575948666">
+            <div class="flip-card-container">
+                <div class="card-front">
+                    <app-option-card
+                        title="Rankings"
+                        link="../site/rankings"
+                        image="https://cdn.images.express.co.uk/img/dynamic/4/590x/Ronnie-O-Sullivan-994407.jpg?r=1532575948666">
 
-                <p>Check World Rankings Since 2013</p>
-            </app-option-card>
+                        <p>Check World Rankings Since 2013</p>
+                    </app-option-card>
+                </div>
+                <div class="card-back">
+                    <p>World Rankings Since 2013</p>
+                    <p>Based on Money Ranking</p>
+                    <button mat-button routerLink="../site/rankings" class="go-button">
+                        <mat-icon>arrow_forward</mat-icon>Go
+                    </button>
+                </div>
+            </div>
         </article>
         <article class="events">
-            <app-option-card
-                title="Tournaments & Events"
-                image="https://www.telegraph.co.uk/content/dam/snooker/2017/04/14/TELEMMGLPICT000125854438_trans_NvBQzQNjv4BqIgboy7m2Vnp-xkpo1Nlwzv4cBevEAptvg3sn-Fm9TnE.jpeg?imwidth=350">
+            <div class="flip-card-container">
+                <div class="card-front">
+                    <app-option-card
+                        title="Tournaments & Events"
+                        image="https://www.telegraph.co.uk/content/dam/snooker/2017/04/14/TELEMMGLPICT000125854438_trans_NvBQzQNjv4BqIgboy7m2Vnp-xkpo1Nlwzv4cBevEAptvg3sn-Fm9TnE.jpeg?imwidth=350">
 
-                <p>Currently Under Construction</p>
-            </app-option-card>
+                        <p>Currently Under Construction</p>
+                    </app-option-card>
+                </div>
+                <div class="card-back">
+                    <p>Currently Under Construction</p>
+                    <p>Please Check Back Later.</p>
+                    <button mat-button class="go-button">
+                        <mat-icon>arrow_forward</mat-icon>Go
+                    </button>
+                </div>
+            </div>
         </article>
     </section>
     <footer class="footer">

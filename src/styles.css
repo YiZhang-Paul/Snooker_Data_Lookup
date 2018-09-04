@@ -15,6 +15,11 @@ html, body {
     height: 100%;
 }
 
+a {
+
+    text-decoration: none;
+}
+
 app-root, app-home {
 
     width: 100%;
@@ -41,11 +46,11 @@ app-home {
 
 }
 
-@media screen and (min-width: 321px) and (max-width: 750px) {
+@media screen and (min-width: 321px) and (max-width: 1024px) {
 
 }
 
-@media screen and (min-width: 751px) {
+@media screen and (min-width: 1025px) {
 
     app-home {
 
