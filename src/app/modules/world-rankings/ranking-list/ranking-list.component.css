@@ -1,3 +1,4 @@
+/* button effects */
 a {
 
     color: white;
@@ -8,14 +9,26 @@ a:hover {
     color: gold;
 }
 
-.mat-row:hover {
+/* material component style */
+mat-select {
 
-    background-color: rgba(255, 99, 71, 0.808);
+    text-align: center;
+}
+
+mat-option {
+
+    color: gold !important;
+}
+
+.select-options .mat-select-content {
+
+    background: rgba(18, 52, 80, 0.747);
 }
 
 /* top panel style */
 .top-panel {
 
+    padding-top: 2%;
     padding-bottom: 2%;
     text-align: center;
     color: rgb(233, 197, 35);
@@ -25,11 +38,32 @@ a:hover {
 h1 {
 
     font-size: 3em;
-    padding-top: 2%;
     line-height: 0.95em;
 }
 
-/* material component style */
+/* table style */
+table {
+
+    width: 100%;
+}
+
+.table-small {
+
+    display: none;
+    text-align: center !important;
+}
+
+.table-small .mat-header-cell {
+
+    text-align: center !important;
+}
+
+.mat-row:hover {
+
+    background-color: rgba(255, 99, 71, 0.808);
+}
+
+/* grids */
 .select {
 
     background-color: inherit;
@@ -46,66 +80,38 @@ h1 {
 
     display: grid;
     background-color: rgb(60, 60, 60);
-    grid-template-columns: 1fr 2fr 10fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-        '. select paginator';
+        '. select .';
 }
 
-mat-select {
-
-    text-align: center;
-}
-
-mat-option {
-
-    color: gold !important;
-}
-
-.select-options .mat-select-content {
-
-    background: rgba(18, 52, 80, 0.747);
-}
-
-/* table style */
-.table-small {
-
-    display: none;
-    text-align: center !important;
-}
-
-table {
-
-    width: 100%;
-}
-
+/* media queries */
 .year { display: none; }
-.table-small .mat-header-cell { text-align: center !important; }
 
 @media screen and (max-width: 320px) {
 
     h1 { font-size: 1.2em; }
-    .paginator { display: none !important; }
     .table-large { display: none; }
     .table-small { display: block; }
-
-    .table-options {
-
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-areas:
-            '. select .';
-    }
 }
 
 @media screen and (min-width: 321px) and (max-width: 540px) {
 
     h1 { font-size: 2em; }
+}
+
+@media screen and (max-width: 540px) {
+
     .paginator { display: none !important; }
+}
 
-    .table-options {
+@media screen and (min-width: 541px) {
 
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-areas:
-            '. select .';
+    .year {
+
+        display: inline;
+        font-size: 0.8em;
+        font-style: italic;
     }
 }
 
@@ -119,12 +125,15 @@ table {
             '. . select . .'
             '. paginator paginator paginator .';
     }
+}
 
-    .year {
+@media screen and (min-width: 801px) {
 
-        display: inline;
-        font-size: 0.8em;
-        font-style: italic;
+    .table-options {
+
+        grid-template-columns: 1fr 2fr 10fr;
+        grid-template-areas:
+            '. select paginator';
     }
 }
 
@@ -134,12 +143,5 @@ table {
 
         width: 70%;
         margin: 0 auto;
-    }
-
-    .year {
-
-        display: inline;
-        font-size: 0.8em;
-        font-style: italic;
     }
 }

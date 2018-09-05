@@ -83,6 +83,10 @@ mat-toolbar {
 
 .introduction {
 
+    top: 0;
+    bottom: -60px;
+    height: calc(100% + 60px);
+    position: relative;
     grid-area: introduction;
     color: white;
     text-align: center;

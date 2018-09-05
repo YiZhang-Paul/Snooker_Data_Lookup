@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Inject } from '@angular/core';
+import { Router, ActivatedRoute, ROUTER_CONFIGURATION } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
@@ -8,6 +8,7 @@ import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.inte
 import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { APP_CONFIG } from '../../../app-config';
 
 @Component({
     selector: 'app-ranking-list',
@@ -22,12 +23,13 @@ export class RankingListComponent implements OnInit {
     private _rankings = new MatTableDataSource(<IRankDetail[]>[]);
     public canSelect = false;
 
-    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatSort) matSort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
 
-        private activatedRoute: ActivatedRoute,
+        @Inject(APP_CONFIG) private configuration,
+        private routes: ActivatedRoute,
         private router: Router,
         private rankingLookup: RankingLookupService,
         private playerLookup: PlayerLookupService
@@ -41,7 +43,7 @@ export class RankingListComponent implements OnInit {
 
     get years(): number[] {
 
-        const startYear = 2013;
+        const startYear = this.configuration.startYear;
         const currentYear = new Date().getFullYear();
         const totalYears = currentYear - startYear + 1;
         const result = new Array(totalYears).fill(0);
@@ -49,14 +51,14 @@ export class RankingListComponent implements OnInit {
         return result.map((year, index) => startYear + index);
     }
 
-    get headings(): string[] {
-
-        return this._headings;
-    }
-
     get shortHeadings(): string[] {
 
         return this._headings.slice(0, 2);
+    }
+
+    get headings(): string[] {
+
+        return this._headings;
     }
 
     get rankings(): MatTableDataSource<IRankDetail> {
@@ -66,9 +68,9 @@ export class RankingListComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.activatedRoute.paramMap.subscribe(params => {
+        this.routes.paramMap.subscribe(paramMap => {
 
-            this._activeYear = Number(params.get('year'));
+            this._activeYear = Number(paramMap.get('year'));
             this.fetchRankings();
         });
     }
@@ -106,22 +108,20 @@ export class RankingListComponent implements OnInit {
         this.paginator.pageSizeOptions = [5, 10, 25, 50, 100, total];
     }
 
-    private setDataSource(dataSource: IRankDetail[]): void {
-
-        this.setPaginator(dataSource.length);
-        this._rankings = new MatTableDataSource(dataSource);
-        this._rankings.paginator = this.paginator;
-        this._rankings.sort = this.sort;
-        this.canSelect = true;
-    }
-
-    private updateRankDetails(rankData: IRankData[]): void {
+    private setRankDetails(rankData: IRankData[]): void {
 
         this.playerLookup.getPlayers(this._activeYear).pipe(
 
             map(players => this.getRankDetails(rankData, players))
 
-        ).subscribe(rankDetails => this.setDataSource(rankDetails));
+        ).subscribe(rankDetails => {
+
+            this.setPaginator(rankDetails.length);
+            this._rankings = new MatTableDataSource(rankDetails);
+            this._rankings.paginator = this.paginator;
+            this._rankings.sort = this.matSort;
+            this.canSelect = true;
+        });
     }
 
     private fetchRankings(): void {
@@ -130,7 +130,7 @@ export class RankingListComponent implements OnInit {
 
             if (rankings !== null) {
 
-                this.updateRankDetails(rankings);
+                this.setRankDetails(rankings);
             }
         });
     }
@@ -138,7 +138,7 @@ export class RankingListComponent implements OnInit {
     public onYearChange(year: string): void {
 
         const parameters = ['../', year];
-        const relativeTo = this.activatedRoute;
+        const relativeTo = this.routes;
 
         this.router.navigate(parameters, { relativeTo });
     }
