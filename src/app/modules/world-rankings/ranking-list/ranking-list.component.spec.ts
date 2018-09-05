@@ -13,6 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 import { RankingListComponent } from './ranking-list.component';
 
 @Component({ selector: 'app-group-size-selector', template: '' })
@@ -71,7 +72,8 @@ describe('RankingListComponent', () => {
                 NoopAnimationsModule,
                 MatSelectModule,
                 MatPaginatorModule,
-                MatTableModule
+                MatTableModule,
+                MatIconModule
             ],
             declarations: [
 

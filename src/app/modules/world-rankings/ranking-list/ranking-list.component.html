@@ -28,7 +28,10 @@
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Player</th>
             <td mat-cell *matCellDef="let ranking">
-                <a [routerLink]="['../../players', ranking.player.id]">{{ ranking.name }}</a>
+                <a [routerLink]="['../../players', ranking.player.id]"
+                    class="player-link">
+                    {{ ranking.name }}<mat-icon class="enter-arrow">arrow_left</mat-icon>
+                </a>
             </td>
         </ng-container>
 
