@@ -11,6 +11,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
@@ -25,6 +26,7 @@ import { MatSortModule } from '@angular/material/sort';
         MatDividerModule,
         MatCardModule,
         MatSelectModule,
+        MatPaginatorModule,
         MatTableModule,
         MatSortModule
     ],
@@ -40,6 +42,7 @@ import { MatSortModule } from '@angular/material/sort';
         MatDividerModule,
         MatCardModule,
         MatSelectModule,
+        MatPaginatorModule,
         MatTableModule,
         MatSortModule
     ]

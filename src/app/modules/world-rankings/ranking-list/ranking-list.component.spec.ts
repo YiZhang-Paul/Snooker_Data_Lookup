@@ -12,6 +12,7 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 import { RankingListComponent } from './ranking-list.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({ selector: 'app-group-size-selector', template: '' })
@@ -69,6 +70,7 @@ describe('RankingListComponent', () => {
                 RouterTestingModule.withRoutes(worldRankingRoutes),
                 NoopAnimationsModule,
                 MatSelectModule,
+                MatPaginatorModule,
                 MatTableModule
             ],
             declarations: [

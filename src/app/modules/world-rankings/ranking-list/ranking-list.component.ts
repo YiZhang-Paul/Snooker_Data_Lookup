@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
@@ -21,7 +21,9 @@ export class RankingListComponent implements OnInit {
     private _headings = ['rank', 'name', 'nationality', 'earnings'];
     private _rankings = new MatTableDataSource(<IRankDetail[]>[]);
     public canSelect = false;
+
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
 
@@ -57,7 +59,7 @@ export class RankingListComponent implements OnInit {
         return this._rankings;
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.activatedRoute.paramMap.subscribe(params => {
 
@@ -91,18 +93,30 @@ export class RankingListComponent implements OnInit {
         return details;
     }
 
+    private setPaginator(total: number): void {
+
+        this.paginator.pageIndex = 0;
+        this.paginator.length = total;
+        this.paginator.pageSize = total;
+        this.paginator.pageSizeOptions = [5, 10, 25, 50, 100, total];
+    }
+
+    private setDataSource(dataSource: IRankDetail[]): void {
+
+        this.setPaginator(dataSource.length);
+        this._rankings = new MatTableDataSource(dataSource);
+        this._rankings.paginator = this.paginator;
+        this._rankings.sort = this.sort;
+        this.canSelect = true;
+    }
+
     private updateRankDetails(rankData: IRankData[]): void {
 
         this.playerLookup.getPlayers(this._activeYear).pipe(
 
             map(players => this.getRankDetails(rankData, players))
 
-        ).subscribe(rankDetails => {
-
-            this._rankings = new MatTableDataSource(rankDetails);
-            this._rankings.sort = this.sort;
-            this.canSelect = true;
-        });
+        ).subscribe(rankDetails => this.setDataSource(rankDetails));
     }
 
     private fetchRankings(): void {
