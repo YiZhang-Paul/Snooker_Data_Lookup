@@ -12,6 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { MatTableModule } from '@angular/material/table';
         MatDividerModule,
         MatCardModule,
         MatSelectModule,
-        MatTableModule
+        MatTableModule,
+        MatSortModule
     ],
     declarations: [UrlFormatterPipe],
     providers: [DoughnutChartFactoryService],
@@ -38,7 +40,8 @@ import { MatTableModule } from '@angular/material/table';
         MatDividerModule,
         MatCardModule,
         MatSelectModule,
-        MatTableModule
+        MatTableModule,
+        MatSortModule
     ]
 })
 export class SharedModule { }

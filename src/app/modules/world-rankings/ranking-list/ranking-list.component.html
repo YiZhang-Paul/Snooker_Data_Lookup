@@ -3,8 +3,9 @@
 
     <mat-form-field>
         <mat-select
-            [value]="activeYear" panelClass="select-options"
-            disableOptionCentering
+            [value]="activeYear"
+            panelClass="select-options" id="select-options"
+            disableOptionCentering [disabled]="!canSelect"
             (selectionChange)="onYearChange($event.value)">
             <mat-option *ngFor="let year of years" [value]="year">
                 {{ year }}
@@ -13,31 +14,29 @@
     </mat-form-field><br/>
 </div>
 
-<ng-container *ngIf="rankings.length > 0">
-    <table mat-table [dataSource]="rankings" class="mat-elevation-z8">
-        <ng-container matColumnDef="rank">
-            <th mat-header-cell *matHeaderCellDef>Rank</th>
-            <td mat-cell *matCellDef="let ranking">{{ ranking.rank }}</td>
-        </ng-container>
+<table mat-table [dataSource]="rankings" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="rank">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Rank</th>
+        <td mat-cell *matCellDef="let ranking">{{ ranking.rank }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="player">
-            <th mat-header-cell *matHeaderCellDef>Player</th>
-            <td mat-cell *matCellDef="let ranking">
-                <a [routerLink]="['../../players', ranking.player.id]">{{ ranking.name }}</a>
-            </td>
-        </ng-container>
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Player</th>
+        <td mat-cell *matCellDef="let ranking">
+            <a [routerLink]="['../../players', ranking.player.id]">{{ ranking.name }}</a>
+        </td>
+    </ng-container>
 
-        <ng-container matColumnDef="nationality">
-            <th mat-header-cell *matHeaderCellDef>Nationality</th>
-            <td mat-cell *matCellDef="let ranking">{{ ranking.nationality }}</td>
-        </ng-container>
+    <ng-container matColumnDef="nationality">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nationality</th>
+        <td mat-cell *matCellDef="let ranking">{{ ranking.nationality }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="winnings">
-            <th mat-header-cell *matHeaderCellDef>Winnings</th>
-            <td mat-cell *matCellDef="let ranking">{{ ranking.earnings }}</td>
-        </ng-container>
+    <ng-container matColumnDef="earnings">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Winnings</th>
+        <td mat-cell *matCellDef="let ranking">{{ ranking.earnings }}</td>
+    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="headings"></tr>
-        <tr mat-row *matRowDef="let row; columns: headings;"></tr>
-    </table>
-</ng-container>
+    <tr mat-header-row *matHeaderRowDef="headings"></tr>
+    <tr mat-row *matRowDef="let row; columns: headings;"></tr>
+</table>

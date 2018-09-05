@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
@@ -17,10 +18,10 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 export class RankingListComponent implements OnInit {
 
     private _activeYear: number;
-    private _pointer = 0;
-    private _groupSize: number;
-    private _headings = ['rank', 'player', 'nationality', 'winnings'];
-    private _rankings: IRankDetail[] = [];
+    private _headings = ['rank', 'name', 'nationality', 'earnings'];
+    private _rankings = new MatTableDataSource(<IRankDetail[]>[]);
+    public canSelect = false;
+    @ViewChild(MatSort) sort: MatSort;
 
     constructor(
 
@@ -51,26 +52,9 @@ export class RankingListComponent implements OnInit {
         return this._headings;
     }
 
-    get rankings(): IRankDetail[] {
+    get rankings(): MatTableDataSource<IRankDetail> {
 
         return this._rankings;
-    }
-
-    get groupIndex(): number {
-
-        return Math.floor(this._pointer / this._groupSize);
-    }
-
-    get totalGroups(): number {
-
-        return Math.ceil(this._rankings.length / this._groupSize);
-    }
-
-    get activeGroup(): IRankDetail[] {
-
-        const endIndex = this._pointer + this._groupSize;
-
-        return this._rankings.slice(this._pointer, endIndex);
     }
 
     ngOnInit() {
@@ -115,14 +99,10 @@ export class RankingListComponent implements OnInit {
 
         ).subscribe(rankDetails => {
 
-            this._rankings = rankDetails;
+            this._rankings = new MatTableDataSource(rankDetails);
+            this._rankings.sort = this.sort;
+            this.canSelect = true;
         });
-    }
-
-    private setGroupRange(size: number): void {
-
-        this._pointer = 0;
-        this._groupSize = size;
     }
 
     private fetchRankings(): void {
@@ -131,7 +111,6 @@ export class RankingListComponent implements OnInit {
 
             if (rankings !== null) {
 
-                this.setGroupRange(rankings.length);
                 this.updateRankDetails(rankings);
             }
         });
@@ -143,47 +122,5 @@ export class RankingListComponent implements OnInit {
         const relativeTo = this.activatedRoute;
 
         this.router.navigate(parameters, { relativeTo });
-    }
-
-    private toPreviousGroup(): void {
-
-        const previousIndex = this._pointer - this._groupSize;
-
-        if (previousIndex >= 0) {
-
-            this._pointer = previousIndex;
-        }
-    }
-
-    private toNextGroup(): void {
-
-        const nextIndex = this._pointer + this._groupSize;
-
-        if (nextIndex <= this._rankings.length - 1) {
-
-            this._pointer = nextIndex;
-        }
-    }
-
-    public onGroupChange(direction: number): void {
-
-        if (direction < 0) {
-
-            this.toPreviousGroup();
-
-            return;
-        }
-
-        this.toNextGroup();
-    }
-
-    public onSizeChange(size: number): void {
-
-        if (size <= 0 || size > this._rankings.length) {
-
-            size = this._rankings.length;
-        }
-
-        this.setGroupRange(Number(size));
     }
 }
