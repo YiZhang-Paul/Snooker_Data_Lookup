@@ -54,6 +54,11 @@ export class RankingListComponent implements OnInit {
         return this._headings;
     }
 
+    get shortHeadings(): string[] {
+
+        return this._headings.slice(0, 2);
+    }
+
     get rankings(): MatTableDataSource<IRankDetail> {
 
         return this._rankings;

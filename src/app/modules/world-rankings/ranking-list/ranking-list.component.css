@@ -8,13 +8,18 @@ a:hover {
     color: gold;
 }
 
+.mat-row:hover {
+
+    background-color: rgba(255, 99, 71, 0.808);
+}
+
 /* top panel style */
 .top-panel {
 
     padding-bottom: 2%;
     text-align: center;
     color: rgb(233, 197, 35);
-    background-color: rgb(170, 168, 168);
+    background-color: rgb(88, 93, 109);
 }
 
 h1 {
@@ -24,12 +29,28 @@ h1 {
     line-height: 0.95em;
 }
 
-.year {
+/* material component style */
+.select {
 
-    font-size: 0.8em;
+    background-color: inherit;
+    grid-area: select;
 }
 
-/* mat-select style */
+.paginator {
+
+    background-color: inherit;
+    grid-area: paginator;
+}
+
+.table-options {
+
+    display: grid;
+    background-color: rgb(60, 60, 60);
+    grid-template-columns: 1fr 2fr 10fr;
+    grid-template-areas:
+        '. select paginator';
+}
+
 mat-select {
 
     text-align: center;
@@ -40,19 +61,85 @@ mat-option {
     color: gold !important;
 }
 
-.top-panel span:not(.year) {
-
-    color: rgb(6, 78, 161);
-    font-weight: bold;
-}
-
 .select-options .mat-select-content {
 
     background: rgba(18, 52, 80, 0.747);
 }
 
 /* table style */
+.table-small {
+
+    display: none;
+    text-align: center !important;
+}
+
 table {
 
     width: 100%;
+}
+
+.year { display: none; }
+.table-small .mat-header-cell { text-align: center !important; }
+
+@media screen and (max-width: 320px) {
+
+    h1 { font-size: 1.2em; }
+    .paginator { display: none !important; }
+    .table-large { display: none; }
+    .table-small { display: block; }
+
+    .table-options {
+
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas:
+            '. select .';
+    }
+}
+
+@media screen and (min-width: 321px) and (max-width: 540px) {
+
+    h1 { font-size: 2em; }
+    .paginator { display: none !important; }
+
+    .table-options {
+
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas:
+            '. select .';
+    }
+}
+
+@media screen and (min-width: 541px) and (max-width: 800px) {
+
+    .table-options {
+
+        grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            '. . select . .'
+            '. paginator paginator paginator .';
+    }
+
+    .year {
+
+        display: inline;
+        font-size: 0.8em;
+        font-style: italic;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+
+    .table {
+
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .year {
+
+        display: inline;
+        font-size: 0.8em;
+        font-style: italic;
+    }
 }
