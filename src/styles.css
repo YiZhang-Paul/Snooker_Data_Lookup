@@ -29,15 +29,6 @@ app-root, app-home, app-site {
     display: block;
 }
 
-app-home {
-
-    background-image: url(http://www.snookercanada.ca/wp-content/uploads/snooker-pic.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-}
-
 .stretch {
 
     width: 100%;
@@ -56,5 +47,9 @@ app-home {
     app-home {
 
         background-image: url(http://www.snookerbacker.com/wp-content/uploads/2010/08/paul-hunter-snooker.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
     }
 }
