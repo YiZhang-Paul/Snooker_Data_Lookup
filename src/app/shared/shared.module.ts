@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { MatSortModule } from '@angular/material/sort';
         MatSelectModule,
         MatPaginatorModule,
         MatTableModule,
-        MatSortModule
+        MatSortModule,
+        MatTabsModule
     ],
     declarations: [UrlFormatterPipe],
     providers: [DoughnutChartFactoryService],
@@ -44,7 +46,8 @@ import { MatSortModule } from '@angular/material/sort';
         MatSelectModule,
         MatPaginatorModule,
         MatTableModule,
-        MatSortModule
+        MatSortModule,
+        MatTabsModule
     ]
 })
 export class SharedModule { }

@@ -1,0 +1,22 @@
+.sub-nav {
+
+    background-color: rgb(88, 93, 109);
+}
+
+/* button effects */
+.mat-tab-link {
+
+    color: rgb(80, 252, 252);
+    background-color: rgb(102, 110, 133);
+}
+
+/* media queries */
+@media screen and (max-width: 450px) {
+
+    .mat-tab-link {
+
+        font-size: 0.75em;
+        color: rgb(255, 170, 58);
+        background-color: rgb(88, 93, 109);
+    }
+}

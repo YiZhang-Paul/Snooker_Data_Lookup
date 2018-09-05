@@ -1,3 +1,7 @@
-<a routerLink="list">Players</a>
-<a routerLink="allstats">Statistics</a>
+<nav mat-tab-nav-bar class="sub-nav" color="accent">
+    <a mat-tab-link *ngFor="let link of links; let i = index;"
+        (click)="active = link"
+        [active]="active === link"
+        [routerLink]="link">{{ texts[i] }}</a>
+</nav>
 <router-outlet></router-outlet>
