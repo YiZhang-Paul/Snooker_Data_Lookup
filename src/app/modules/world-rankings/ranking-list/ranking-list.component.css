@@ -1,9 +1,58 @@
-table {
+a {
 
-    border-collapse: collapse;
+    color: white;
 }
 
-table tr {
+a:hover {
 
-    border: 1px grey;
+    color: gold;
+}
+
+/* top panel style */
+.top-panel {
+
+    padding-bottom: 2%;
+    text-align: center;
+    color: rgb(233, 197, 35);
+    background-color: rgb(170, 168, 168);
+}
+
+h1 {
+
+    font-size: 3em;
+    padding-top: 2%;
+    line-height: 0.95em;
+}
+
+.year {
+
+    font-size: 0.8em;
+}
+
+/* mat-select style */
+mat-select {
+
+    text-align: center;
+}
+
+mat-option {
+
+    color: gold !important;
+}
+
+.top-panel span:not(.year) {
+
+    color: rgb(6, 78, 161);
+    font-weight: bold;
+}
+
+.select-options .mat-select-content {
+
+    background: rgba(18, 52, 80, 0.747);
+}
+
+/* table style */
+table {
+
+    width: 100%;
 }

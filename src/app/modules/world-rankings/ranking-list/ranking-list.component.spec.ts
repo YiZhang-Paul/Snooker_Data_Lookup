@@ -103,12 +103,12 @@ describe('RankingListComponent', () => {
 
     it('should default to current year', () => {
 
-        expect(component.selectedYear).not.toEqual(currentYear);
+        expect(component.activeYear).not.toEqual(currentYear);
 
         fixture.detectChanges();
 
         expect(paramMapSpy).toHaveBeenCalledTimes(1);
-        expect(component.selectedYear).toEqual(currentYear);
+        expect(component.activeYear).toEqual(currentYear);
     });
 
     it('should have rankings when data is available', () => {
@@ -181,12 +181,12 @@ describe('RankingListComponent', () => {
         fixture.detectChanges();
         expect(component.rankings.length).toEqual(rankData.length);
 
-        component.onSizeSelected(-1);
-        expect(component.currentGroup.length).toEqual(component.rankings.length);
+        component.onSizeChange(-1);
+        expect(component.activeGroup.length).toEqual(component.rankings.length);
         expect(component.totalGroups).toEqual(1);
 
-        component.onSizeSelected(component.rankings.length + 1);
-        expect(component.currentGroup.length).toEqual(component.rankings.length);
+        component.onSizeChange(component.rankings.length + 1);
+        expect(component.activeGroup.length).toEqual(component.rankings.length);
         expect(component.totalGroups).toEqual(1);
     });
 
@@ -195,8 +195,8 @@ describe('RankingListComponent', () => {
         fixture.detectChanges();
         expect(component.rankings.length).toEqual(rankData.length);
 
-        component.onSizeSelected(rankData.length / 2);
-        expect(component.currentGroup.length).toEqual(rankData.length / 2);
+        component.onSizeChange(rankData.length / 2);
+        expect(component.activeGroup.length).toEqual(rankData.length / 2);
         expect(component.totalGroups).toEqual(2);
     });
 
@@ -204,13 +204,13 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        component.onSizeSelected(rankData.length / 2);
+        component.onSizeChange(rankData.length / 2);
         expect(component.groupIndex).toEqual(0);
 
-        component.onGroupChanged(1);
+        component.onGroupChange(1);
         expect(component.groupIndex).toEqual(1);
 
-        component.onGroupChanged(-1);
+        component.onGroupChange(-1);
         expect(component.groupIndex).toEqual(0);
     });
 
@@ -218,10 +218,10 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        component.onSizeSelected(rankData.length / 2);
+        component.onSizeChange(rankData.length / 2);
         expect(component.groupIndex).toEqual(0);
 
-        component.onGroupChanged(-1);
+        component.onGroupChange(-1);
         expect(component.groupIndex).toEqual(0);
     });
 
@@ -229,13 +229,13 @@ describe('RankingListComponent', () => {
 
         fixture.detectChanges();
 
-        component.onSizeSelected(rankData.length / 2);
+        component.onSizeChange(rankData.length / 2);
         expect(component.groupIndex).toEqual(0);
 
-        component.onGroupChanged(1);
+        component.onGroupChange(1);
         expect(component.groupIndex).toEqual(1);
 
-        component.onGroupChanged(1);
+        component.onGroupChange(1);
         expect(component.groupIndex).toEqual(1);
     });
 

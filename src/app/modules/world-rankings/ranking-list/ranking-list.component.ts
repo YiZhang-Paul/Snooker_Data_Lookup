@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
@@ -11,13 +11,15 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 @Component({
     selector: 'app-ranking-list',
     templateUrl: './ranking-list.component.html',
-    styleUrls: ['./ranking-list.component.css']
+    styleUrls: ['./ranking-list.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class RankingListComponent implements OnInit {
 
-    private _selectedYear: number;
-    private _currentIndex = 0;
+    private _activeYear: number;
+    private _pointer = 0;
     private _groupSize: number;
+    private _headings = ['rank', 'player', 'nationality', 'winnings'];
     private _rankings: IRankDetail[] = [];
 
     constructor(
@@ -29,12 +31,12 @@ export class RankingListComponent implements OnInit {
 
     ) { }
 
-    get selectedYear(): number {
+    get activeYear(): number {
 
-        return this._selectedYear;
+        return this._activeYear;
     }
 
-    get validYears(): number[] {
+    get years(): number[] {
 
         const startYear = 2013;
         const currentYear = new Date().getFullYear();
@@ -44,6 +46,11 @@ export class RankingListComponent implements OnInit {
         return result.map((year, index) => startYear + index);
     }
 
+    get headings(): string[] {
+
+        return this._headings;
+    }
+
     get rankings(): IRankDetail[] {
 
         return this._rankings;
@@ -51,7 +58,7 @@ export class RankingListComponent implements OnInit {
 
     get groupIndex(): number {
 
-        return Math.floor(this._currentIndex / this._groupSize);
+        return Math.floor(this._pointer / this._groupSize);
     }
 
     get totalGroups(): number {
@@ -59,18 +66,18 @@ export class RankingListComponent implements OnInit {
         return Math.ceil(this._rankings.length / this._groupSize);
     }
 
-    get currentGroup(): IRankDetail[] {
+    get activeGroup(): IRankDetail[] {
 
-        const endIndex = this._currentIndex + this._groupSize;
+        const endIndex = this._pointer + this._groupSize;
 
-        return this._rankings.slice(this._currentIndex, endIndex);
+        return this._rankings.slice(this._pointer, endIndex);
     }
 
     ngOnInit() {
 
         this.activatedRoute.paramMap.subscribe(params => {
 
-            this._selectedYear = Number(params.get('year'));
+            this._activeYear = Number(params.get('year'));
             this.fetchRankings();
         });
     }
@@ -102,7 +109,7 @@ export class RankingListComponent implements OnInit {
 
     private updateRankDetails(rankData: IRankData[]): void {
 
-        this.playerLookup.getPlayers(this._selectedYear).pipe(
+        this.playerLookup.getPlayers(this._activeYear).pipe(
 
             map(players => this.getRankDetails(rankData, players))
 
@@ -114,13 +121,13 @@ export class RankingListComponent implements OnInit {
 
     private setGroupRange(size: number): void {
 
-        this._currentIndex = 0;
+        this._pointer = 0;
         this._groupSize = size;
     }
 
     private fetchRankings(): void {
 
-        this.rankingLookup.getRankings(this._selectedYear).subscribe(rankings => {
+        this.rankingLookup.getRankings(this._activeYear).subscribe(rankings => {
 
             if (rankings !== null) {
 
@@ -130,7 +137,7 @@ export class RankingListComponent implements OnInit {
         });
     }
 
-    public onYearSelected(year: string): void {
+    public onYearChange(year: string): void {
 
         const parameters = ['../', year];
         const relativeTo = this.activatedRoute;
@@ -140,25 +147,25 @@ export class RankingListComponent implements OnInit {
 
     private toPreviousGroup(): void {
 
-        const previousIndex = this._currentIndex - this._groupSize;
+        const previousIndex = this._pointer - this._groupSize;
 
         if (previousIndex >= 0) {
 
-            this._currentIndex = previousIndex;
+            this._pointer = previousIndex;
         }
     }
 
     private toNextGroup(): void {
 
-        const nextIndex = this._currentIndex + this._groupSize;
+        const nextIndex = this._pointer + this._groupSize;
 
         if (nextIndex <= this._rankings.length - 1) {
 
-            this._currentIndex = nextIndex;
+            this._pointer = nextIndex;
         }
     }
 
-    public onGroupChanged(direction: number): void {
+    public onGroupChange(direction: number): void {
 
         if (direction < 0) {
 
@@ -170,7 +177,7 @@ export class RankingListComponent implements OnInit {
         this.toNextGroup();
     }
 
-    public onSizeSelected(size: number): void {
+    public onSizeChange(size: number): void {
 
         if (size <= 0 || size > this._rankings.length) {
 
