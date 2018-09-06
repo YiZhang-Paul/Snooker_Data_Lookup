@@ -18,7 +18,8 @@ export class PlayerListComponent implements OnInit {
     private _nationalities = [''];
     private _debounceTime = 150;
     private _searchResult: Observable<IPlayer[]>;
-    private _players: IPlayer[] = [];
+    private _sortedPlayers: IPlayer[] = [];
+    private _categorizedPlayers: IPlayer[][] = [];
 
     constructor(
 
@@ -55,7 +56,7 @@ export class PlayerListComponent implements OnInit {
 
         if (this._nationalities.length === 1) {
 
-            const result = this._players.map(player => player.nationality);
+            const result = this._sortedPlayers.map(player => player.nationality);
             this._nationalities = ['', ...Array.from(new Set(result)).sort()];
         }
 
@@ -67,9 +68,14 @@ export class PlayerListComponent implements OnInit {
         return this._debounceTime;
     }
 
-    get players(): IPlayer[] {
+    get sortedPlayers(): IPlayer[] {
 
-        return this._players;
+        return this._sortedPlayers;
+    }
+
+    get categorizedPlayers(): IPlayer[][] {
+
+        return this._categorizedPlayers;
     }
 
     ngOnInit() {
@@ -78,12 +84,14 @@ export class PlayerListComponent implements OnInit {
 
         this.lookup.players$.subscribe(players => {
 
-            this._players = this.sortBy(this.toArray(players), 'id');
+            this._sortedPlayers = this.sortBy(this.toArray(players), 'firstName');
+            this._categorizedPlayers = this.categorize(this._sortedPlayers);
         });
 
         this._searchResult.subscribe(players => {
 
-            this._players = this.sortBy(players, 'id');
+            this._sortedPlayers = this.sortBy(players, 'firstName');
+            this._categorizedPlayers = this.categorize(this._sortedPlayers);
         });
     }
 
@@ -99,7 +107,46 @@ export class PlayerListComponent implements OnInit {
 
     private sortBy(players: IPlayer[], property: string): IPlayer[] {
 
-        return players.slice().sort((a, b) => a[property] - b[property]);
+        return players.slice().sort((a, b) => {
+
+            if (a[property] === b[property]) {
+
+                return 0;
+            }
+
+            return a[property] < b[property] ? -1 : 1;
+        });
+    }
+
+    private getLastCategory(categories: IPlayer[][]): string {
+
+        if (categories.length === 0) {
+
+            return null;
+        }
+
+        const player = categories[categories.length - 1][0];
+
+        return player.firstName[0].toLowerCase();
+    }
+
+    private categorize(players: IPlayer[]): IPlayer[][] {
+
+        const categories: IPlayer[][] = [];
+
+        players.forEach(player => {
+
+            const initial = this.getLastCategory(categories);
+
+            if (!initial || initial !== player.firstName[0].toLowerCase()) {
+
+                categories.push(new Array<IPlayer>());
+            }
+
+            categories[categories.length - 1].push(player);
+        });
+
+        return categories;
     }
 
     private formatTerm(term: string): string {
@@ -139,7 +186,8 @@ export class PlayerListComponent implements OnInit {
 
             const filterFunction = this.filter.filterByNationality;
             const result = filterFunction(this.toArray(players), nationality);
-            this._players = this.sortBy(result, 'id');
+            this._sortedPlayers = this.sortBy(result, 'firstName');
+            this._categorizedPlayers = this.categorize(this._sortedPlayers);
         });
     }
 

@@ -1,0 +1,189 @@
+a {
+
+    color: white;
+}
+
+a:hover {
+
+    color: gold;
+}
+
+.tables, table {
+
+    width: 100%;
+}
+
+.mat-row:hover {
+
+    background-color: rgba(255, 99, 71, 0.808);
+}
+
+.category-label {
+
+    color: gold;
+    background-color: rgb(192, 0, 0);
+    font-weight: bold;
+    font-size: 3em;
+}
+
+/* Hover.css effects by Ian Lunn @https://github.com/IanLunn/Hover */
+
+/* player name enter arrow effect */
+.enter-arrow { display: none; }
+
+@media screen and (min-width: 321px) {
+
+    @-webkit-keyframes enter-arrow-effect-mat-row {
+        16.65% {
+            -webkit-transform: translateX(6px);
+            transform: translateX(6px);
+        }
+        33.3% {
+            -webkit-transform: translateX(-5px);
+            transform: translateX(-5px);
+        }
+        49.95% {
+            -webkit-transform: translateX(4px);
+            transform: translateX(4px);
+        }
+        66.6% {
+            -webkit-transform: translateX(-2px);
+            transform: translateX(-2px);
+        }
+        83.25% {
+            -webkit-transform: translateX(1px);
+            transform: translateX(1px);
+        }
+        100% {
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes enter-arrow-effect-mat-row {
+        16.65% {
+            -webkit-transform: translateX(6px);
+            transform: translateX(6px);
+        }
+        33.3% {
+            -webkit-transform: translateX(-5px);
+            transform: translateX(-5px);
+        }
+        49.95% {
+            -webkit-transform: translateX(4px);
+            transform: translateX(4px);
+        }
+        66.6% {
+            -webkit-transform: translateX(-2px);
+            transform: translateX(-2px);
+        }
+        83.25% {
+            -webkit-transform: translateX(1px);
+            transform: translateX(1px);
+        }
+        100% {
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+        }
+    }
+
+    @-webkit-keyframes enter-arrow-effect-player-link {
+        16.65% {
+            -webkit-transform: translateX(6px);
+            transform: translateX(6px);
+        }
+        33.3% {
+            -webkit-transform: translateX(-5px);
+            transform: translateX(-5px);
+        }
+        49.95% {
+            -webkit-transform: translateX(4px);
+            transform: translateX(4px);
+        }
+        66.6% {
+            -webkit-transform: translateX(-2px);
+            transform: translateX(-2px);
+        }
+        83.25% {
+            -webkit-transform: translateX(1px);
+            transform: translateX(1px);
+        }
+        100% {
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes enter-arrow-effect-player-link {
+        16.65% {
+            -webkit-transform: translateX(6px);
+            transform: translateX(6px);
+        }
+        33.3% {
+            -webkit-transform: translateX(-5px);
+            transform: translateX(-5px);
+        }
+        49.95% {
+            -webkit-transform: translateX(4px);
+            transform: translateX(4px);
+        }
+        66.6% {
+            -webkit-transform: translateX(-2px);
+            transform: translateX(-2px);
+        }
+        83.25% {
+            -webkit-transform: translateX(1px);
+            transform: translateX(1px);
+        }
+        100% {
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+        }
+    }
+
+    .player-link {
+
+        line-height: 2em;
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+    }
+
+    .enter-arrow {
+
+        color: gold;
+        vertical-align: middle;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    .mat-row:hover .enter-arrow, .mat-row:focus .enter-arrow, .mat-row:active .enter-arrow {
+
+        display: inline-block;
+        -webkit-animation-name: enter-arrow-effect-mat-row;
+        animation-name: enter-arrow-effect-mat-row;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+        -webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+    }
+
+    .player-link:hover .enter-arrow, .player-link:focus .enter-arrow, .player-link:active .enter-arrow {
+
+        display: inline-block;
+        -webkit-animation-name: enter-arrow-effect-player-link;
+        animation-name: enter-arrow-effect-player-link;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+        -webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+    }
+}

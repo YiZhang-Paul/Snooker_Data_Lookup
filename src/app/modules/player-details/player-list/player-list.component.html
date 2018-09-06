@@ -1,4 +1,3 @@
-<h2>Players</h2>
 <select (change)="onYearSelected($event.target.value)" class="years">
     <option *ngFor="let year of years"
         [selected]="year === selectedYear"
@@ -10,8 +9,22 @@
         value="{{ nationality }}">{{ nationality ? nationality : 'All' }}</option>
 </select>
 <input type="text" id="search" class="search" max="50" />
-<ng-container *ngIf="players.length > 0">
-    <div *ngFor="let player of players; trackBy: trackById">
-        <a routerLink="{{ '../' + player.id }}">{{ player.shortFullName }}</a>
+
+<ng-container *ngIf="categorizedPlayers.length > 0">
+    <div *ngFor="let category of categorizedPlayers" class="tables">
+        <table mat-table [dataSource]="category" class="mat-elevation-z8">
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef class="category-label">
+                    {{ category[0].firstName[0] | uppercase }}
+                </th>
+                <td mat-cell *matCellDef="let player">
+                    <a [routerLink]="'../' + player.id" class="player-link">
+                        {{ player.fullName }}<mat-icon class="enter-arrow">arrow_left</mat-icon></a>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['fullName']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['fullName'];"></tr>
+        </table>
     </div>
 </ng-container>

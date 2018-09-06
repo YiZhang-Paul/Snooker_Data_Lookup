@@ -2,10 +2,12 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement } from '@angular/core';
 import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
-import { RouterLinkStubDirective, getLinkStubs } from '../../../../testing/router-link-stub-directive';
+import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { queryAllByCss, triggerNativeEventByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerFilterService } from './player-filter.service';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 import { PlayerListComponent } from './player-list.component';
 import { startYear } from '../../../app-config';
 
@@ -15,30 +17,29 @@ describe('PlayerListComponent', () => {
 
         {
             id: 293,
-            nationality: 'three-body',
-            get shortFullName(): string { return 'John Doe'; }
+            firstName: 'Mike',
+            nationality: 'three-body'
         },
         {
             id: 130,
-            nationality: 'three-body',
-            get shortFullName(): string { return 'Jane Doe'; }
+            firstName: 'Jane',
+            nationality: 'three-body'
         },
         {
             id: 15,
-            nationality: 'china',
-            get shortFullName(): string { return 'Jim Moe'; }
+            firstName: 'Moe',
+            nationality: 'china'
         }
     ];
 
     let fixture: ComponentFixture<PlayerListComponent>;
     let component: PlayerListComponent;
-    let linkDebugElements: DebugElement[];
-    let routerLinks: RouterLinkStubDirective[];
     let lookup: PlayerLookupService;
     let players$Spy: jasmine.Spy;
     let getPlayersSpy: jasmine.Spy;
     let filter: jasmine.SpyObj<PlayerFilterService>;
-    const sortedPlayers = players.slice().sort((a, b) => a.id - b.id);
+    const sortedPlayers = [players[1], players[0], players[2]];
+    const categorizedPlayers = [[players[1]], [players[0], players[2]]];
 
     beforeEach(async(() => {
 
@@ -47,6 +48,7 @@ describe('PlayerListComponent', () => {
 
         TestBed.configureTestingModule({
 
+            imports: [MatTableModule, MatIconModule],
             declarations: [PlayerListComponent, RouterLinkStubDirective],
             providers: [
 
@@ -68,59 +70,18 @@ describe('PlayerListComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should not show players when data is not available', () => {
-
-        players$Spy.and.returnValue(of(new Map<number, IPlayer>()));
+    it('should sort players by first name in ascending order', () => {
 
         fixture.detectChanges();
 
-        routerLinks = getLinkStubs(fixture)[1];
-        expect(routerLinks.length).toEqual(0);
+        expect(component.sortedPlayers).toEqual(sortedPlayers);
     });
 
-    it('should display all players when data is available', () => {
+    it('should categorize players by the initial letter of first name', () => {
 
         fixture.detectChanges();
 
-        routerLinks = getLinkStubs(fixture)[1];
-        expect(routerLinks.length).toEqual(players.length);
-    });
-
-    it('should sort players by id in ascending order', () => {
-
-        fixture.detectChanges();
-
-        expect(component.players).toEqual(sortedPlayers);
-    });
-
-    it('should bind to corresponding links for player wiki pages', () => {
-
-        fixture.detectChanges();
-
-        routerLinks = getLinkStubs(fixture)[1];
-        expect(routerLinks.length).toEqual(players.length);
-
-        for (let i = 0; i < routerLinks.length; i++) {
-
-            expect(routerLinks[i].linkParams).toEqual(`../${sortedPlayers[i].id}`);
-        }
-    });
-
-    it('should navigate to binding links on click', () => {
-
-        fixture.detectChanges();
-
-        [linkDebugElements, routerLinks] = getLinkStubs(fixture);
-
-        for (let i = 0; i < routerLinks.length; i++) {
-
-            expect(routerLinks[i].navigatedTo).not.toEqual(routerLinks[i].linkParams);
-
-            linkDebugElements[i].triggerEventHandler('click', null);
-            fixture.detectChanges();
-
-            expect(routerLinks[i].navigatedTo).toEqual(routerLinks[i].linkParams);
-        }
+        expect(component.categorizedPlayers).toEqual(categorizedPlayers);
     });
 
     it('should populate year options', () => {
@@ -173,7 +134,7 @@ describe('PlayerListComponent', () => {
 
         tick();
 
-        expect(component.players.length).toEqual(players.length);
+        expect(component.sortedPlayers.length).toEqual(players.length);
     }));
 
     it('should properly filter players by selected year', fakeAsync(() => {
@@ -182,7 +143,7 @@ describe('PlayerListComponent', () => {
 
         tick();
 
-        expect(component.players.length).toEqual(2);
+        expect(component.sortedPlayers.length).toEqual(2);
     }));
 
     it('should properly filter players by selected nationality', fakeAsync(() => {
@@ -191,7 +152,7 @@ describe('PlayerListComponent', () => {
 
         tick();
 
-        expect(component.players.length).toEqual(1);
+        expect(component.sortedPlayers.length).toEqual(1);
     }));
 
     it('should properly filter players by selected year and nationality', fakeAsync(() => {
@@ -201,7 +162,7 @@ describe('PlayerListComponent', () => {
 
         tick();
 
-        expect(component.players.length).toEqual(1);
+        expect(component.sortedPlayers.length).toEqual(1);
     }));
 
     it('should display all players when search box is empty', fakeAsync(() => {
@@ -212,7 +173,7 @@ describe('PlayerListComponent', () => {
         triggerNativeEventByCss(fixture.debugElement, '#search', 'keyup', target);
         tick(component.debounceTime);
 
-        expect(component.players.length).toEqual(players.length);
+        expect(component.sortedPlayers.length).toEqual(players.length);
     }));
 
     it('should properly filter players with search term', fakeAsync(() => {
@@ -223,7 +184,7 @@ describe('PlayerListComponent', () => {
         triggerNativeEventByCss(fixture.debugElement, '#search', 'keyup', target);
         tick(component.debounceTime);
 
-        expect(component.players.length).toEqual(2);
+        expect(component.sortedPlayers.length).toEqual(2);
     }));
 
     function compareText(debugElement: DebugElement, expected: string): void {
