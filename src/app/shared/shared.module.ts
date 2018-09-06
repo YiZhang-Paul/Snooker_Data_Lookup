@@ -16,6 +16,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatInputModule } from '@angular/material/input';
 import { OptionCardComponent } from './components/option-card/option-card.component';
 
 @NgModule({
@@ -33,7 +34,8 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatPaginatorModule,
         MatTableModule,
         MatSortModule,
-        MatTabsModule
+        MatTabsModule,
+        MatInputModule
     ],
     declarations: [UrlFormatterPipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
@@ -51,6 +53,7 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatTableModule,
         MatSortModule,
         MatTabsModule,
+        MatInputModule,
         OptionCardComponent
     ]
 })

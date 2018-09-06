@@ -6,7 +6,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { WorldRankingsRoutingModule } from './world-rankings-routing.module';
 
 import { RankingListComponent } from './ranking-list/ranking-list.component';
-import { GroupSizeSelectorComponent } from './group-size-selector/group-size-selector.component';
 
 @NgModule({
     imports: [
@@ -16,6 +15,6 @@ import { GroupSizeSelectorComponent } from './group-size-selector/group-size-sel
         SharedModule
     ],
     exports: [RankingListComponent],
-    declarations: [RankingListComponent, GroupSizeSelectorComponent]
+    declarations: [RankingListComponent]
 })
 export class WorldRankingsModule { }

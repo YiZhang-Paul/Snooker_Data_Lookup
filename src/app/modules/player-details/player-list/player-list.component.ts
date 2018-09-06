@@ -13,9 +13,9 @@ import { APP_CONFIG } from '../../../app-config';
 })
 export class PlayerListComponent implements OnInit {
 
-    private _year = -1;
-    private _nationality = '';
-    private _nationalities = [''];
+    private _year: number;
+    private _nationality: string;
+    private _nationalities: string[] = [];
     private _debounceTime = 150;
     private _searchResult: Observable<IPlayer[]>;
     private _sortedPlayers: IPlayer[] = [];
@@ -44,20 +44,17 @@ export class PlayerListComponent implements OnInit {
         const startYear = this.configuration.startYear;
         const currentYear = new Date().getFullYear();
         const totalYears = currentYear - startYear + 1;
-        const result = new Array(totalYears + 1).fill(-1);
+        const result = new Array(totalYears).fill(0);
 
-        return result.map((year, index) => {
-
-            return index ? startYear + (index - 1) : -1;
-        });
+        return result.map((year, index) => startYear + index);
     }
 
     get nationalities(): string[] {
 
-        if (this._nationalities.length === 1) {
+        if (this._nationalities.length === 0) {
 
             const result = this._sortedPlayers.map(player => player.nationality);
-            this._nationalities = ['', ...Array.from(new Set(result)).sort()];
+            this._nationalities = Array.from(new Set(result)).sort();
         }
 
         return this._nationalities;
@@ -176,7 +173,7 @@ export class PlayerListComponent implements OnInit {
 
     private applyFilters(year: number, nationality: string): void {
 
-        const players$ = year === -1 ? this.lookup.players$ : this.lookup.getPlayers(year);
+        const players$ = year ? this.lookup.getPlayers(year) : this.lookup.players$;
 
         players$.subscribe(players => {
 
@@ -188,7 +185,7 @@ export class PlayerListComponent implements OnInit {
 
     public onYearSelected(year: string): void {
 
-        this._year = Number(year);
+        this._year = year ? Number(year) : undefined;
         this.applyFilters(this._year, this._nationality);
     }
 

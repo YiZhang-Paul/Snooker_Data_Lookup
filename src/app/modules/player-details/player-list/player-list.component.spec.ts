@@ -1,15 +1,17 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DebugElement, Component } from '@angular/core';
 import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
-import { queryAllByCss, triggerNativeEventByCss } from '../../../../testing/custom-test-utilities';
+import { triggerNativeEventByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerFilterService } from './player-filter.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
 import { PlayerListComponent } from './player-list.component';
-import { startYear } from '../../../app-config';
 
 @Component({ selector: 'app-option-card', template: '' })
 class TestOptionCardComponent {  }
@@ -51,7 +53,14 @@ describe('PlayerListComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [MatTableModule, MatIconModule],
+            imports: [
+
+                NoopAnimationsModule,
+                MatTableModule,
+                MatIconModule,
+                MatSelectModule,
+                MatInputModule
+            ],
             declarations: [
 
                 PlayerListComponent,
@@ -92,35 +101,6 @@ describe('PlayerListComponent', () => {
         expect(component.categorizedPlayers).toEqual(categorizedPlayers);
     });
 
-    it('should populate year options', () => {
-
-        fixture.detectChanges();
-
-        const options = queryAllByCss(fixture.debugElement, '.years option');
-        const totalYears = new Date().getFullYear() - startYear + 1;
-
-        expect(options.length).toEqual(totalYears + 1);
-        compareText(options[0], 'All');
-
-        for (let i = 1; i < options.length; i++) {
-
-            compareText(options[i], `${startYear + (i - 1)}`);
-        }
-    });
-
-    it('should populate nationality options', () => {
-
-        fixture.detectChanges();
-
-        const options = queryAllByCss(fixture.debugElement, '.nationalities option');
-
-        expect(options.length).toEqual(3);
-        compareText(options[0], 'All');
-        // nationalities will be sorted in ascending order
-        compareText(options[1], players[2].nationality);
-        compareText(options[2], players[0].nationality);
-    });
-
     it('should update selected year', () => {
 
         component.onYearSelected('2017');
@@ -137,8 +117,8 @@ describe('PlayerListComponent', () => {
 
     it('should show all players when year and nationality are set to "All"', fakeAsync(() => {
 
-        component.onYearSelected('-1');
-        component.onNationalitySelected('');
+        component.onYearSelected(undefined);
+        component.onNationalitySelected(undefined);
 
         tick();
 
@@ -147,11 +127,12 @@ describe('PlayerListComponent', () => {
 
     it('should properly filter players by selected year', fakeAsync(() => {
 
-        component.onYearSelected('2017');
+        component.onYearSelected('2015');
 
         tick();
 
         expect(component.sortedPlayers.length).toEqual(2);
+        expect(getPlayersSpy).toHaveBeenCalledTimes(1);
     }));
 
     it('should properly filter players by selected nationality', fakeAsync(() => {
@@ -237,7 +218,7 @@ describe('PlayerListComponent', () => {
 
         filter.filterByNationality.and.callFake((input: IPlayer[], pattern: string) => {
 
-            if (pattern === '') {
+            if (!pattern) {
 
                 return input;
             }

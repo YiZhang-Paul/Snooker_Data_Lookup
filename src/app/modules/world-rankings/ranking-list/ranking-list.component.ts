@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, Inject } from '@angular/core';
-import { Router, ActivatedRoute, ROUTER_CONFIGURATION } from '@angular/router';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
@@ -13,8 +13,7 @@ import { APP_CONFIG } from '../../../app-config';
 @Component({
     selector: 'app-ranking-list',
     templateUrl: './ranking-list.component.html',
-    styleUrls: ['./ranking-list.component.css'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./ranking-list.component.css']
 })
 export class RankingListComponent implements OnInit {
 

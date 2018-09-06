@@ -1,3 +1,4 @@
+/* button effects */
 a {
 
     color: white;
@@ -8,14 +9,27 @@ a:hover {
     color: gold;
 }
 
+/* list options style */
+.options {
+
+    background-color: rgba(39, 39, 39, 0.9);
+}
+
+/* material component style */
+mat-option {
+
+    color: gold !important;
+}
+
+mat-form-field {
+
+    margin-left: 5%;
+}
+
+/* table style */
 .tables, table {
 
     width: 100%;
-}
-
-.mat-row:hover {
-
-    background-color: rgba(255, 99, 71, 0.808);
 }
 
 .category-label {
@@ -26,10 +40,13 @@ a:hover {
     font-size: 3em;
 }
 
-.player-block-wrapper {
+.mat-row:hover {
 
-    display: none;
+    background-color: rgba(255, 99, 71, 0.808);
 }
+
+/* player display card style */
+.player-block-wrapper { display: none; }
 
 .player-block-wrapper h3 {
 
@@ -64,12 +81,12 @@ a:hover {
     border: 1px solid gold;
 }
 
-.player-block .dummy-image {
+.dummy-image {
 
     background-image: url(https://img-thebanffcentre.netdna-ssl.com/cdn/farfuture/wu7Y6hwOyAXs8nB4jbDfjShRZkJjTwONZe44XceHP00/mtime:1524701279/sites/all/themes/tbc_custom/images/default_user.png);
 }
 
-.player-block .image-wrapper {
+.image-wrapper {
 
     width: 90%;
     height: 60%;
@@ -82,7 +99,29 @@ a:hover {
     background-size: cover;
 }
 
+/* grids */
+.year { grid-area: year }
+.nationality { grid-area: nationality }
+.search { grid-area: search }
+
+.options {
+
+    font-size: 0.8em;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+        '. year .'
+        '. nationality .'
+        '. search .';
+}
+
 /* media queries */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+
+    .options { display: block; }
+    mat-form-field { margin-left: 2.5%; }
+}
+
 @media screen and (min-width: 721px) {
 
     .tables { display: none; }
@@ -90,6 +129,12 @@ a:hover {
 }
 
 @media screen and (min-width: 1025px) {
+
+    .options {
+
+        font-size: 1em;
+        display: block;
+    }
 
     .player-block {
 
