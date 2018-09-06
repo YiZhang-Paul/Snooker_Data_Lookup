@@ -26,7 +26,122 @@ a:hover {
     font-size: 3em;
 }
 
+.player-block-wrapper {
+
+    display: none;
+}
+
+.player-block-wrapper h3 {
+
+    font-size: 3.8em;
+    font-style: italic;
+    padding-left: 2%;
+    color: rgb(223, 0, 0);
+}
+
+.player-block {
+
+    width: 25vw;
+    height: 25vw;
+    position: relative;
+    margin-left: 1.5vw;
+    margin-top: 1.5vw;
+    text-align: center;
+    display: inline-block;
+    border-radius: 10px;
+    border: 1px solid gold;
+    background-color: rgb(88, 93, 109);
+}
+
+.player-block .mat-button {
+
+    color: white;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: 0.7em;
+    background-color: rgb(27, 141, 218);
+    border-radius: 20px;
+    border: 1px solid gold;
+}
+
+.player-block .dummy-image {
+
+    background-image: url(https://img-thebanffcentre.netdna-ssl.com/cdn/farfuture/wu7Y6hwOyAXs8nB4jbDfjShRZkJjTwONZe44XceHP00/mtime:1524701279/sites/all/themes/tbc_custom/images/default_user.png);
+}
+
+.player-block .image-wrapper {
+
+    width: 90%;
+    height: 60%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid lightgrey;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+/* media queries */
+@media screen and (min-width: 721px) {
+
+    .tables { display: none; }
+    .player-block-wrapper { display: block; }
+}
+
+@media screen and (min-width: 1025px) {
+
+    .player-block {
+
+        width: 20vw;
+        height: 20vw;
+    }
+
+    .player-block .mat-button {
+
+        font-size: 0.85em;
+    }
+}
+
+@media screen and (min-width: 1401px) {
+
+    .player-block {
+
+        width: 16vw;
+        height: 16vw;
+    }
+
+    .player-block .mat-button {
+
+        font-size: 1em;
+    }
+}
+
 /* Hover.css effects by Ian Lunn @https://github.com/IanLunn/Hover */
+
+/* grow shadow effect */
+@media screen and (min-width: 1025px) {
+
+    .hvr-grow-shadow {
+
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: box-shadow, transform;
+        transition-property: box-shadow, transform;
+    }
+
+    .hvr-grow-shadow:hover, .hvr-grow-shadow:focus, .hvr-grow-shadow:active {
+
+        box-shadow: 0 10px 30px 15px rgba(0, 0, 0, 0.5);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+}
 
 /* player name enter arrow effect */
 .enter-arrow { display: none; }

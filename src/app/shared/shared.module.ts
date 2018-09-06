@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { DoughnutChartFactoryService } from './services/doughnut-chart-factory.service';
 import { UrlFormatterPipe } from './pipes/url-formatter.pipe';
 
@@ -15,10 +16,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
+import { OptionCardComponent } from './components/option-card/option-card.component';
 
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         MatIconModule,
         MatButtonModule,
         MatMenuModule,
@@ -32,7 +35,7 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatSortModule,
         MatTabsModule
     ],
-    declarations: [UrlFormatterPipe],
+    declarations: [UrlFormatterPipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
     exports: [
         UrlFormatterPipe,
@@ -47,7 +50,8 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatPaginatorModule,
         MatTableModule,
         MatSortModule,
-        MatTabsModule
+        MatTabsModule,
+        OptionCardComponent
     ]
 })
 export class SharedModule { }

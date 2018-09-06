@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { RouterLinkStubDirective } from '../../../testing/router-link-stub-directive';
+import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { OptionCardComponent } from './option-card.component';
 
 // tslint:disable:component-selector

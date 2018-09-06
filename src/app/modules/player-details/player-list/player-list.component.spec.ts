@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Component } from '@angular/core';
 import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
@@ -10,6 +10,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { PlayerListComponent } from './player-list.component';
 import { startYear } from '../../../app-config';
+
+@Component({ selector: 'app-option-card', template: '' })
+class TestOptionCardComponent {  }
 
 describe('PlayerListComponent', () => {
 
@@ -49,7 +52,12 @@ describe('PlayerListComponent', () => {
         TestBed.configureTestingModule({
 
             imports: [MatTableModule, MatIconModule],
-            declarations: [PlayerListComponent, RouterLinkStubDirective],
+            declarations: [
+
+                PlayerListComponent,
+                RouterLinkStubDirective,
+                TestOptionCardComponent
+            ],
             providers: [
 
                 { provide: PlayerLookupService, useValue: lookup },

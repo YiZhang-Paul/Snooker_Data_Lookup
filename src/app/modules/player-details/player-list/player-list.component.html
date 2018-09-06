@@ -1,30 +1,48 @@
-<select (change)="onYearSelected($event.target.value)" class="years">
-    <option *ngFor="let year of years"
-        [selected]="year === selectedYear"
-        value="{{ year }}">{{ year === -1 ? 'All' : year }}</option>
-</select>
-<select (change)="onNationalitySelected($event.target.value)" class="nationalities">
-    <option *ngFor="let nationality of nationalities"
-        [selected]="nationality === selectedNationality"
-        value="{{ nationality }}">{{ nationality ? nationality : 'All' }}</option>
-</select>
-<input type="text" id="search" class="search" max="50" />
+<div class="options">
+    <select (change)="onYearSelected($event.target.value)" class="years">
+        <option *ngFor="let year of years"
+            [selected]="year === selectedYear"
+            value="{{ year }}">{{ year === -1 ? 'All' : year }}</option>
+    </select>
+    <select (change)="onNationalitySelected($event.target.value)" class="nationalities">
+        <option *ngFor="let nationality of nationalities"
+            [selected]="nationality === selectedNationality"
+            value="{{ nationality }}">{{ nationality ? nationality : 'All' }}</option>
+    </select>
+    <input type="text" id="search" class="search" max="50" />
+</div>
 
-<ng-container *ngIf="categorizedPlayers.length > 0">
-    <div *ngFor="let category of categorizedPlayers" class="tables">
-        <table mat-table [dataSource]="category" class="mat-elevation-z8">
-            <ng-container matColumnDef="fullName">
-                <th mat-header-cell *matHeaderCellDef class="category-label">
-                    {{ category[0].firstName[0] | uppercase }}
-                </th>
-                <td mat-cell *matCellDef="let player">
-                    <a [routerLink]="'../' + player.id" class="player-link">
-                        {{ player.fullName }}<mat-icon class="enter-arrow">arrow_left</mat-icon></a>
-                </td>
-            </ng-container>
+<main>
+    <ng-container *ngIf="categorizedPlayers.length > 0">
+        <div *ngFor="let category of categorizedPlayers" class="tables">
+            <table mat-table [dataSource]="category" class="mat-elevation-z8">
+                <ng-container matColumnDef="fullName">
+                    <th mat-header-cell *matHeaderCellDef class="category-label">
+                        {{ category[0].firstName[0] | uppercase }}
+                    </th>
+                    <td mat-cell *matCellDef="let player">
+                        <a [routerLink]="'../' + player.id" class="player-link">
+                            {{ player.fullName }}<mat-icon class="enter-arrow">arrow_left</mat-icon></a>
+                    </td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['fullName']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['fullName'];"></tr>
-        </table>
-    </div>
-</ng-container>
+                <tr mat-header-row *matHeaderRowDef="['fullName']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['fullName'];"></tr>
+            </table>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="categorizedPlayers.length > 0">
+        <div *ngFor="let category of categorizedPlayers" class="player-block-wrapper">
+            <h3>{{ category[0].firstName[0] | uppercase }}</h3>
+            <div *ngFor="let player of category" class="player-block hvr-grow-shadow ">
+                <button mat-button [routerLink]="'../' + player.id">{{ player.fullName }}</button>
+                <div *ngIf="!player.photo; else playerPhoto" class="dummy-image image-wrapper"></div>
+
+                <ng-template #playerPhoto>
+                    <div [ngStyle]="{ 'background-image': 'url(' + player.photo + ')' }" class="image-wrapper"></div>
+                </ng-template>
+            </div>
+        </div>
+    </ng-container>
+</main>

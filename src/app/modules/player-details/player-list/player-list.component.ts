@@ -81,18 +81,14 @@ export class PlayerListComponent implements OnInit {
     ngOnInit() {
 
         this.setupSearch();
+        this.lookup.players$.subscribe(players => this.setPlayers(this.toArray(players)));
+        this._searchResult.subscribe(players => this.setPlayers(players));
+    }
 
-        this.lookup.players$.subscribe(players => {
+    private setPlayers(players: IPlayer[]): void {
 
-            this._sortedPlayers = this.sortBy(this.toArray(players), 'firstName');
-            this._categorizedPlayers = this.categorize(this._sortedPlayers);
-        });
-
-        this._searchResult.subscribe(players => {
-
-            this._sortedPlayers = this.sortBy(players, 'firstName');
-            this._categorizedPlayers = this.categorize(this._sortedPlayers);
-        });
+        this._sortedPlayers = this.sortBy(players, 'firstName');
+        this._categorizedPlayers = this.categorize(this._sortedPlayers);
     }
 
     public trackById(index: number, player: IPlayer): number {
@@ -186,8 +182,7 @@ export class PlayerListComponent implements OnInit {
 
             const filterFunction = this.filter.filterByNationality;
             const result = filterFunction(this.toArray(players), nationality);
-            this._sortedPlayers = this.sortBy(result, 'firstName');
-            this._categorizedPlayers = this.categorize(this._sortedPlayers);
+            this.setPlayers(result);
         });
     }
 
