@@ -12,6 +12,7 @@ a:hover {
 /* list options style */
 .options {
 
+    padding-top: 1%;
     background-color: rgba(39, 39, 39, 0.9);
 }
 
@@ -24,6 +25,11 @@ mat-option {
 mat-form-field {
 
     margin-left: 5%;
+}
+
+.search {
+
+    color: white;
 }
 
 /* table style */
