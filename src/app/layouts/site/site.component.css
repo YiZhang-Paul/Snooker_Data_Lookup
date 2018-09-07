@@ -118,7 +118,7 @@ main {
         grid-template-rows: 10vh auto 8vh;
         grid-template-areas:
             'top-nav top-nav top-nav'
-            '. main-content .'
+            'main-content main-content main-content'
             'footer footer footer';
     }
 }
