@@ -13,10 +13,8 @@ import { LineChartFactoryService } from '../../../shared/services/line-chart-fac
 export class PlayerGraphsComponent implements OnInit {
 
     private _id: number;
-    private _chartTitle: string;
-    private _activeChart: Chart;
-    private _rankingChartTitle = 'World Ranking';
-    private _earningChartTitle = 'Earnings';
+    private _rankingChart: Chart;
+    private _earningChart: Chart;
 
     constructor(
 
@@ -27,30 +25,25 @@ export class PlayerGraphsComponent implements OnInit {
 
     ) { }
 
-    get chartTitle(): string {
-
-        return this._chartTitle;
-    }
-
     ngOnInit() {
 
         this.routes.parent.paramMap.subscribe(paramMap => {
 
             this._id = Number(paramMap.get('id'));
-            this.loadRankingChart();
+            this.loadRankingChart('rankingCanvas');
+            this.loadEarningChart('earningCanvas');
         });
     }
 
-    private loadRankingChart(): void {
+    private loadRankingChart(canvas: string): void {
 
         this.statistics.getRankHistory(this._id).subscribe(rankings => {
 
-            this.lineChartFactory.clear(this._activeChart);
-            this._chartTitle = this._rankingChartTitle;
+            this.lineChartFactory.clear(this._rankingChart);
 
-            this._activeChart = this.lineChartFactory.create(<IGridChartData>{
+            this._rankingChart = this.lineChartFactory.create(<IGridChartData>{
 
-                canvas: 'canvas',
+                canvas,
                 title: 'World Ranking per Year',
                 labels: this.statistics.supportedYears.map(year => `${year}`),
                 values: rankings.map(ranking => ranking.rank),
@@ -60,16 +53,15 @@ export class PlayerGraphsComponent implements OnInit {
         });
     }
 
-    private loadEarningChart(): void {
+    private loadEarningChart(canvas: string): void {
 
         this.statistics.getEarningHistory(this._id).subscribe(earnings => {
 
-            this.barChartFactory.clear(this._activeChart);
-            this._chartTitle = this._earningChartTitle;
+            this.barChartFactory.clear(this._earningChart);
 
-            this._activeChart = this.barChartFactory.create(<IGridChartData>{
+            this._earningChart = this.barChartFactory.create(<IGridChartData>{
 
-                canvas: 'canvas',
+                canvas,
                 title: 'Earnings per Year',
                 labels: this.statistics.supportedYears.map(year => `${year}`),
                 values: earnings.map(earning => earning.earning),
@@ -77,17 +69,5 @@ export class PlayerGraphsComponent implements OnInit {
                 gridRgb: { r: 86, g: 89, b: 94}
             });
         });
-    }
-
-    public toggleChart(): void {
-
-        if (this._chartTitle === this._rankingChartTitle) {
-
-            this.loadEarningChart();
-
-            return;
-        }
-
-        this.loadRankingChart();
     }
 }

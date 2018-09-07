@@ -1,2 +1,13 @@
-<button (click)="toggleChart()">{{ chartTitle }}</button>
-<div><canvas id="canvas"></canvas></div>
+<div class="toggle-group">
+    <mat-button-toggle-group #chartToggle="matButtonToggleGroup" value="rankings">
+        <mat-button-toggle value="rankings">World Ranking</mat-button-toggle>
+        <mat-button-toggle value="earnings">Earnings</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+
+<div [class.hidden-chart]="chartToggle.value !== 'rankings'" class="rankingCanvas">
+    <canvas id="rankingCanvas"></canvas>
+</div>
+<div [class.hidden-chart]="chartToggle.value !== 'earnings'" class="earningCanvas">
+    <canvas id="earningCanvas"></canvas>
+</div>

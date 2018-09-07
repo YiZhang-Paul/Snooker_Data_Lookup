@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
 import { LineChartFactoryService } from '../../../shared/services/line-chart-factory.service';
 import { BarChartFactoryService } from '../../../shared/services/bar-chart-factory.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PlayerGraphsComponent } from './player-graphs.component';
 
 describe('PlayerGraphsComponent', () => {
@@ -32,7 +33,7 @@ describe('PlayerGraphsComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule],
+            imports: [RouterTestingModule, MatButtonToggleModule],
             declarations: [PlayerGraphsComponent],
             providers: [
 
@@ -65,6 +66,8 @@ describe('PlayerGraphsComponent', () => {
 
         expect(getRankHistorySpy).toHaveBeenCalledTimes(1);
         expect(getRankHistorySpy).toHaveBeenCalledWith(id);
+        expect(getEarningHistorySpy).toHaveBeenCalledTimes(1);
+        expect(getEarningHistorySpy).toHaveBeenCalledWith(id);
     });
 
     it('should not retrieve player statistics when parent route paramMap is missing id property', () => {
@@ -75,34 +78,17 @@ describe('PlayerGraphsComponent', () => {
 
         expect(getRankHistorySpy).toHaveBeenCalledTimes(1);
         expect(getRankHistorySpy).toHaveBeenCalledWith(0);
+        expect(getEarningHistorySpy).toHaveBeenCalledTimes(1);
+        expect(getEarningHistorySpy).toHaveBeenCalledWith(0);
     });
 
-    it('should display ranking chart on default', () => {
-
-        expect(component.chartTitle).not.toEqual('World Ranking');
+    it('should load both charts on default', () => {
 
         fixture.detectChanges();
 
-        expect(component.chartTitle).toEqual('World Ranking');
         expect(getRankHistorySpy).toHaveBeenCalledTimes(1);
         expect(lineChartClearSpy).toHaveBeenCalledTimes(1);
         expect(lineChartCreateSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should toggle charts', () => {
-
-        fixture.detectChanges();
-        expect(component.chartTitle).toEqual('World Ranking');
-
-        component.toggleChart();
-        expect(component.chartTitle).toEqual('Earnings');
-
-        component.toggleChart();
-        expect(component.chartTitle).toEqual('World Ranking');
-
-        expect(getRankHistorySpy).toHaveBeenCalledTimes(2);
-        expect(lineChartClearSpy).toHaveBeenCalledTimes(2);
-        expect(lineChartCreateSpy).toHaveBeenCalledTimes(2);
 
         expect(getEarningHistorySpy).toHaveBeenCalledTimes(1);
         expect(barChartClearSpy).toHaveBeenCalledTimes(1);
