@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { OptionCardComponent } from './components/option-card/option-card.component';
 
 @NgModule({
@@ -35,7 +36,8 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatTableModule,
         MatSortModule,
         MatTabsModule,
-        MatInputModule
+        MatInputModule,
+        MatButtonToggleModule
     ],
     declarations: [UrlFormatterPipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
@@ -54,6 +56,7 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatSortModule,
         MatTabsModule,
         MatInputModule,
+        MatButtonToggleModule,
         OptionCardComponent
     ]
 })

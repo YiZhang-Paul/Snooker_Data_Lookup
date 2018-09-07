@@ -1,12 +1,41 @@
-<h2>All Player Statistics</h2>
-<select (change)="onYearSelected($event.target.value)" class="years">
-    <option *ngFor="let year of years"
-        [selected]="year === selectedYear"
-        value="{{ year }}">{{ year === -1 ? 'All' : year }}</option>
-</select>
-<div>
-    <canvas id="nationalityCanvas"></canvas>
-    <canvas id="ageCanvas"></canvas>
-    <canvas id="statusCanvas"></canvas>
-    <canvas id="earningsCanvas"></canvas>
+<div class="options">
+    <mat-form-field class="year">
+        <mat-select [value]="selectedYear"
+            placeholder="Season" panelClass="select-options"
+            (selectionChange)="onYearSelected($event.value)"
+            disableOptionCentering class="select">
+            <mat-option>All</mat-option>
+            <mat-option *ngFor="let year of years" [value]="year">
+                {{ year }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-button-toggle-group #chartToggle="matButtonToggleGroup" value="nationalities">
+        <mat-button-toggle value="nationalities">
+            <span class="large-text">Nationalities</span>
+            <span class="small-text">Nation</span>
+        </mat-button-toggle>
+        <mat-button-toggle value="age">Age</mat-button-toggle>
+        <mat-button-toggle value="status">Status</mat-button-toggle>
+        <mat-button-toggle value="earnings">
+            <span class="large-text">Earnings</span>
+            <span class="small-text">Earn</span>
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+
+<div class="canvases">
+    <div [class.active]="chartToggle.value === 'nationalities'" class="nationality">
+        <canvas id="nationalityCanvas"></canvas>
+    </div>
+    <div [class.active]="chartToggle.value === 'age'" class="age">
+        <canvas id="ageCanvas"></canvas>
+    </div>
+    <div [class.active]="chartToggle.value === 'status'" class="status">
+        <canvas id="statusCanvas"></canvas>
+    </div>
+    <div [class.active]="chartToggle.value === 'earnings'" class="earnings">
+        <canvas id="earningsCanvas"></canvas>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 <div class="options">
     <mat-form-field class="year">
         <mat-select [value]="selectedYear"
-            placeholder="Year" panelClass="select-options"
+            placeholder="Season" panelClass="select-options"
             (selectionChange)="onYearSelected($event.value)"
             disableOptionCentering class="select">
             <mat-option>All</mat-option>
@@ -24,7 +24,7 @@
     </mat-form-field>
 
     <mat-form-field class="search" id="search">
-        <input matInput placeholder="search player">
+        <input matInput placeholder="Search Player">
     </mat-form-field>
 </div>
 

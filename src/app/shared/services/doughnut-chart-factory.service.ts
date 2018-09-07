@@ -57,6 +57,7 @@ export class DoughnutChartFactoryService extends ChartFactory {
 
         return <ChartOptions>{
 
+            maintainAspectRatio: false,
             cutoutPercentage: 25,
             legend,
             title,

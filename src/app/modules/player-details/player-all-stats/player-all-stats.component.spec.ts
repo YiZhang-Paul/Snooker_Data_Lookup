@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { queryAllByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerAllStatisticsCalculatorService } from '../../data-providers/players-data/player-all-statistics-calculator.service';
 import { DoughnutChartFactoryService } from '../../../shared/services/doughnut-chart-factory.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PlayerAllStatsComponent } from './player-all-stats.component';
-import { startYear } from '../../../app-config';
 
 describe('PlayerAllStatsComponent', () => {
 
@@ -27,6 +27,12 @@ describe('PlayerAllStatsComponent', () => {
 
         TestBed.configureTestingModule({
 
+            imports: [
+
+                NoopAnimationsModule,
+                MatSelectModule,
+                MatButtonToggleModule
+            ],
             declarations: [PlayerAllStatsComponent],
             providers: [
 
@@ -46,22 +52,6 @@ describe('PlayerAllStatsComponent', () => {
     it('should create', () => {
 
         expect(component).toBeTruthy();
-    });
-
-    it('should populate year options', () => {
-
-        fixture.detectChanges();
-
-        const options = queryAllByCss(fixture.debugElement, '.years option');
-        const totalYears = new Date().getFullYear() - startYear + 1;
-
-        expect(options.length).toEqual(totalYears + 1);
-        compareText(options[0], 'All');
-
-        for (let i = 1; i < options.length; i++) {
-
-            compareText(options[i], `${startYear + (i - 1)}`);
-        }
     });
 
     it('should create all charts on page load', () => {
@@ -111,10 +101,5 @@ describe('PlayerAllStatsComponent', () => {
 
         clearChartSpy = chartFactory.clear;
         createChartSpy = chartFactory.create;
-    }
-
-    function compareText(debugElement: DebugElement, expected: string): void {
-
-        expect(debugElement.nativeElement.textContent).toEqual(expected);
     }
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject } from '@angular/core';
 import { PlayerAllStatisticsCalculatorService } from '../../data-providers/players-data/player-all-statistics-calculator.service';
 import { DoughnutChartFactoryService } from '../../../shared/services/doughnut-chart-factory.service';
 import { APP_CONFIG } from '../../../app-config';
@@ -8,7 +8,7 @@ import { APP_CONFIG } from '../../../app-config';
     templateUrl: './player-all-stats.component.html',
     styleUrls: ['./player-all-stats.component.css']
 })
-export class PlayerAllStatsComponent implements OnInit {
+export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
 
     private _year = -1;
     private _nationalityChart: Chart;
@@ -34,15 +34,15 @@ export class PlayerAllStatsComponent implements OnInit {
         const startYear = this.configuration.startYear;
         const currentYear = new Date().getFullYear();
         const totalYears = currentYear - startYear + 1;
-        const result = new Array(totalYears + 1).fill(-1);
+        const result = new Array(totalYears).fill(0);
 
-        return result.map((year, index) => {
-
-            return index ? startYear + (index - 1) : -1;
-        });
+        return result.map((year, index) => startYear + index);
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+    }
+
+    ngAfterViewInit(): void {
 
         this.loadCharts(this._year);
     }
@@ -129,7 +129,7 @@ export class PlayerAllStatsComponent implements OnInit {
 
     public onYearSelected(year: string): void {
 
-        this._year = Number(year);
+        this._year = year ? Number(year) : -1;
         this.loadCharts(this._year);
     }
 }

@@ -79,6 +79,11 @@ export abstract class ChartFactory {
 
     public create(data: IChartData): Chart {
 
+        if (!document.getElementById(data.canvas)) {
+
+            return null;
+        }
+
         return new Chart(data.canvas, {
 
             type: this.type,
