@@ -2,12 +2,16 @@
     <div class="toggle-group">
         <mat-button-toggle-group #toggleGroup="matButtonToggleGroup">
             <mat-button-toggle value="details"
+                (change)="setActiveTab('details')"
                 routerLink="details">Details</mat-button-toggle>
             <mat-button-toggle value="stats"
+                (change)="setActiveTab('stats')"
                 routerLink="stats">Stats</mat-button-toggle>
             <mat-button-toggle value="history"
+                (change)="setActiveTab('history')"
                 routerLink="history">History</mat-button-toggle>
             <mat-button-toggle value="graphs"
+                (change)="setActiveTab('graphs')"
                 routerLink="graphs">Graphs</mat-button-toggle>
         </mat-button-toggle-group>
     </div>
@@ -15,22 +19,22 @@
     <mat-drawer #sidebar class="side-nav" mode="side" [opened]="true">
         <button #details mat-button
             routerLink="details"
-            (click)="activeTab = details"
+            (click)="setActiveTab('details')"
             [class.active]="activeTab === details">Details
         </button>
         <button #stats mat-button
             routerLink="stats"
-            (click)="activeTab = stats"
+            (click)="setActiveTab('stats')"
             [class.active]="activeTab === stats">Statistics
         </button>
         <button #history mat-button
             routerLink="history"
-            (click)="activeTab = history"
+            (click)="setActiveTab('history')"
             [class.active]="activeTab === history">History
         </button>
         <button #graphs mat-button
             routerLink="graphs"
-            (click)="activeTab = graphs"
+            (click)="setActiveTab('graphs')"
             [class.active]="activeTab === graphs">Graphs
         </button>
     </mat-drawer>

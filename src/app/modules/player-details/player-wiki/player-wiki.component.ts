@@ -15,6 +15,7 @@ export class PlayerWikiComponent implements OnInit, AfterViewInit {
     @ViewChild('history') private historyTab: MatButton;
     @ViewChild('graphs') private graphsTab: MatButton;
     @ViewChild('toggleGroup') private toggleGroup: MatButtonToggleGroup;
+    private tabs = ['details', 'stats', 'history', 'graphs'];
 
     public activeTab: MatButton;
 
@@ -27,26 +28,33 @@ export class PlayerWikiComponent implements OnInit, AfterViewInit {
 
         const timeout = setTimeout(() => {
 
-            this.setActiveTab(this.router.url);
+            this.setActiveTabs(this.router.url);
             clearTimeout(timeout);
         });
     }
 
-    private setActiveTab(url: string): void {
+    private setActiveTabs(url: string): void {
 
-        const tabs = ['details', 'stats', 'history', 'graphs'];
+        for (let i = 0; i < this.tabs.length; i++) {
 
-        for (let i = 0; i < tabs.length; i++) {
-
-            const pattern = new RegExp(`/${tabs[i]}`);
+            const pattern = new RegExp(`/${this.tabs[i]}`);
 
             if (pattern.test(url)) {
 
-                this.toggleGroup.value = tabs[i];
-                this.activeTab = this[`${tabs[i]}Tab`];
+                this.toggleGroup.value = this.tabs[i];
+                this.activeTab = this[`${this.tabs[i]}Tab`];
 
                 break;
             }
+        }
+    }
+
+    public setActiveTab(tab: string): void {
+
+        if (this.tabs.includes(tab)) {
+
+            this.activeTab = this[`${tab}Tab`];
+            this.toggleGroup.value = tab;
         }
     }
 }
