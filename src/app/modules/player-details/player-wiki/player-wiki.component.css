@@ -1,0 +1,191 @@
+/* main layout */
+.drawer-container {
+
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: relative;
+    background-color: inherit;
+}
+
+main {
+
+    width: 100%;
+    color: black;
+    display: block;
+}
+
+/* material component styles */
+.toggle-group {
+
+    width: 100%;
+    font-size: 0.75em;
+    text-align: center;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    background-color: rgb(39, 39, 39);
+}
+
+.mat-button-toggle {
+
+    color: white !important;
+    background-color: rgb(179, 2, 2);
+    border: 1px solid rgb(255, 81, 12);
+}
+
+.mat-button-toggle-checked {
+
+    color: gold !important;
+    background-color: tomato;
+    border: 1px solid gold;
+}
+
+.side-nav { display: none; }
+
+/* media queries */
+@media screen and (min-width: 451px) {
+
+    .toggle-group { display: none; }
+
+    /* side navigation bar style */
+    .side-nav {
+
+        width: 180px;
+        padding: 20px;
+        display: block;
+    }
+
+    .side-nav .mat-button {
+
+        width: 100%;
+        display: block;
+        text-align: left;
+    }
+
+    .side-nav .mat-button:hover:not(.active) {
+
+        color: black;
+        background-color: gold;
+    }
+
+    .side-nav .active {
+
+        color: gold;
+        background-color: tomato;
+    }
+
+    /* side navigation bar toggler effect */
+    .filler {
+
+        width: 4px;
+        height: 100%;
+        background-color: tomato;
+    }
+
+    /* grids */
+    .sidebar-toggle {
+
+        grid-area: toggle;
+        width: 14px;
+        height: 100%;
+    }
+
+    main {
+
+        grid-area: main;
+    }
+
+    .main-content {
+
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 14px auto;
+        grid-template-areas:
+            'toggle main';
+    }
+}
+
+/* Hover.css effects by Ian Lunn @https://github.com/IanLunn/Hover */
+@media screen and (min-width: 451px) {
+
+    /* fade */
+    .hvr-fade {
+
+        display: block;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: color, background-color;
+        transition-property: color, background-color;
+    }
+
+    .hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
+
+        background-color: rgba(218, 81, 56, 0.74);
+    }
+
+    /* bubble left - right */
+    .hvr-bubble-left, .hvr-bubble-right {
+
+        display: block;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        position: fixed;
+        top: 0;
+    }
+
+    .hvr-bubble-left:before, .hvr-bubble-right:before {
+
+        pointer-events: none;
+        position: absolute;
+        z-index: -1;
+        content: '';
+        border-style: solid;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: transform;
+        transition-property: transform;
+        top: calc(50% - 10px);
+        right: -2px;
+    }
+
+    .hvr-bubble-left:before {
+
+        border-width: 10px 10px 10px 0;
+        border-color: transparent tomato transparent transparent;
+    }
+
+    .hvr-bubble-right:before {
+
+        border-width: 10px 0 10px 10px;
+        border-color: transparent transparent transparent tomato;
+    }
+
+    .hvr-bubble-left:hover:before, .hvr-bubble-left:focus:before, .hvr-bubble-left:active:before,
+    .hvr-bubble-right:hover:before, .hvr-bubble-right:focus:before, .hvr-bubble-right:active:before {
+
+        right: -4px;
+        -webkit-transform: translateX(10px);
+        transform: translateX(10px);
+    }
+
+    .hvr-bubble-left:hover:before, .hvr-bubble-left:focus:before, .hvr-bubble-left:active:before {
+
+        border-color: transparent rgba(218, 81, 56, 0.74) transparent transparent;
+    }
+
+    .hvr-bubble-right:hover:before, .hvr-bubble-right:focus:before, .hvr-bubble-right:active:before {
+
+        border-color: transparent transparent transparent rgba(218, 81, 56, 0.74);
+    }
+
+    .hvr-bubble-left:hover .filler, .hvr-bubble-left:focus .filler, .hvr-bubble-left:active .filler,
+    .hvr-bubble-right:hover .filler, .hvr-bubble-right:focus .filler, .hvr-bubble-right:active .filler {
+
+        display: none;
+    }
+}

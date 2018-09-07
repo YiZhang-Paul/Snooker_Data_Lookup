@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DoughnutChartFactoryService } from './services/doughnut-chart-factory.service';
 import { UrlFormatterPipe } from './pipes/url-formatter.pipe';
@@ -18,11 +19,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { OptionCardComponent } from './components/option-card/option-card.component';
 
 @NgModule({
     imports: [
         CommonModule,
+        FormsModule,
         RouterModule,
         MatIconModule,
         MatButtonModule,
@@ -37,11 +40,13 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatSortModule,
         MatTabsModule,
         MatInputModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatSidenavModule
     ],
     declarations: [UrlFormatterPipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
     exports: [
+        FormsModule,
         UrlFormatterPipe,
         MatIconModule,
         MatButtonModule,
@@ -57,6 +62,7 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatTabsModule,
         MatInputModule,
         MatButtonToggleModule,
+        MatSidenavModule,
         OptionCardComponent
     ]
 })

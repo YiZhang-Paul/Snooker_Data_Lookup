@@ -1,9 +1,50 @@
-<nav>
-    <ul>
-        <li routerLink="details">Detail</li>
-        <li routerLink="stats">Stats</li>
-        <li routerLink="history">History</li>
-        <li routerLink="graphs">Graphs</li>
-    </ul>
-    <router-outlet></router-outlet>
-</nav>
+<mat-drawer-container class="drawer-container" autosize>
+    <div class="toggle-group">
+        <mat-button-toggle-group #toggleGroup="matButtonToggleGroup">
+            <mat-button-toggle value="details"
+                routerLink="details">Details</mat-button-toggle>
+            <mat-button-toggle value="stats"
+                routerLink="stats">Stats</mat-button-toggle>
+            <mat-button-toggle value="history"
+                routerLink="history">History</mat-button-toggle>
+            <mat-button-toggle value="graphs"
+                routerLink="graphs">Graphs</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
+    <mat-drawer #sidebar class="side-nav" mode="side" [opened]="true">
+        <button #details mat-button
+            routerLink="details"
+            (click)="activeTab = details"
+            [class.active]="activeTab === details">Details
+        </button>
+        <button #stats mat-button
+            routerLink="stats"
+            (click)="activeTab = stats"
+            [class.active]="activeTab === stats">Statistics
+        </button>
+        <button #history mat-button
+            routerLink="history"
+            (click)="activeTab = history"
+            [class.active]="activeTab === history">History
+        </button>
+        <button #graphs mat-button
+            routerLink="graphs"
+            (click)="activeTab = graphs"
+            [class.active]="activeTab === graphs">Graphs
+        </button>
+    </mat-drawer>
+
+    <div class="main-content">
+        <div (click)="sidebar.toggle()"
+            class="sidebar-toggle hvr-fade"
+            [class.hvr-bubble-right]="!sidebar.opened"
+            [class.hvr-bubble-left]="sidebar.opened">
+            <div class="filler"></div>
+        </div>
+
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</mat-drawer-container>

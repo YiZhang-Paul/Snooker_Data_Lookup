@@ -1,5 +1,7 @@
 .sub-nav {
 
+    z-index: 2;
+    position: relative;
     background-color: rgb(88, 93, 109);
 }
 
