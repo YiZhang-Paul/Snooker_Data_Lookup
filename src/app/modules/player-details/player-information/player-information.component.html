@@ -1,4 +1,4 @@
-<h2>{{ player?.fullName }}</h2>
+<h2 *ngIf="player?.fullName">{{ player?.fullName }}</h2>
 
 <div *ngIf="player?.photo" class="image-wrapper"
     [ngStyle]="{ 'background-image': 'url(' + player?.photo + ')' }">

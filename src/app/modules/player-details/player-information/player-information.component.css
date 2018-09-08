@@ -1,9 +1,14 @@
 h2 {
 
-    text-align: center;
+    width: 75%;
     font-size: 1em;
+    margin: 0 auto;
     margin-top: 2%;
     margin-bottom: 2%;
+    text-align: center;
+    background-color: gold;
+    border: 6px solid red;
+    border-radius: 50px;
 }
 
 /* material component style */
@@ -141,7 +146,7 @@ mat-list-item {
 
 @media screen and (min-width: 541px) {
 
-    h2 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
     mat-list { width: 90%; }
     mat-list-item { font-size: 1em !important; }
 }
@@ -153,7 +158,7 @@ mat-list-item {
 
 @media screen and (min-width: 721px) {
 
-    h2 { font-size: 2.5em; }
+    h2 { font-size: 2.1em; }
     mat-list-item { font-size: 1.3em !important; }
     .short-text { display: none; }
     .long-text { display: inline; }
@@ -231,15 +236,18 @@ mat-list-item {
 
 @media screen and (min-width: 1201px) {
 
+    h2 { width: 65%; }
     mat-list { width: 50%; }
 }
 
 @media screen and (min-width: 1301px) {
 
+    h2 { width: 60%; }
     mat-list { width: 45%; }
 }
 
 @media screen and (min-width: 1401px) {
 
+    h2 { width: 55%; }
     mat-list { width: 40%; }
 }

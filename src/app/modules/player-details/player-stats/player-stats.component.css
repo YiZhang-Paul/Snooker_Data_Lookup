@@ -1,7 +1,12 @@
 h2 {
 
-    text-align: center;
+    width: 50%;
+    margin: 0 auto;
     margin-top: 2%;
+    text-align: center;
+    background-color: gold;
+    border: 6px solid red;
+    border-radius: 50px;
 }
 
 /* material component style */
@@ -87,7 +92,7 @@ mat-list-item {
 /* turned professional year/last season played field */
 .year-content {
 
-    color: rgba(22, 22, 206, 0.904);
+    color: rgb(0, 132, 255);
 }
 
 /* career earning field */
@@ -172,5 +177,6 @@ mat-list-item {
 
 @media screen and (min-width: 1201px) {
 
+    h2 { width: 40%; }
     mat-list { width: 40%; }
 }
