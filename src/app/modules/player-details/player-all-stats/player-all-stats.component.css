@@ -10,6 +10,21 @@
 .large-text { display: none }
 
 /* material component style */
+.spinner-wrapper {
+
+    width: 0;
+    height: 0;
+    display: relative;
+}
+
+.mat-spinner {
+
+    /* spinner diameter is 60px */
+    top: calc(40vh - 30px);
+    left: calc(50vw - 30px);
+    display: fixed;
+}
+
 mat-option {
 
     color: gold !important;

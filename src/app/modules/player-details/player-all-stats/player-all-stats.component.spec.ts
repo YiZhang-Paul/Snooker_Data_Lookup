@@ -5,6 +5,7 @@ import { PlayerAllStatisticsCalculatorService } from '../../data-providers/playe
 import { DoughnutChartFactoryService } from '../../../shared/services/doughnut-chart-factory.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerAllStatsComponent } from './player-all-stats.component';
 
 describe('PlayerAllStatsComponent', () => {
@@ -31,7 +32,8 @@ describe('PlayerAllStatsComponent', () => {
 
                 NoopAnimationsModule,
                 MatSelectModule,
-                MatButtonToggleModule
+                MatButtonToggleModule,
+                MatProgressSpinnerModule
             ],
             declarations: [PlayerAllStatsComponent],
             providers: [

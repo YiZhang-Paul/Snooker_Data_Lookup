@@ -16,6 +16,8 @@ export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
     private _statusChart: Chart;
     private _earningsChart: Chart;
 
+    public isLoaded = false;
+
     constructor(
 
         @Inject(APP_CONFIG) private configuration,
@@ -39,12 +41,37 @@ export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
         return result.map((year, index) => startYear + index);
     }
 
+    get charts(): Chart[] {
+
+        return [
+
+            this._nationalityChart,
+            this._ageChart,
+            this._statusChart,
+            this._earningsChart
+        ];
+    }
+
     ngOnInit(): void {
     }
 
     ngAfterViewInit(): void {
 
         this.loadCharts(this._year);
+    }
+
+    private checkLoaded(): void {
+
+        if (this.charts.some(chart => !chart)) {
+
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+
+            this.isLoaded = true;
+            clearTimeout(timeout);
+        });
     }
 
     private loadNationalityChart(year: number): void {
@@ -61,6 +88,8 @@ export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
                 values: percentages.map(percentage => percentage.size),
                 mainRgb: { r: 255, g: 99, b: 132 }
             });
+
+            this.checkLoaded();
         });
     }
 
@@ -80,6 +109,8 @@ export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
                 values: percentages.map(percentage => percentage.size),
                 mainRgb: { r: 255, g: 99, b: 132 }
             });
+
+            this.checkLoaded();
         });
     }
 
@@ -97,6 +128,8 @@ export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
                 values: percentages.map(percentage => percentage.size),
                 mainRgb: { r: 255, g: 99, b: 132 }
             });
+
+            this.checkLoaded();
         });
     }
 
@@ -116,6 +149,8 @@ export class PlayerAllStatsComponent implements OnInit, AfterViewInit {
                 values: percentages.map(percentage => percentage.size),
                 mainRgb: { r: 255, g: 99, b: 132 }
             });
+
+            this.checkLoaded();
         });
     }
 
