@@ -3,7 +3,7 @@
 </div>
 
 <div class="options">
-    <mat-form-field class="year">
+    <mat-form-field class="year" color="warn">
         <mat-select [value]="selectedYear"
             placeholder="Season" panelClass="select-options"
             (selectionChange)="onYearSelected($event.value)"
@@ -15,7 +15,7 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="nationality">
+    <mat-form-field class="nationality" color="warn">
         <mat-select [value]="selectedNationality"
             placeholder="Nationality" panelClass="select-options"
             (selectionChange)="onNationalitySelected($event.value)"
@@ -27,7 +27,7 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="search" id="search">
+    <mat-form-field class="search" id="search" color="warn">
         <input matInput placeholder="Search Player">
     </mat-form-field>
 </div>
