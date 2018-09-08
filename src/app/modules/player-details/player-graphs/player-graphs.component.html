@@ -1,3 +1,7 @@
+<div *ngIf="!isLoaded" class="spinner-wrapper">
+    <mat-spinner color="warn" [diameter]="60"></mat-spinner>
+</div>
+
 <div class="toggle-group">
     <mat-button-toggle-group #chartToggle="matButtonToggleGroup" value="rankings">
         <mat-button-toggle value="rankings">World Ranking</mat-button-toggle>

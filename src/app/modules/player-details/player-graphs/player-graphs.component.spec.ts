@@ -6,6 +6,7 @@ import { PlayerStatisticsCalculatorService } from '../../data-providers/players-
 import { LineChartFactoryService } from '../../../shared/services/line-chart-factory.service';
 import { BarChartFactoryService } from '../../../shared/services/bar-chart-factory.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerGraphsComponent } from './player-graphs.component';
 
 describe('PlayerGraphsComponent', () => {
@@ -33,7 +34,12 @@ describe('PlayerGraphsComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule, MatButtonToggleModule],
+            imports: [
+
+                RouterTestingModule,
+                MatButtonToggleModule,
+                MatProgressSpinnerModule
+            ],
             declarations: [PlayerGraphsComponent],
             providers: [
 

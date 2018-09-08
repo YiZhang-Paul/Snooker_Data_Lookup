@@ -16,6 +16,8 @@ export class PlayerGraphsComponent implements OnInit {
     private _rankingChart: Chart;
     private _earningChart: Chart;
 
+    public isLoaded = false;
+
     constructor(
 
         private routes: ActivatedRoute,
@@ -50,6 +52,8 @@ export class PlayerGraphsComponent implements OnInit {
                 mainRgb: { r: 23, g: 190, b: 209 },
                 gridRgb: { r: 86, g: 89, b: 94}
             });
+
+            this.isLoaded = true;
         });
     }
 
@@ -68,6 +72,8 @@ export class PlayerGraphsComponent implements OnInit {
                 mainRgb: { r: 255, g: 99, b: 132 },
                 gridRgb: { r: 86, g: 89, b: 94}
             });
+
+            this.isLoaded = true;
         });
     }
 }
