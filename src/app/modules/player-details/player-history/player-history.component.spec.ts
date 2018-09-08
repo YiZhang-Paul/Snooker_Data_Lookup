@@ -7,6 +7,7 @@ import { ITournamentEvent } from '../../data-providers/event-data/tournament-eve
 import { IMatch } from '../../data-providers/match-data/match.interface';
 import { IMatchHistory } from '../../data-providers/players-data/match-history.interface';
 import { PlayerMatchHistoryLookupService } from '../../data-providers/players-data/player-match-history-lookup.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerHistoryComponent } from './player-history.component';
 
 @Component({ selector: 'app-match-history-listing', template: '' })
@@ -42,7 +43,7 @@ describe('PlayerHistoryComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule],
+            imports: [RouterTestingModule, MatProgressSpinnerModule],
             declarations: [PlayerHistoryComponent, MatchHistoryListingComponent],
             providers: [{ provide: PlayerMatchHistoryLookupService, useValue: historyLookup }]
 

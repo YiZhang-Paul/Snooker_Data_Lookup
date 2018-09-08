@@ -16,6 +16,8 @@ export class PlayerHistoryComponent implements OnInit {
     private _selectedYear: number;
     private _histories: IMatchHistory[];
 
+    public isLoaded = false;
+
     constructor(
 
         @Inject(APP_CONFIG) private configuration,
@@ -60,9 +62,12 @@ export class PlayerHistoryComponent implements OnInit {
 
     private loadHistory(id: number, year: number): void {
 
+        this.isLoaded = false;
+
         this.historyLookup.getMatchHistories(id, year).subscribe(histories => {
 
             this._histories = histories;
+            this.isLoaded = true;
         });
     }
 

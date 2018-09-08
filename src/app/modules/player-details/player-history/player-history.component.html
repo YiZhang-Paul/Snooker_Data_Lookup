@@ -1,3 +1,7 @@
+<div *ngIf="!isLoaded" class="spinner-wrapper">
+    <mat-spinner color="warn" [diameter]="60"></mat-spinner>
+</div>
+
 <h2>Tournament History</h2>
 <select (change)="onYearSelected($event.target.value)" class="years">
     <option *ngFor="let year of years"
