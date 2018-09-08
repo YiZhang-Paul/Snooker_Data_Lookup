@@ -1,3 +1,7 @@
+<div *ngIf="!isLoaded" class="spinner-wrapper">
+    <mat-spinner color="warn" [diameter]="60"></mat-spinner>
+</div>
+
 <h2 *ngIf="player?.fullName">{{ player?.fullName }}</h2>
 
 <div *ngIf="player?.photo" class="image-wrapper"

@@ -7,6 +7,7 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerInformationComponent } from './player-information.component';
 
 @Pipe({ name: 'urlFormatter' })
@@ -51,7 +52,12 @@ describe('PlayerInformationComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule, MatListModule],
+            imports: [
+
+                RouterTestingModule,
+                MatListModule,
+                MatProgressSpinnerModule
+            ],
             declarations: [
 
                 PlayerInformationComponent,

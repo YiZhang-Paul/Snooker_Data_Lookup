@@ -13,6 +13,8 @@ export class PlayerInformationComponent implements OnInit {
 
     private _player: IPlayer;
 
+    public isLoaded = false;
+
     constructor(
 
         private routes: ActivatedRoute,
@@ -39,6 +41,7 @@ export class PlayerInformationComponent implements OnInit {
         ).subscribe(player => {
 
             this._player = player;
+            this.isLoaded = true;
         });
     }
 }
