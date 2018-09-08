@@ -2,7 +2,8 @@ h2 {
 
     width: 50%;
     margin: 0 auto;
-    margin-top: 2%;
+    margin-top: 4%;
+    margin-bottom: 6%;
     text-align: center;
     background-color: gold;
     border: 6px solid red;
@@ -152,7 +153,8 @@ mat-list-item {
     h2 {
 
         font-size: 3em;
-        margin-bottom: 2%;
+        margin-top: 2%;
+        margin-bottom: 8%;
     }
 
     mat-list { width: 60%; }
