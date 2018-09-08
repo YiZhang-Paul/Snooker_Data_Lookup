@@ -21,6 +21,7 @@ export class RankingListComponent implements OnInit {
     private _headings = ['rank', 'name', 'nationality', 'earnings'];
     private _rankings = new MatTableDataSource(<IRankDetail[]>[]);
     public canSelect = false;
+    public isLoaded = false;
 
     @ViewChild(MatSort) matSort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -120,10 +121,13 @@ export class RankingListComponent implements OnInit {
             this._rankings.paginator = this.paginator;
             this._rankings.sort = this.matSort;
             this.canSelect = true;
+            this.isLoaded = true;
         });
     }
 
     private fetchRankings(): void {
+
+        this.isLoaded = false;
 
         this.rankingLookup.getRankings(this._activeYear).subscribe(rankings => {
 

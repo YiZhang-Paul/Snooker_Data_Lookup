@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RankingListComponent } from './ranking-list.component';
 
 @Component({ selector: 'app-group-size-selector', template: '' })
@@ -73,7 +74,8 @@ describe('RankingListComponent', () => {
                 MatSelectModule,
                 MatPaginatorModule,
                 MatTableModule,
-                MatIconModule
+                MatIconModule,
+                MatProgressSpinnerModule
             ],
             declarations: [
 

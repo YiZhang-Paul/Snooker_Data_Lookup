@@ -1,10 +1,14 @@
+<div *ngIf="!isLoaded" class="spinner-wrapper">
+    <mat-spinner color="warn" [diameter]="60"></mat-spinner>
+</div>
+
 <div class="top-panel">
     <h1>World Rankings<br/><span class="year">Year {{ activeYear }}</span></h1>
 </div>
 
 <div class="table">
     <div class="table-options">
-        <mat-form-field class="select">
+        <mat-form-field class="select" color="warn">
             <mat-select
                 [value]="activeYear"
                 panelClass="select-options" id="select-options"
