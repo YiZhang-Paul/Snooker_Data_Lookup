@@ -69,6 +69,7 @@ export class PlayerHistoryComponent implements OnInit {
     public onYearSelected(year: string): void {
 
         this._selectedYear = Number(year);
+        this._histories = null;
         this.loadHistory(this._id, this._selectedYear);
     }
 }
