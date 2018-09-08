@@ -12,7 +12,13 @@ import { PlayerInformationComponent } from './player-information.component';
 @Pipe({ name: 'urlFormatter' })
 class UrlFormatterPipe implements PipeTransform {
 
-    transform(url: string): string { return ''; }
+    transform(url: string): string { return url; }
+}
+
+@Pipe({ name: 'urlTruncate' })
+class UrlTruncatePipe implements PipeTransform {
+
+    transform(url: string): string { return url; }
 }
 
 describe('PlayerInformationComponent', () => {
@@ -49,7 +55,8 @@ describe('PlayerInformationComponent', () => {
             declarations: [
 
                 PlayerInformationComponent,
-                UrlFormatterPipe
+                UrlFormatterPipe,
+                UrlTruncatePipe
             ],
             providers: [
 
@@ -97,7 +104,7 @@ describe('PlayerInformationComponent', () => {
         compareText('.firstName', player.firstName);
         compareText('.middleName', player.middleName);
         compareText('.lastName', player.lastName);
-        compareText('.gender', player.sex);
+        compareText('.gender', 'Male');
         compareText('.birth', player.dateOfBirth);
         compareText('.country', player.nationality);
         compareText('.bio', player.bioPage);

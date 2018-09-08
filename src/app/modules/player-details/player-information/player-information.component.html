@@ -34,7 +34,7 @@
             <span class="long-text">Gender:</span>
             <span class="short-text">Sex:</span>
         </span>&nbsp;
-        <span class="gender-content gender">{{ player?.sex }}</span>
+        <span [class.gender-male]="player?.sex === 'M'" class="gender-content gender">{{ player?.sex === 'M' ? 'Male' : 'Female' }}</span>
     </mat-list-item>
 
     <mat-list-item>
@@ -59,14 +59,14 @@
             <span class="short-text">Bio:</span>
         </span>&nbsp;
         <span class="url-content bio">
-            <a [href]="player?.bioPage | urlFormatter">{{ player?.bioPage }}</a>
+            <a [href]="player?.bioPage | urlFormatter">{{ player?.bioPage | urlTruncate }}</a>
         </span>
     </mat-list-item>
 
     <mat-list-item *ngIf="player?.website">
         <span class="header url-header">Website:</span>&nbsp;
         <span class="url-content website">
-            <a [href]="player?.website | urlFormatter">{{ player?.website }}</a>
+            <a [href]="player?.website | urlFormatter">{{ player?.website | urlTruncate }}</a>
         </span>
     </mat-list-item>
 

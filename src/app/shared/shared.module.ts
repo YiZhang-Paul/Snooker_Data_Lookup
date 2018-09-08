@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { DoughnutChartFactoryService } from './services/doughnut-chart-factory.service';
-import { UrlFormatterPipe } from './pipes/url-formatter.pipe';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,8 +19,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { OptionCardComponent } from './components/option-card/option-card.component';
+
+import { DoughnutChartFactoryService } from './services/doughnut-chart-factory.service';
+
+import { UrlFormatterPipe } from './pipes/url-formatter.pipe';
 import { UrlTruncatePipe } from './pipes/url-truncate.pipe';
+
+import { OptionCardComponent } from './components/option-card/option-card.component';
 
 @NgModule({
     imports: [
@@ -46,11 +49,10 @@ import { UrlTruncatePipe } from './pipes/url-truncate.pipe';
         MatSidenavModule,
         MatListModule
     ],
-    declarations: [UrlFormatterPipe, OptionCardComponent, UrlTruncatePipe],
+    declarations: [UrlFormatterPipe, UrlTruncatePipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
     exports: [
         FormsModule,
-        UrlFormatterPipe,
         MatIconModule,
         MatButtonModule,
         MatMenuModule,
@@ -67,6 +69,8 @@ import { UrlTruncatePipe } from './pipes/url-truncate.pipe';
         MatButtonToggleModule,
         MatSidenavModule,
         MatListModule,
+        UrlFormatterPipe,
+        UrlTruncatePipe,
         OptionCardComponent
     ]
 })
