@@ -1,39 +1,43 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
+import { queryByDirective } from '../../../../testing/custom-test-utilities';
+import { MatCardModule } from '@angular/material/card';
 import { OptionCardComponent } from './option-card.component';
 
-// tslint:disable:component-selector
-// tslint:disable:component-class-suffix
-@Component({ selector: 'mat-card', template: '' })
-class TestMatCard {}
+@Component({
+    template: `
+        <app-option-card
+            [title]="title"
+            [link]="link"
+            [image]="image">
+        </app-option-card>
+    `
+})
+class TestComponent {
 
-@Component({ selector: 'mat-card-header', template: '' })
-class TestMatCardHeader {}
-
-@Component({ selector: 'mat-card-title', template: '' })
-class TestMatCardTitle {}
-
-@Component({ selector: 'mat-card-content', template: '' })
-class TestMatCardContent {}
+    title = 'test-title';
+    link = 'test-link';
+    image = 'favicon.ico';
+}
 
 describe('OptionCardComponent', () => {
 
-    let fixture: ComponentFixture<OptionCardComponent>;
-    let component: OptionCardComponent;
+    let fixture: ComponentFixture<TestComponent>;
+    let component: TestComponent;
+    let cardDebugElement: DebugElement;
+    let card: OptionCardComponent;
 
     beforeEach(async(() => {
 
         TestBed.configureTestingModule({
 
+            imports: [MatCardModule],
             declarations: [
 
+                RouterLinkStubDirective,
                 OptionCardComponent,
-                TestMatCard,
-                TestMatCardHeader,
-                TestMatCardTitle,
-                TestMatCardContent,
-                RouterLinkStubDirective
+                TestComponent
             ]
 
         }).compileComponents();
@@ -41,13 +45,22 @@ describe('OptionCardComponent', () => {
 
     beforeEach(() => {
 
-        fixture = TestBed.createComponent(OptionCardComponent);
+        fixture = TestBed.createComponent(TestComponent);
         component = fixture.componentInstance;
+        cardDebugElement = queryByDirective(fixture.debugElement, OptionCardComponent);
+        card = cardDebugElement.componentInstance;
         fixture.detectChanges();
     });
 
     it('should create', () => {
 
         expect(component).toBeTruthy();
+    });
+
+    it('should bind values properly', () => {
+
+        expect(card.title).toEqual(component.title);
+        expect(card.link).toEqual(component.link);
+        expect(card.image).toEqual(component.image);
     });
 });
