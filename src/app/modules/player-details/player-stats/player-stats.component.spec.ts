@@ -6,6 +6,7 @@ import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
+import { MatListModule } from '@angular/material/list';
 import { PlayerStatsComponent } from './player-stats.component';
 
 describe('PlayerStatsComponent', () => {
@@ -49,7 +50,7 @@ describe('PlayerStatsComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule],
+            imports: [RouterTestingModule, MatListModule],
             declarations: [PlayerStatsComponent],
             providers: [
 
@@ -120,13 +121,13 @@ describe('PlayerStatsComponent', () => {
 
         fixture.detectChanges();
 
-        compareText('.status', 'Status: Active');
-        compareText('.turnedPro', `Turned Professional: ${active.turnedPro}`);
-        compareText('.lastSeason', `Last Season Played: ${active.lastSeasonPlayed}`);
-        compareText('.careerEarnings', `Career Earnings: ${component.careerEarning}`);
-        compareText('.currentRank', `Current Ranking: ${component.currentRank}`);
-        compareText('.highestRank', `Highest Ranking: ${component.highestRank}`);
-        compareText('.lowestRank', `Lowest Ranking: ${component.lowestRank}`);
+        compareText('.status', 'Active');
+        compareText('.turnedPro', `${active.turnedPro}`);
+        compareText('.lastSeason', `${active.lastSeasonPlayed}`);
+        compareText('.earnings', `${component.careerEarning}`);
+        compareText('.currentRank', `${component.currentRank}`);
+        compareText('.highestRank', `${component.highestRank}`);
+        compareText('.lowestRank', `${component.lowestRank}`);
     });
 
     it('should properly display status for retired player', () => {
@@ -134,7 +135,7 @@ describe('PlayerStatsComponent', () => {
         getPlayerSpy.and.returnValue(of(retired));
         fixture.detectChanges();
 
-        compareText('.status', 'Status: Currently Retired');
+        compareText('.status', 'Retired');
     });
 
     function setupPlayerLookup(expectedId: number): void {

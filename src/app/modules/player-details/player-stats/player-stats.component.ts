@@ -41,7 +41,7 @@ export class PlayerStatsComponent implements OnInit {
         const currentYear = new Date().getFullYear();
         const isActive = this._player.lastSeasonPlayed === currentYear;
 
-        return isActive ? 'Active' : 'Currently Retired';
+        return isActive ? 'Active' : 'Retired';
     }
 
     get careerEarning(): number {

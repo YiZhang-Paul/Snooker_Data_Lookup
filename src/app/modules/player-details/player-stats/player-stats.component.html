@@ -1,8 +1,39 @@
 <h2>General</h2>
-<p class="status">Status: {{ status }}</p>
-<p class="turnedPro">Turned Professional: {{ player?.turnedPro }}</p>
-<p class="lastSeason">Last Season Played: {{ player?.lastSeasonPlayed }}</p>
-<p class="careerEarnings">Career Earnings: {{ careerEarning }}</p>
-<p *ngIf="status === 'Active'" class="currentRank">Current Ranking: {{ currentRank }}</p>
-<p class="highestRank">Highest Ranking: {{ highestRank }}</p>
-<p class="lowestRank">Lowest Ranking: {{ lowestRank }}</p>
+
+<mat-list>
+    <mat-list-item>
+        <span class="header status-header">Status:</span>&nbsp;
+        <span [class.status-active]="status === 'Active'"
+            class="status-content status">{{ status }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header year-header">Turned Professional:</span>&nbsp;
+        <span class="year-content turnedPro">{{ player?.turnedPro }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header year-header">Last Season Played:</span>&nbsp;
+        <span class="year-content lastSeason">{{ player?.lastSeasonPlayed }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header currency-header">Career Earnings: &#163;</span>
+        <span class="currency-content earnings">{{ careerEarning }}</span>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="status === 'Active'">
+        <span class="header ranking-header">Current Ranking:</span>&nbsp;
+        <span class="ranking-content currentRank">{{ currentRank }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header ranking-header">Highest Ranking:</span>&nbsp;
+        <span class="ranking-content highestRank">{{ highestRank }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header ranking-header">Lowest Ranking:</span>&nbsp;
+        <span class="ranking-content lowestRank">{{ lowestRank }}</span>
+    </mat-list-item>
+</mat-list>

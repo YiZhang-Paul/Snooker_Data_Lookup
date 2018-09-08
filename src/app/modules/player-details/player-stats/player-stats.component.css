@@ -1,0 +1,176 @@
+h2 {
+
+    text-align: center;
+    margin-top: 2%;
+}
+
+/* material component style */
+mat-list {
+
+    margin: 0 auto;
+}
+
+mat-list-item {
+
+    color: black !important;
+}
+
+/* field header style */
+.header {
+
+    font-weight: bold;
+}
+
+.header:before {
+
+    width: 20px;
+    height: 17px;
+    content: '';
+    margin-right: 3px;
+    margin-bottom: 1px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 20px 17px;
+}
+
+.status-header:before {
+
+    background-image: url(https://static.thenounproject.com/png/63767-200.png);
+}
+
+.year-header:before {
+
+    background-image: url(https://cdn3.iconfinder.com/data/icons/business-office-2/512/calendar_estimate_milestones-512.png);
+}
+
+.currency-header:before {
+
+    background-image: url(https://images-na.ssl-images-amazon.com/images/I/51yUXWbUHUL.png);
+}
+
+.ranking-header:before {
+
+    background-image: url(https://cdn4.iconfinder.com/data/icons/we-re-the-best/512/best-badge-cup-gold-medal-game-win-winner-gamification-first-award-acknowledge-acknowledgement-prize-victory-reward-conquest-premium-rank-ranking-gold-hero-star-quality-challenge-trophy-praise-victory-success-512.png);
+}
+
+/* status field */
+.status-content {
+
+    color: red;
+}
+
+.status-active {
+
+    color: darkgreen;
+}
+
+.status-content:after, .status-active:after {
+
+    width: 12px;
+    height: 12px;
+    content: '';
+    margin-left: 3px;
+    display: inline-block;
+    background-size: 12px 12px;
+}
+
+.status-content:after {
+
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/No_icon_%28white_X_on_red_circle%29.svg/2000px-No_icon_%28white_X_on_red_circle%29.svg.png);
+}
+
+.status-active:after {
+
+    background-image: url(http://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/512/Accept-icon.png);
+}
+
+/* turned professional year/last season played field */
+.year-content {
+
+    color: rgba(22, 22, 206, 0.904);
+}
+
+/* career earning field */
+.currency-content {
+
+    color: darkgreen;
+}
+
+/* rankings fields */
+.ranking-content {
+
+    color: red;
+}
+
+/* media queries */
+@media screen and (min-width: 321px) {
+
+    mat-list { width: 85%; }
+}
+
+@media screen and (min-width: 451px) {
+
+    mat-list { width: 100%; }
+}
+
+@media screen and (min-width: 541px) {
+
+    h2 { font-size: 2em; }
+    mat-list { width: 90%; }
+}
+
+@media screen and (min-width: 721px) {
+
+    h2 { font-size: 2.5em; }
+    mat-list { width: 70%; }
+    mat-list-item { font-size: 1.3em !important; }
+
+    .status-content:after, .status-active:after {
+
+        width: 15px;
+        height: 15px;
+        margin-left: 5px;
+        background-size: 15px 15px;
+    }
+
+    .header:before {
+
+        width: 23px;
+        height: 19px;
+        margin-right: 6px;
+        background-size: 23px 19px;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+
+    h2 {
+
+        font-size: 3em;
+        margin-bottom: 2%;
+    }
+
+    mat-list { width: 60%; }
+    mat-list-item { font-size: 1.5em !important; }
+
+    .status-content:after, .status-active:after {
+
+        width: 18px;
+        height: 18px;
+        margin-left: 7px;
+        background-size: 18px 18px;
+    }
+
+    .header:before {
+
+        width: 26px;
+        height: 21px;
+        margin-right: 8px;
+        background-size: 26px 21px;
+    }
+}
+
+@media screen and (min-width: 1201px) {
+
+    mat-list { width: 40%; }
+}
