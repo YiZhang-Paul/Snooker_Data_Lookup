@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerListComponent } from './player-list.component';
 
 @Component({ selector: 'app-option-card', template: '' })
@@ -59,7 +60,8 @@ describe('PlayerListComponent', () => {
                 MatTableModule,
                 MatIconModule,
                 MatSelectModule,
-                MatInputModule
+                MatInputModule,
+                MatProgressSpinnerModule
             ],
             declarations: [
 

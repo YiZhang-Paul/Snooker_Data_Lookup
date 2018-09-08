@@ -21,6 +21,8 @@ export class PlayerListComponent implements OnInit {
     private _sortedPlayers: IPlayer[] = [];
     private _categorizedPlayers: IPlayer[][] = [];
 
+    public isLoaded = false;
+
     constructor(
 
         @Inject(APP_CONFIG) private configuration,
@@ -78,8 +80,17 @@ export class PlayerListComponent implements OnInit {
     ngOnInit() {
 
         this.setupSearch();
-        this.lookup.players$.subscribe(players => this.setPlayers(this.toArray(players)));
         this._searchResult.subscribe(players => this.setPlayers(players));
+
+        this.lookup.players$.subscribe(players => {
+
+            this.setPlayers(this.toArray(players));
+
+            if (players.size > 0) {
+
+                this.isLoaded = true;
+            }
+        });
     }
 
     private setPlayers(players: IPlayer[]): void {

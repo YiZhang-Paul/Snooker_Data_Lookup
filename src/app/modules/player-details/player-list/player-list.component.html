@@ -1,3 +1,7 @@
+<div *ngIf="!isLoaded" class="spinner-wrapper">
+    <mat-spinner color="warn" [diameter]="60"></mat-spinner>
+</div>
+
 <div class="options">
     <mat-form-field class="year">
         <mat-select [value]="selectedYear"
