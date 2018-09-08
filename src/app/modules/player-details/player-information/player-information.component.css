@@ -1,0 +1,165 @@
+h2 {
+
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+/* material component style */
+mat-list {
+
+    margin: 0 auto;
+    border: 1px solid red;
+}
+
+mat-list-item {
+
+    color: black !important;
+    font-size: 0.75em !important;
+}
+
+/* player photo */
+.image-wrapper {
+
+    width: 17vh;
+    height: 17vh;
+    margin: 0 auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* field header style */
+.header:before {
+
+    width: 15px;
+    height: 12px;
+    content: '';
+    margin-right: 3px;
+    margin-bottom: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 15px 12px;
+}
+
+.gender-header:before, .country-header:before, .url-header:before, .twitter-header:before {
+
+    width: 13px;
+    height: 13px;
+    margin-right: 4px;
+    margin-left: 2px;
+    background-size: 13px 13px;
+}
+
+.name-header:before {
+
+    background-image: url(https://cdn3.iconfinder.com/data/icons/glyph/227/Profile-512.png);
+}
+
+.gender-header:before {
+
+    background-image: url(https://cdn0.iconfinder.com/data/icons/party-and-celebrations-8/128/214-512.png);
+}
+
+.year-header:before {
+
+    background-image: url(https://cdn3.iconfinder.com/data/icons/business-office-2/512/calendar_estimate_milestones-512.png);
+}
+
+.country-header:before {
+
+    background-image: url(https://images-na.ssl-images-amazon.com/images/I/41ihrDXyrwL.png);
+}
+
+.url-header:before {
+
+    background-image: url(https://cdn3.iconfinder.com/data/icons/seo-internet-marketing-flat-icons/250/web-code.png);
+}
+
+.twitter-header:before {
+
+    background-image: url(https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-512.png);
+}
+
+.long-text { display: none; }
+
+/* media queries */
+@media screen and (min-width: 401px) {
+
+    .header { font-weight: bold; }
+    mat-list-item { font-size: 1em !important; }
+}
+
+@media screen and (min-width: 541px) {
+
+    h2 { font-size: 2em; }
+}
+
+@media screen and (min-width: 721px) {
+
+    h2 { font-size: 2.5em; }
+    mat-list-item { font-size: 1.3em !important; }
+    .short-text { display: none; }
+    .long-text { display: inline; }
+
+    .header:before {
+
+        width: 23px;
+        height: 19px;
+        margin-right: 6px;
+        background-size: 23px 19px;
+    }
+
+    .gender-header:before, .country-header:before, .url-header:before, .twitter-header:before {
+
+        width: 19px;
+        height: 19px;
+        margin-right: 6px;
+        margin-left: 4px;
+        background-size: 19px 19px;
+    }
+}
+
+@media screen and (min-width: 851px) {
+
+    mat-list { width: 85%; }
+}
+
+@media screen and (min-width: 1025px) {
+
+    h2 {
+
+        font-size: 3em;
+        margin-bottom: 2%;
+    }
+
+    mat-list { width: 75%; }
+    mat-list-item { font-size: 1.5em !important; }
+
+    .header:before {
+
+        width: 26px;
+        height: 21px;
+        margin-right: 8px;
+        background-size: 26px 21px;
+    }
+
+    .gender-header:before, .country-header:before, .url-header:before, .twitter-header:before {
+
+        width: 21px;
+        height: 21px;
+        margin-right: 9px;
+        margin-left: 4px;
+        background-size: 21px 21px;
+    }
+}
+
+@media screen and (min-width: 1201px) {
+
+    mat-list { width: 70%; }
+}
+
+@media screen and (min-width: 1401px) {
+
+    mat-list { width: 50%; }
+}

@@ -1,10 +1,75 @@
-<h2>{{ player?.firstName }} {{ player?.lastName }}</h2>
-<p class="firstName">First Name: {{ player?.firstName }}</p>
-<p *ngIf="player?.middleName" class="middleName">Middle Name: {{ player?.middleName }}</p>
-<p class="lastName">Last Name: {{ player?.lastName }}</p>
-<p class="gender">Gender: {{ player?.sex }}</p>
-<p class="birth">Date of Birth: {{ player?.dateOfBirth }}</p>
-<p class="country">Country of Origin: {{ player?.nationality }}</p>
-<p *ngIf="player?.bioPage" class="bio">Bio Page: <a [href]="player?.bioPage | urlFormatter">{{ player?.bioPage }}</a></p>
-<p *ngIf="player?.website" class="website">Website: <a [href]="player?.website | urlFormatter">{{ player?.website }}</a></p>
-<p *ngIf="player?.twitter" class="twitter">Twitter: @{{ player?.twitter }}</p>
+<h2>{{ player?.fullName }}</h2>
+
+<div class="image-wrapper" [ngStyle]="{ 'background-image': 'url(' + player?.photo + ')' }"></div>
+
+<mat-list>
+    <mat-list-item>
+        <span class="header name-header">
+            <span class="long-text">First Name:</span>
+            <span class="short-text">First:</span>
+        </span>&nbsp;
+        <span class="name-content firstName">{{ player?.firstName }}</span>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="player?.middleName">
+        <span class="header name-header">
+            <span class="long-text">Middle Name:</span>
+            <span class="short-text">Middle:</span>
+        </span>&nbsp;
+        <span class="name-content middleName">{{ player?.middleName }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header name-header">
+            <span class="long-text">Last Name:</span>
+            <span class="short-text">Last:</span>
+        </span>&nbsp;
+        <span class="name-content lastName">{{ player?.lastName }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header gender-header">
+            <span class="long-text">Gender:</span>
+            <span class="short-text">Sex:</span>
+        </span>&nbsp;
+        <span class="gender-content gender">{{ player?.sex }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header year-header">
+            <span class="long-text">Date of Birth:</span>
+            <span class="short-text">D.O.B:</span>
+        </span>&nbsp;
+        <span class="year-content birth">{{ player?.dateOfBirth }}</span>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span class="header country-header">
+            <span class="long-text">Country of Origin:</span>
+            <span class="short-text">Nationality:</span>
+        </span>&nbsp;
+        <span class="country-content country">{{ player?.nationality }}</span>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="player?.bioPage">
+        <span class="header url-header">
+            <span class="long-text">Bio Page:</span>
+            <span class="short-text">Bio:</span>
+        </span>&nbsp;
+        <span class="url-content bio">
+            <a [href]="player?.bioPage | urlFormatter">{{ player?.bioPage }}</a>
+        </span>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="player?.website">
+        <span class="header url-header">Website:</span>&nbsp;
+        <span class="url-content website">
+            <a [href]="player?.website | urlFormatter">{{ player?.website }}</a>
+        </span>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="player?.twitter">
+        <span class="header twitter-header">Twitter: @</span>
+        <span class="twitter-content twitter">{{ player?.twitter }}</span>
+    </mat-list-item>
+</mat-list>
