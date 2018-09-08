@@ -7,6 +7,7 @@ import { queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerStatsComponent } from './player-stats.component';
 
 describe('PlayerStatsComponent', () => {
@@ -50,7 +51,12 @@ describe('PlayerStatsComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule, MatListModule],
+            imports: [
+
+                RouterTestingModule,
+                MatListModule,
+                MatProgressSpinnerModule
+            ],
             declarations: [PlayerStatsComponent],
             providers: [
 

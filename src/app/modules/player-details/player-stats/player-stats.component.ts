@@ -18,6 +18,8 @@ export class PlayerStatsComponent implements OnInit {
     private _highestRank: number;
     private _lowestRank: number;
 
+    public isLoaded = false;
+
     constructor(
 
         private routes: ActivatedRoute,
@@ -93,6 +95,7 @@ export class PlayerStatsComponent implements OnInit {
             this._currentRank = results[1];
             this._highestRank = results[2];
             this._lowestRank = results[3];
+            this.isLoaded = true;
         });
     }
 }
