@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { MatListModule } from '@angular/material/list';
 import { PlayerInformationComponent } from './player-information.component';
 
 @Pipe({ name: 'urlFormatter' })
@@ -28,7 +29,7 @@ describe('PlayerInformationComponent', () => {
         bioPage: 'bio.com',
         website: 'site.com',
         twitter: '@kDoe',
-        get shortFullName(): string { return 'John Doe'; }
+        get fullName(): string { return 'John M Doe'; }
     };
 
 
@@ -44,7 +45,7 @@ describe('PlayerInformationComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule],
+            imports: [RouterTestingModule, MatListModule],
             declarations: [
 
                 PlayerInformationComponent,
@@ -92,16 +93,16 @@ describe('PlayerInformationComponent', () => {
 
         fixture.detectChanges();
 
-        compareText('h2', player.shortFullName);
-        compareText('.firstName', `First Name: ${player.firstName}`);
-        compareText('.middleName', `Middle Name: ${player.middleName}`);
-        compareText('.lastName', `Last Name: ${player.lastName}`);
-        compareText('.gender', `Gender: ${player.sex}`);
-        compareText('.birth', `Date of Birth: ${player.dateOfBirth}`);
-        compareText('.country', `Country of Origin: ${player.nationality}`);
-        compareText('.bio', `Bio Page: ${player.bioPage}`);
-        compareText('.website', `Website: ${player.website}`);
-        compareText('.twitter', `Twitter: @${player.twitter}`);
+        compareText('h2', player.fullName);
+        compareText('.firstName', player.firstName);
+        compareText('.middleName', player.middleName);
+        compareText('.lastName', player.lastName);
+        compareText('.gender', player.sex);
+        compareText('.birth', player.dateOfBirth);
+        compareText('.country', player.nationality);
+        compareText('.bio', player.bioPage);
+        compareText('.website', player.website);
+        compareText('.twitter', player.twitter);
     });
 
     function setupParamMapSpy(map: object): void {

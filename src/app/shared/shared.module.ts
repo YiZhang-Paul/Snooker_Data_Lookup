@@ -22,6 +22,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { OptionCardComponent } from './components/option-card/option-card.component';
+import { UrlTruncatePipe } from './pipes/url-truncate.pipe';
 
 @NgModule({
     imports: [
@@ -45,7 +46,7 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatSidenavModule,
         MatListModule
     ],
-    declarations: [UrlFormatterPipe, OptionCardComponent],
+    declarations: [UrlFormatterPipe, OptionCardComponent, UrlTruncatePipe],
     providers: [DoughnutChartFactoryService],
     exports: [
         FormsModule,

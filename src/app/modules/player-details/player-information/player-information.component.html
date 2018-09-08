@@ -1,6 +1,8 @@
 <h2>{{ player?.fullName }}</h2>
 
-<div class="image-wrapper" [ngStyle]="{ 'background-image': 'url(' + player?.photo + ')' }"></div>
+<div *ngIf="player?.photo" class="image-wrapper"
+    [ngStyle]="{ 'background-image': 'url(' + player?.photo + ')' }">
+</div>
 
 <mat-list>
     <mat-list-item>
