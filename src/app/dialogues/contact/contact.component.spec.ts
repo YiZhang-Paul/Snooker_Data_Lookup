@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 import { ContactComponent } from './contact.component';
 
 describe('ContactComponent', () => {
@@ -11,7 +12,7 @@ describe('ContactComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [MatListModule],
+            imports: [MatListModule, MatIconModule],
             declarations: [ContactComponent]
 
         }).compileComponents();
