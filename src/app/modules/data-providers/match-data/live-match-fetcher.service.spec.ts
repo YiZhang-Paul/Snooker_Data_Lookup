@@ -9,7 +9,7 @@ describe('LiveMatchFetcherService', () => {
     let fetcher: LiveMatchFetcherService;
     const id = 203;
     const year = 2016;
-    const urlByPlayer = `http://api.snooker.org/?t=8&p=${id}&s=${year}`;
+    const urlByPlayer = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?t=8&p=${id}&s=${year}`;
 
     const rawData = [
 

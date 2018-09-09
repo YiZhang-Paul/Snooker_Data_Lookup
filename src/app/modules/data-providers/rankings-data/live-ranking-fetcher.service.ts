@@ -29,7 +29,7 @@ export class LiveRankingFetcherService {
 
     public fetch(year: number, type: string = 'MoneyRankings'): Observable<IRankData[]> {
 
-        const url = `https://cors.io?http://api.snooker.org/?rt=${type}&s=${year}`;
+        const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?rt=${type}&s=${year}`;
 
         return this.httpClient.get<object>(url).pipe(
 

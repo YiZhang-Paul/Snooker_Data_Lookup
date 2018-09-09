@@ -14,7 +14,7 @@ export class LiveEventFetcherService {
 
     public fetchById(id: number): Observable<ITournamentEvent> {
 
-        const url = `https://cors.io?http://api.snooker.org/?e=${id}`;
+        const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?e=${id}`;
 
         return this.httpClient.get<object>(url).pipe(
 
