@@ -26,7 +26,7 @@ export class LivePlayerFetcherService {
 
     public fetchById(id: number): Observable<IPlayer> {
 
-        const url = `http://api.snooker.org/?p=${id}`;
+        const url = `https://cors.io?http://api.snooker.org/?p=${id}`;
 
         return this.httpClient.get<object>(url).pipe(
 
@@ -38,7 +38,7 @@ export class LivePlayerFetcherService {
 
     public fetchByYear(year: number): Observable<IPlayer[]> {
 
-        const url = `http://api.snooker.org/?t=10&st=p&s=${year}`;
+        const url = `https://cors.io?http://api.snooker.org/?t=10&st=p&s=${year}`;
 
         return this.httpClient.get<object>(url).pipe(
 
