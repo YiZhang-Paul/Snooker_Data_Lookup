@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './layouts/home/home.component';
 import { SiteComponent } from './layouts/site/site.component';
+import { AboutComponent } from './dialogues/about/about.component';
+import { ContactComponent } from './dialogues/contact/contact.component';
 
 import { DataCacheService } from './shared/services/data-cache.service';
 import { CachingInterceptorService } from './shared/interceptors/caching-interceptor.service';
@@ -18,7 +20,9 @@ import { CachingInterceptorService } from './shared/interceptors/caching-interce
     declarations: [
         AppComponent,
         HomeComponent,
-        SiteComponent
+        SiteComponent,
+        AboutComponent,
+        ContactComponent
     ],
     imports: [
         BrowserModule,
@@ -32,6 +36,7 @@ import { CachingInterceptorService } from './shared/interceptors/caching-interce
         DataCacheService,
         { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptorService, multi: true}
     ],
+    entryComponents: [AboutComponent, ContactComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

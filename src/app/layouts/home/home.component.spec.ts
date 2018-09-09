@@ -1,31 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { HomeComponent } from './home.component';
-
-// tslint:disable:component-selector
-// tslint:disable:component-class-suffix
-// tslint:disable:directive-selector
-// tslint:disable:directive-class-suffix
-@Component({ selector: 'button', template: '' })
-class TestButton { @Input() matMenuTriggerFor: any; }
-
-@Component({ selector: 'mat-toolbar', template: '' })
-class TestMatToolbar { }
-
-@Component({ selector: 'mat-button', template: '' })
-class TestMatButton { }
-
-@Component({ selector: 'mat-mini-fab', template: '' })
-class TestMatMiniFab { }
-
-@Component({ selector: 'mat-icon', template: '' })
-class TestMatIcon { }
-
-@Component({ selector: 'mat-menu', template: '', exportAs: 'matMenu' })
-class TestMatMenu { }
-
-@Component({ selector: 'mat-menu-item', template: '' })
-class TestMatMenuItem { }
 
 @Component({ selector: 'app-option-card', template: '' })
 class TestOptionCardComponent { @Input() image: string; }
@@ -39,16 +19,17 @@ describe('HomeComponent', () => {
 
         TestBed.configureTestingModule({
 
+            imports: [
+
+                MatToolbarModule,
+                MatButtonModule,
+                MatIconModule,
+                MatMenuModule,
+                MatDialogModule
+            ],
             declarations: [
 
                 HomeComponent,
-                TestButton,
-                TestMatToolbar,
-                TestMatButton,
-                TestMatIcon,
-                TestMatMiniFab,
-                TestMatMenu,
-                TestMatMenuItem,
                 TestOptionCardComponent
             ]
 

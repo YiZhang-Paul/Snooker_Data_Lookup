@@ -20,6 +20,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { DoughnutChartFactoryService } from './services/doughnut-chart-factory.service';
 
@@ -49,7 +50,8 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatButtonToggleModule,
         MatSidenavModule,
         MatListModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatDialogModule
     ],
     declarations: [UrlFormatterPipe, UrlTruncatePipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
@@ -72,6 +74,7 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatSidenavModule,
         MatListModule,
         MatProgressSpinnerModule,
+        MatDialogModule,
         UrlFormatterPipe,
         UrlTruncatePipe,
         OptionCardComponent

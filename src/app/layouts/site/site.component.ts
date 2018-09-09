@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { AboutComponent } from '../../dialogues/about/about.component';
+import { ContactComponent } from '../../dialogues/contact/contact.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-site',
@@ -10,7 +13,12 @@ export class SiteComponent implements OnInit {
 
     private _buttonIds = ['players', 'rankings'];
 
-    constructor(private router: Router) { }
+    constructor(
+
+        private router: Router,
+        private dialog: MatDialog
+
+    ) { }
 
     ngOnInit(): void {
 
@@ -23,6 +31,16 @@ export class SiteComponent implements OnInit {
                 this.checkActiveButton((<NavigationEnd>event).url);
             }
         });
+    }
+
+    public openAboutDialog(): void {
+
+        this.dialog.open(AboutComponent);
+    }
+
+    public openContactDialog(): void {
+
+        this.dialog.open(ContactComponent);
     }
 
     private removeClass(id: string, className: string): void {

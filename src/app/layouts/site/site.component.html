@@ -15,8 +15,8 @@
             <div class="expanded-buttons">
                 <button mat-button routerLink="/site/players" id="players">Players</button>
                 <button mat-button routerLink="/site/rankings" id="rankings">Rankings</button>
-                <button mat-button>Contact</button>
-                <button mat-button>About</button>
+                <button mat-button (click)="openContactDialog()">Contact</button>
+                <button mat-button (click)="openAboutDialog()">About</button>
             </div>
         </mat-toolbar>
 
@@ -24,8 +24,8 @@
             <ng-template matMenuContent>
                 <button mat-menu-item routerLink="/site/players">Players</button>
                 <button mat-menu-item routerLink="/site/rankings">Rankings</button>
-                <button mat-menu-item>Contact</button>
-                <button mat-menu-item>About</button>
+                <button mat-menu-item (click)="openContactDialog()">Contact</button>
+                <button mat-menu-item (click)="openAboutDialog()">About</button>
             </ng-template>
         </mat-menu>
     </nav>
