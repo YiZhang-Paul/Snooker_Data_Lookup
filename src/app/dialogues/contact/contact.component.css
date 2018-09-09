@@ -5,6 +5,47 @@ a {
 
 h1 {
 
+    color: gold;
     margin-top: 2%;
     text-align: center;
+}
+
+/* contact list short form */
+.field {
+
+    color: tomato;
+}
+
+.value {
+
+    font-size: 0.7em;
+}
+
+.contact-long { display: none; }
+
+/* media queries */
+@media screen and (min-width: 371px) {
+
+    .contact-short { display: none; }
+    .contact-long { display: block; }
+
+    /* contact list long form */
+    .email-icon {
+
+        margin-left: 1px;
+        margin-right: 3px;
+    }
+
+    .github-link:before {
+
+        width: 19px;
+        height: 19px;
+        content: '';
+        display: inline-block;
+        margin-left: 3px;
+        margin-right: 5px;
+        vertical-align: middle;
+        background-size: 19px 19px;
+        background-image: url(/assets/GitHub-Mark-Light-64px.png);
+    }
 }
