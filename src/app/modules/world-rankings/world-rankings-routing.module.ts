@@ -3,12 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { RankingListComponent } from './ranking-list/ranking-list.component';
 
-const currentYear = new Date().getFullYear();
-
 export const worldRankingRoutes: Routes = [
 
     { path: ':year', component: RankingListComponent },
-    { path: '', redirectTo: `${currentYear}`, pathMatch: 'full' }
+    { path: '', redirectTo: '2018', pathMatch: 'full' }
 ];
 
 @NgModule({
