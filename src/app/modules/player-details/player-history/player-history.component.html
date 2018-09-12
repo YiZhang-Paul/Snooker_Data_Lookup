@@ -8,6 +8,9 @@
         [selected]="year === selectedYear"
         value="{{ year }}">{{ year }}</option>
 </select>
+
+<p #message class="message message-invisible">No history found for this year.</p>
+
 <ng-container *ngIf="histories">
     <div *ngFor="let history of histories">
         <app-match-history-listing

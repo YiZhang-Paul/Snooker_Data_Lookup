@@ -60,7 +60,15 @@ export class PlayerMatchHistoryLookupService {
 
         return this.matchLookup.getMatchesOfPlayer(id, year).pipe(
 
-            map(matches => this.groupByEvent(matches)),
+            map(matches => {
+
+                if (matches.length === 0) {
+
+                    throw new Error('no history found.');
+                }
+
+                return this.groupByEvent(matches);
+            }),
             mergeMap(groups => this.toHistories(groups)),
             map(histories => histories.filter(history => history.event)),
             catchError(() => of(new Array<IMatchHistory>()))
