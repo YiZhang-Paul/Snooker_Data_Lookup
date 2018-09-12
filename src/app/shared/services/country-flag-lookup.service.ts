@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { APP_CONFIG } from '../../app-config';
 
@@ -9,7 +9,7 @@ import { APP_CONFIG } from '../../app-config';
 })
 export class CountryFlagLookupService {
 
-    private _lookup: Map<string, string> = null;
+    private _flags: Map<string, string> = null;
 
     constructor(
 
@@ -18,44 +18,31 @@ export class CountryFlagLookupService {
 
     ) { }
 
-    private setLookup(): Observable<Map<string, string>> {
+    private setFlags(countryCodes: { [key: string]: string }): void {
 
-        const file = this.configuration.images.flags.lookup;
+        this._flags = new Map<string, string>();
 
-        return this.httpClient.get<object>(file).pipe(
+        Object.keys(countryCodes).forEach(code => {
 
-            map(data => {
-
-                this._lookup = new Map<string, string>();
-
-                Object.keys(data).forEach(key => {
-
-                    this._lookup.set(data[key].toLowerCase(), key.toLowerCase());
-                });
-
-                return this._lookup;
-            })
-        );
+            this._flags.set(countryCodes[code], `/assets/flags/${code}.png`);
+        });
     }
 
-    public getFlags(countries: string[]): Observable<Map<string, string>> {
+    public getFlag(country: string): Observable<string> {
 
-        return (this._lookup ? of(this._lookup) : this.setLookup()).pipe(
+        const file = this.configuration.images.flags.lookup;
+        country = country.toLowerCase();
 
-            map(lookup => {
+        return this.httpClient.get<{ [key: string]: string }>(file).pipe(
 
-                const flags = new Map<string, string>();
+            tap(countryCodes => {
 
-                countries.map(country => country.toLowerCase()).forEach(country => {
+                if (this._flags === null) {
 
-                    if (lookup.has(country)) {
-
-                        flags.set(country, `/assets/flags/${lookup.get(country)}.png`);
-                    }
-                });
-
-                return flags;
-            })
+                    this.setFlags(countryCodes);
+                }
+            }),
+            map(() => this._flags.has(country) ? this._flags.get(country) : null)
         );
     }
 }

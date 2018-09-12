@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CountryFlagLookupService } from './country-flag-lookup.service';
 
 describe('CountryFlagLookupService', () => {
@@ -9,12 +9,12 @@ describe('CountryFlagLookupService', () => {
 
     const lookupData = {
 
-        'AF': 'Afghanistan',
-        'AO': 'Angola',
-        'AU': 'Australia',
-        'BE': 'Belgium',
-        'BG': 'Bulgaria',
-        'BR': 'Brazil'
+        'af': 'afghanistan',
+        'ao': 'angola',
+        'au': 'australia',
+        'be': 'belgium',
+        'bg': 'bulgaria',
+        'br': 'brazil'
     };
 
     const targetFile = '/assets/flags/countries.json';
@@ -31,59 +31,38 @@ describe('CountryFlagLookupService', () => {
         lookup = TestBed.get(CountryFlagLookupService);
     });
 
+    afterEach(() => {
+
+        httpTestingController.verify();
+    });
+
     it('should be created', inject([CountryFlagLookupService], (service: CountryFlagLookupService) => {
 
         expect(service).toBeTruthy();
     }));
 
-    it('should load flag urls properly', () => {
+    it('should ignore letter casing', () => {
 
-        const countries = ['Brazil', 'Bulgaria', 'Angola'];
+        lookup.getFlag('BrAZil').subscribe(data => {
 
-        lookup.getFlags(countries).subscribe(data => {
+            expect(data).toEqual('/assets/flags/br.png');
+        });
 
-            expect(data.size).toEqual(countries.length);
+        httpTestingController.expectOne(targetFile).flush(lookupData);
 
-            countries.forEach(country => {
+        lookup.getFlag('ANGOLA').subscribe(data => {
 
-                expect(data.has(country.toLowerCase())).toBeTruthy();
-            });
+            expect(data).toEqual('/assets/flags/ao.png');
         });
 
         httpTestingController.expectOne(targetFile).flush(lookupData);
     });
 
-    it('should ignore letter casing for country lookups', () => {
+    it('should return null for unsupported countries', () => {
 
-        const countries = ['BrAZiL', 'bulgaria', 'ANGOLA'];
+        lookup.getFlag('three-body').subscribe(data => {
 
-        lookup.getFlags(countries).subscribe(data => {
-
-            expect(data.size).toEqual(countries.length);
-
-            countries.forEach(country => {
-
-                expect(data.has(country.toLowerCase())).toBeTruthy();
-            });
-        });
-
-        httpTestingController.expectOne(targetFile).flush(lookupData);
-    });
-
-    it('should not include unsupported countries in final result', () => {
-
-        const countries = ['Brazil', 'Bulgaria', 'China'];
-
-        lookup.getFlags(countries).subscribe(data => {
-            // China is not supported here
-            expect(data.size).toEqual(countries.length - 1);
-
-            countries.slice(0, 2).forEach(country => {
-
-                expect(data.has(country.toLowerCase())).toBeTruthy();
-            });
-
-            expect(data.has('china')).toBeFalsy();
+            expect(data).toBeNull();
         });
 
         httpTestingController.expectOne(targetFile).flush(lookupData);
