@@ -1,13 +1,9 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>
-            <button mat-button [routerLink]="link">{{ title }}</button>
-        </mat-card-title>
-    </mat-card-header>
+<div class="card">
+    <button mat-button [routerLink]="link">{{ title }}</button>
     <div class="image-wrapper">
         <a [routerLink]="link"><img mat-card-image [src]="image"></a>
     </div>
-    <mat-card-content>
+    <div class="main-content">
         <ng-content></ng-content>
-    </mat-card-content>
-</mat-card>
+    </div>
+</div>
