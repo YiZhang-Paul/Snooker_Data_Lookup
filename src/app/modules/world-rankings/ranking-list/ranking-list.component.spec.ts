@@ -9,6 +9,7 @@ import { worldRankingRoutes } from '../world-rankings-routing.module';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -34,6 +35,7 @@ describe('RankingListComponent', () => {
     let rankingLookup: jasmine.SpyObj<RankingLookupService>;
     let getRankingsSpy: jasmine.Spy;
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
+    let flagLookup: jasmine.SpyObj<CountryFlagLookupService>;
     let routes: ActivatedRoute;
     let router: Router;
     let paramMapSpy: jasmine.Spy;
@@ -62,6 +64,7 @@ describe('RankingListComponent', () => {
 
     beforeEach(() => {
 
+        flagLookup = jasmine.createSpyObj('CountryFlagLookupService', ['getFlags']);
         setupRankingLookup(rankData);
         setupPlayerLookup(players);
 
@@ -86,7 +89,8 @@ describe('RankingListComponent', () => {
             providers: [
 
                 { provide: RankingLookupService, useValue: rankingLookup },
-                { provide: PlayerLookupService, useValue: playerLookup }
+                { provide: PlayerLookupService, useValue: playerLookup },
+                { provide: CountryFlagLookupService, useValue: flagLookup }
             ]
         });
 

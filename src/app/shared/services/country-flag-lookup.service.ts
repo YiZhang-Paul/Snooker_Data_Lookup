@@ -30,7 +30,7 @@ export class CountryFlagLookupService {
 
                 Object.keys(data).forEach(key => {
 
-                    this._lookup.set(data[key].toLowerCase(), key);
+                    this._lookup.set(data[key].toLowerCase(), key.toLowerCase());
                 });
 
                 return this._lookup;

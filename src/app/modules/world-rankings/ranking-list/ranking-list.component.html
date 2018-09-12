@@ -41,7 +41,10 @@
 
         <ng-container matColumnDef="nationality">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-label">Nationality</th>
-            <td mat-cell *matCellDef="let ranking">{{ ranking.nationality }}</td>
+            <td mat-cell *matCellDef="let ranking">
+                <img *ngIf="flags$" [src]="(flags$ | async)?.get(ranking.nationality.toLowerCase())">
+                {{ ranking.nationality }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="earnings">
