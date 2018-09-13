@@ -8,6 +8,7 @@ import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.inte
 import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { APP_CONFIG } from '../../../app-config';
 
 @Component({
@@ -20,6 +21,7 @@ export class RankingListComponent implements OnInit {
     private _activeYear: number;
     private _headings = ['rank', 'name', 'nationality', 'earnings'];
     private _rankings = new MatTableDataSource(<IRankDetail[]>[]);
+    private _flags: Map<string, string> = null;
 
     public canSelect = false;
     public isLoaded = false;
@@ -33,7 +35,8 @@ export class RankingListComponent implements OnInit {
         private routes: ActivatedRoute,
         private router: Router,
         private rankingLookup: RankingLookupService,
-        private playerLookup: PlayerLookupService
+        private playerLookup: PlayerLookupService,
+        private flagLookup: CountryFlagLookupService
 
     ) { }
 
@@ -67,7 +70,17 @@ export class RankingListComponent implements OnInit {
         return this._rankings;
     }
 
+    get flags(): Map<string, string> {
+
+        return this._flags;
+    }
+
     ngOnInit(): void {
+
+        this.flagLookup.getFlags().subscribe(flags => {
+
+            this._flags = flags;
+        });
 
         this.routes.paramMap.subscribe(paramMap => {
 

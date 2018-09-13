@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input, Output, EventEmitter, DebugElement } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -9,6 +9,7 @@ import { worldRankingRoutes } from '../world-rankings-routing.module';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -34,6 +35,8 @@ describe('RankingListComponent', () => {
     let rankingLookup: jasmine.SpyObj<RankingLookupService>;
     let getRankingsSpy: jasmine.Spy;
     let playerLookup: jasmine.SpyObj<PlayerLookupService>;
+    let flagLookup: jasmine.SpyObj<CountryFlagLookupService>;
+    let getFlags$Spy: jasmine.Spy;
     let routes: ActivatedRoute;
     let router: Router;
     let paramMapSpy: jasmine.Spy;
@@ -64,6 +67,7 @@ describe('RankingListComponent', () => {
 
         setupRankingLookup(rankData);
         setupPlayerLookup(players);
+        setupFlagLookup();
 
         TestBed.configureTestingModule({
 
@@ -86,7 +90,8 @@ describe('RankingListComponent', () => {
             providers: [
 
                 { provide: RankingLookupService, useValue: rankingLookup },
-                { provide: PlayerLookupService, useValue: playerLookup }
+                { provide: PlayerLookupService, useValue: playerLookup },
+                { provide: CountryFlagLookupService, useValue: flagLookup }
             ]
         });
 
@@ -182,13 +187,14 @@ describe('RankingListComponent', () => {
         playerLookup.getPlayers.and.returnValue(of(getPlayerLookupMap(input)));
     }
 
+    function setupFlagLookup(): void {
+
+        flagLookup = jasmine.createSpyObj('CountryFlagLookupService', ['getFlags']);
+        getFlags$Spy = flagLookup.getFlags.and.returnValue(of(new Map<string, string>()));
+    }
+
     function setupRoutesSpy(map: ParamMap): void {
 
         paramMapSpy = spyOnProperty(routes, 'paramMap').and.returnValue(of(map));
-    }
-
-    function compareText(debugElement: DebugElement, expected: string): void {
-
-        expect(debugElement.nativeElement.textContent).toEqual(expected);
     }
 });
