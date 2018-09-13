@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
+import { PlayerDataFixerService } from './player-data-fixer.service';
 import { recordToPlayer } from './player';
 
 @Injectable({
@@ -10,7 +11,17 @@ import { recordToPlayer } from './player';
 })
 export class LivePlayerFetcherService {
 
-    constructor(private httpClient: HttpClient) { }
+    constructor(
+
+        private httpClient: HttpClient,
+        private fixer: PlayerDataFixerService
+
+    ) { }
+
+    protected toPlayer(record: object): IPlayer {
+
+        return this.fixer.fix(recordToPlayer(record));
+    }
 
     protected toPlayers(records: object[]): IPlayer[] {
 
@@ -18,7 +29,7 @@ export class LivePlayerFetcherService {
 
         for (const record of records) {
 
-            players.push(recordToPlayer(record));
+            players.push(this.toPlayer(record));
         }
 
         return players;
@@ -31,7 +42,7 @@ export class LivePlayerFetcherService {
         return this.httpClient.get<object>(url).pipe(
 
             retry(2),
-            map(record => recordToPlayer(record[0])),
+            map(record => this.toPlayer(record[0])),
             catchError(() => of(null))
         );
     }
