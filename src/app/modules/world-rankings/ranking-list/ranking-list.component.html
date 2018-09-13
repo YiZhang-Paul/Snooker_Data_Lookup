@@ -42,7 +42,7 @@
         <ng-container matColumnDef="nationality">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-label">Nationality</th>
             <td mat-cell *matCellDef="let ranking">
-                <div *ngIf="flags" class="country-flag"
+                <div *ngIf="flags && flags.has(ranking.nationality.toLowerCase())" class="country-flag"
                     [ngStyle]="{ 'background-image': 'url(' + flags.get(ranking.nationality.toLowerCase()) + ')' }">
                 </div>
                 {{ ranking.nationality }}

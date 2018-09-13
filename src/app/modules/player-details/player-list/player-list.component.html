@@ -22,8 +22,9 @@
             disableOptionCentering class="select">
             <mat-option>All</mat-option>
             <mat-option *ngFor="let nationality of nationalities" [value]="nationality">
-                <div *ngIf="flags" class="country-flag-small"
-                    [ngStyle]="{ 'background-image': 'url(' + flags.get(nationality.toLowerCase()) + ')' }">
+                <div *ngIf="flags && flags.has(nationality.toLowerCase())"
+                    [ngStyle]="{ 'background-image': 'url(' + flags.get(nationality.toLowerCase()) + ')' }"
+                    class="country-flag-small">
                 </div>
                 {{ nationality }}
             </mat-option>
@@ -44,8 +45,9 @@
                         {{ category[0].firstName[0] | uppercase }}
                     </th>
                     <td mat-cell *matCellDef="let player">
-                        <div *ngIf="flags" class="country-flag-medium"
-                            [ngStyle]="{ 'background-image': 'url(' + flags.get(player.nationality.toLowerCase()) + ')' }">
+                        <div *ngIf="flags && flags.has(player.nationality.toLowerCase())"
+                            [ngStyle]="{ 'background-image': 'url(' + flags.get(player.nationality.toLowerCase()) + ')' }"
+                            class="country-flag-medium">
                         </div>
                         <a [routerLink]="'../' + player.id" class="player-link">
                             {{ player.fullName }}<mat-icon class="enter-arrow">arrow_left</mat-icon>
@@ -70,8 +72,9 @@
                     <div [ngStyle]="{ 'background-image': 'url(' + player.photo + ')' }" class="image-wrapper"></div>
                 </ng-template>
 
-                <div *ngIf="flags" class="country-flag-large"
-                    [ngStyle]="{ 'background-image': 'url(' + flags.get(player.nationality.toLowerCase()) + ')' }">
+                <div *ngIf="flags && flags.has(player.nationality.toLowerCase())"
+                    [ngStyle]="{ 'background-image': 'url(' + flags.get(player.nationality.toLowerCase()) + ')' }"
+                    class="country-flag-large">
                 </div>
             </div>
         </div>
