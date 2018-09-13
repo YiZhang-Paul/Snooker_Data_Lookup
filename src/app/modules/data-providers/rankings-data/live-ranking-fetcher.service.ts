@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 import { IRankData } from './rank-data.interface';
 import { RankData } from './rank-data';
+import { attachCorsProxy } from '../../../app-config';
 
 @Injectable({
     providedIn: 'root'
@@ -29,7 +30,7 @@ export class LiveRankingFetcherService {
 
     public fetch(year: number, type: string = 'MoneyRankings'): Observable<IRankData[]> {
 
-        const url = `http://api.snooker.org/?rt=${type}&s=${year}`;
+        const url = attachCorsProxy(`http://api.snooker.org/?rt=${type}&s=${year}`);
 
         return this.httpClient.get<object>(url).pipe(
 

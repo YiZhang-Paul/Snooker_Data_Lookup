@@ -3,9 +3,11 @@ import { InjectionToken } from '@angular/core';
 // tslint:disable:max-line-length
 export const startYear = 2013;
 
-const configuration = {
+export const configuration = {
 
     startYear,
+    useCorsProxy: false, // for debug purpose only
+    corsProxyUrl: 'https://cors-anywhere.herokuapp.com/',
 
     images: {
 
@@ -21,6 +23,16 @@ const configuration = {
         }
     }
 };
+
+export function attachCorsProxy(url: string): string {
+
+    if (!configuration.useCorsProxy) {
+
+        return url;
+    }
+
+    return `${configuration.corsProxyUrl}${url}`;
+}
 
 export const APP_CONFIG = new InjectionToken(
 

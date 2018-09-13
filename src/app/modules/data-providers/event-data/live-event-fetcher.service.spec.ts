@@ -2,13 +2,14 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ITournamentEvent } from './tournament-event.interface';
 import { LiveEventFetcherService } from './live-event-fetcher.service';
+import { attachCorsProxy } from '../../../app-config';
 
 describe('LiveEventFetcherService', () => {
 
     let httpTestingController: HttpTestingController;
     let fetcher: LiveEventFetcherService;
     const id = 479;
-    const urlById = `http://api.snooker.org/?e=${id}`;
+    const urlById = attachCorsProxy(`http://api.snooker.org/?e=${id}`);
 
     const rawData = [{
 

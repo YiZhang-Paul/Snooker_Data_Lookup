@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IPlayer } from './player.interface';
 import { PlayerDataFixerService } from './player-data-fixer.service';
 import { LivePlayerFetcherService } from './live-player-fetcher.service';
+import { attachCorsProxy } from '../../../app-config';
 
 describe('LivePlayerFetcherService', () => {
 
@@ -12,8 +13,8 @@ describe('LivePlayerFetcherService', () => {
     let fixSpy: jasmine.Spy;
     const id = 109;
     const year = 2017;
-    const urlById = `http://api.snooker.org/?p=${id}`;
-    const urlByYear = `http://api.snooker.org/?t=10&st=p&s=${year}`;
+    const urlById = attachCorsProxy(`http://api.snooker.org/?p=${id}`);
+    const urlByYear = attachCorsProxy(`http://api.snooker.org/?t=10&st=p&s=${year}`);
 
     const rawData = [{
 

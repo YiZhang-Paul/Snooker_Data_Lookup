@@ -2,6 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { IMatch } from './match.interface';
 import { LiveMatchFetcherService } from './live-match-fetcher.service';
+import { attachCorsProxy } from '../../../app-config';
 
 describe('LiveMatchFetcherService', () => {
 
@@ -9,7 +10,7 @@ describe('LiveMatchFetcherService', () => {
     let fetcher: LiveMatchFetcherService;
     const id = 203;
     const year = 2016;
-    const urlByPlayer = `http://api.snooker.org/?t=8&p=${id}&s=${year}`;
+    const urlByPlayer = attachCorsProxy(`http://api.snooker.org/?t=8&p=${id}&s=${year}`);
 
     const rawData = [
 
