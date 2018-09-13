@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -65,32 +65,36 @@ describe('PlayerHistoryComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should load match history for current season on default when successfully retrieved player id', () => {
+    it('should load match history for current season on default when successfully retrieved player id', fakeAsync(() => {
 
         expect(component.histories).not.toEqual(historyOne);
 
         fixture.detectChanges();
+        tick();
 
         expect(component.selectedYear).toEqual(expectedYear);
         expect(component.histories).toEqual(historyOne);
         expect(getMatchHistoriesSpy).toHaveBeenCalledTimes(1);
-    });
+    }));
 
-    it('should not load match history when player id cannot be retrieved', () => {
+    it('should not load match history when player id cannot be retrieved', fakeAsync(() => {
 
         setupParamMapSpy({ foo: 1 });
         expect(component.histories).not.toEqual(historyOne);
 
         fixture.detectChanges();
+        tick();
 
         expect(component.histories).not.toEqual(historyOne);
         expect(getMatchHistoriesSpy).toHaveBeenCalledTimes(1);
-    });
+    }));
 
-    it('should load match history for selected year', () => {
+    it('should load match history for selected year', fakeAsync(() => {
 
         fixture.detectChanges();
-        expect(component.histories).toEqual(historyOne);
+        tick();
+
+        expect(component.histories).not.toEqual(historyTwo);
 
         component.onYearSelected('2015');
         fixture.detectChanges();
@@ -98,7 +102,7 @@ describe('PlayerHistoryComponent', () => {
         expect(component.selectedYear).toEqual(2015);
         expect(component.histories).toEqual(historyTwo);
         expect(getMatchHistoriesSpy).toHaveBeenCalledTimes(2);
-    });
+    }));
 
     function setupHistoryLookup(response: IMatchHistory[]): void {
 

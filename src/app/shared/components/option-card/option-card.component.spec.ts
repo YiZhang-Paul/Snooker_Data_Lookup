@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { queryByDirective } from '../../../../testing/custom-test-utilities';
-import { MatCardModule } from '@angular/material/card';
 import { OptionCardComponent } from './option-card.component';
 
 @Component({
@@ -32,7 +31,6 @@ describe('OptionCardComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [MatCardModule],
             declarations: [
 
                 RouterLinkStubDirective,

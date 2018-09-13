@@ -13,3 +13,18 @@
     left: calc(40vw - 30px);
     display: fixed;
 }
+
+/* error message */
+.message {
+
+    color: red;
+    margin-top: 15%;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.message-invisible {
+
+    display: none;
+}

@@ -1,12 +1,13 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DebugElement, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { RouterLinkStubDirective } from '../../../../testing/router-link-stub-directive';
 import { triggerNativeEventByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerFilterService } from './player-filter.service';
+import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,10 +41,12 @@ describe('PlayerListComponent', () => {
 
     let fixture: ComponentFixture<PlayerListComponent>;
     let component: PlayerListComponent;
-    let lookup: PlayerLookupService;
+    let playerLookup: PlayerLookupService;
     let players$Spy: jasmine.Spy;
     let getPlayersSpy: jasmine.Spy;
     let filter: jasmine.SpyObj<PlayerFilterService>;
+    let flagLookup: jasmine.SpyObj<CountryFlagLookupService>;
+    let getFlags$Spy: jasmine.Spy;
     const sortedPlayers = [players[1], players[0], players[2]];
     const categorizedPlayers = [[players[1]], [players[0], players[2]]];
 
@@ -51,6 +54,7 @@ describe('PlayerListComponent', () => {
 
         setupPlayerLookup(players);
         setupPlayerFilter();
+        setupFlagLookup();
 
         TestBed.configureTestingModule({
 
@@ -71,8 +75,9 @@ describe('PlayerListComponent', () => {
             ],
             providers: [
 
-                { provide: PlayerLookupService, useValue: lookup },
-                { provide: PlayerFilterService, useValue: filter }
+                { provide: PlayerLookupService, useValue: playerLookup },
+                { provide: PlayerFilterService, useValue: filter },
+                { provide: CountryFlagLookupService, useValue: flagLookup }
             ]
 
         }).compileComponents();
@@ -178,11 +183,6 @@ describe('PlayerListComponent', () => {
         expect(component.sortedPlayers.length).toEqual(2);
     }));
 
-    function compareText(debugElement: DebugElement, expected: string): void {
-
-        expect(debugElement.nativeElement.textContent).toEqual(expected);
-    }
-
     function toMap(data: IPlayer[]): Map<number, IPlayer> {
 
         const map = new Map<number, IPlayer>();
@@ -197,9 +197,9 @@ describe('PlayerListComponent', () => {
 
     function setupPlayerLookup(data: IPlayer[]): void {
 
-        lookup = new PlayerLookupService(null);
-        players$Spy = spyOnProperty(lookup, 'players$');
-        getPlayersSpy = spyOn(lookup, 'getPlayers');
+        playerLookup = new PlayerLookupService(null);
+        players$Spy = spyOnProperty(playerLookup, 'players$');
+        getPlayersSpy = spyOn(playerLookup, 'getPlayers');
         players$Spy.and.returnValue(of(toMap(data)));
         getPlayersSpy.and.returnValue(of(toMap(data.slice(1))));
     }
@@ -232,5 +232,11 @@ describe('PlayerListComponent', () => {
                     player.nationality !== 'china';
             });
         });
+    }
+
+    function setupFlagLookup(): void {
+
+        flagLookup = jasmine.createSpyObj('CountryFlagLookupService', ['getFlags']);
+        getFlags$Spy = flagLookup.getFlags.and.returnValue(of(new Map<string, string>()));
     }
 });
