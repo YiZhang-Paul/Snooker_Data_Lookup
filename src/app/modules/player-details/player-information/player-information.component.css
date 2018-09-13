@@ -134,11 +134,25 @@ mat-list-item {
     background-image: url(http://icons.iconarchive.com/icons/custom-icon-design/flatastic-7/256/Male-icon.png);
 }
 
+/* nationality field */
+.country-flag {
+
+    display: none;
+    width: 21px;
+    height: 14px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 1px;
+    background-size: cover;
+    background-position: center;
+}
+
 .long-text { display: none; }
 
 /* media queries */
 @media screen and (min-width: 311px) {
 
+    .country-flag { display: inline-block; }
     mat-list { width: 80%; }
 }
 
@@ -177,6 +191,13 @@ mat-list-item {
     mat-list-item { font-size: 1.3em !important; }
     .short-text { display: none; }
     .long-text { display: inline; }
+
+    .country-flag {
+
+        width: 25px;
+        height: 19px;
+        margin-right: 3px;
+    }
 
     .header:before {
 

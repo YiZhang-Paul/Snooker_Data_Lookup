@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { queryByCss } from '../../../../testing/custom-test-utilities';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
+import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlayerInformationComponent } from './player-information.component';
@@ -44,11 +45,14 @@ describe('PlayerInformationComponent', () => {
     let component: PlayerInformationComponent;
     let routes: ActivatedRoute;
     let routesParentSpy: jasmine.Spy;
-    let lookup: jasmine.SpyObj<PlayerLookupService>;
+    let playerLookup: jasmine.SpyObj<PlayerLookupService>;
+    let flagLookup: jasmine.SpyObj<CountryFlagLookupService>;
+    let getFlag$Spy: jasmine.Spy;
 
     beforeEach(async(() => {
 
         setupGetPlayerSpy(player.id, player);
+        setupFlagLookup();
 
         TestBed.configureTestingModule({
 
@@ -66,7 +70,8 @@ describe('PlayerInformationComponent', () => {
             ],
             providers: [
 
-                { provide: PlayerLookupService, useValue: lookup }
+                { provide: PlayerLookupService, useValue: playerLookup },
+                { provide: CountryFlagLookupService, useValue: flagLookup }
             ]
 
         }).compileComponents();
@@ -129,12 +134,18 @@ describe('PlayerInformationComponent', () => {
 
     function setupGetPlayerSpy(expectedId: number, response: IPlayer): void {
 
-        lookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayer']);
+        playerLookup = jasmine.createSpyObj('PlayerLookupService', ['getPlayer']);
 
-        lookup.getPlayer.and.callFake(targetId => {
+        playerLookup.getPlayer.and.callFake(targetId => {
 
             return of(targetId === expectedId ? response : null);
         });
+    }
+
+    function setupFlagLookup(): void {
+
+        flagLookup = jasmine.createSpyObj('CountryFlagLookupService', ['getFlag']);
+        getFlag$Spy = flagLookup.getFlag.and.returnValue(of(''));
     }
 
     function compareText(css: string, expected: string): void {

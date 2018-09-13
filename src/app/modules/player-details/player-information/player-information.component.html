@@ -54,6 +54,9 @@
             <span class="long-text">Country of Origin:</span>
             <span class="short-text">Nationality:</span>
         </span>&nbsp;
+        <div *ngIf="flag" class="country-flag"
+            [ngStyle]="{ 'background-image': 'url(' + flag + ')' }">
+        </div>
         <span class="country-content country">{{ player?.nationality }}</span>
     </mat-list-item>
 
