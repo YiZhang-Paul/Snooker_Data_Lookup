@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { IRankData } from '../../data-providers/rankings-data/rank-data.interface';
@@ -9,7 +8,6 @@ import { IRankDetail } from '../../data-providers/rankings-data/rank-detail.inte
 import { RankDetail } from '../../data-providers/rankings-data/rank-detail';
 import { RankingLookupService } from '../../data-providers/rankings-data/ranking-lookup.service';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
-import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { APP_CONFIG } from '../../../app-config';
 
 @Component({
@@ -22,7 +20,6 @@ export class RankingListComponent implements OnInit {
     private _activeYear: number;
     private _headings = ['rank', 'name', 'nationality', 'earnings'];
     private _rankings = new MatTableDataSource(<IRankDetail[]>[]);
-    private _flags$: Observable<Map<string, string>> = null;
 
     public canSelect = false;
     public isLoaded = false;
@@ -36,8 +33,7 @@ export class RankingListComponent implements OnInit {
         private routes: ActivatedRoute,
         private router: Router,
         private rankingLookup: RankingLookupService,
-        private playerLookup: PlayerLookupService,
-        private flagLookup: CountryFlagLookupService
+        private playerLookup: PlayerLookupService
 
     ) { }
 
@@ -69,11 +65,6 @@ export class RankingListComponent implements OnInit {
     get rankings(): MatTableDataSource<IRankDetail> {
 
         return this._rankings;
-    }
-
-    get flags$(): Observable<Map<string, string>> {
-
-        return this._flags$;
     }
 
     ngOnInit(): void {
@@ -118,13 +109,6 @@ export class RankingListComponent implements OnInit {
         this.paginator.pageSizeOptions = [5, 10, 25, 50, 100, total];
     }
 
-    private setFlags(rankings: IRankDetail[]): void {
-
-        const countries = rankings.map(ranking => ranking.nationality.toLowerCase());
-
-        this._flags$ = this.flagLookup.getFlags(Array.from(new Set(countries)));
-    }
-
     private setRankDetails(rankData: IRankData[]): void {
 
         this.playerLookup.getPlayers(this._activeYear).pipe(
@@ -133,7 +117,6 @@ export class RankingListComponent implements OnInit {
 
         ).subscribe(rankDetails => {
 
-            this.setFlags(rankDetails);
             this.setPaginator(rankDetails.length);
             this._rankings = new MatTableDataSource(rankDetails);
             this._rankings.paginator = this.paginator;

@@ -54,8 +54,6 @@ describe('CountryFlagLookupService', () => {
 
             expect(data).toEqual('/assets/flags/ao.png');
         });
-
-        httpTestingController.expectOne(targetFile).flush(lookupData);
     });
 
     it('should return null for unsupported countries', () => {
@@ -63,6 +61,21 @@ describe('CountryFlagLookupService', () => {
         lookup.getFlag('three-body').subscribe(data => {
 
             expect(data).toBeNull();
+        });
+
+        httpTestingController.expectOne(targetFile).flush(lookupData);
+    });
+
+    it('should return all supported flags', () => {
+
+        lookup.getFlags().subscribe(data => {
+
+            expect(data.size).toEqual(Object.keys(lookupData).length);
+
+            Object.keys(lookupData).forEach(key => {
+
+                expect(data.has(lookupData[key])).toBeTruthy();
+            });
         });
 
         httpTestingController.expectOne(targetFile).flush(lookupData);
