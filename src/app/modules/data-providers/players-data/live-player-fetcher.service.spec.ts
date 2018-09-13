@@ -1,12 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { IPlayer } from './player.interface';
+import { PlayerDataFixerService } from './player-data-fixer.service';
 import { LivePlayerFetcherService } from './live-player-fetcher.service';
 
 describe('LivePlayerFetcherService', () => {
 
     let httpTestingController: HttpTestingController;
     let fetcher: LivePlayerFetcherService;
+    let fixer: jasmine.SpyObj<PlayerDataFixerService>;
+    let fixSpy: jasmine.Spy;
     const id = 109;
     const year = 2017;
     const urlById = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?p=${id}`;
@@ -30,10 +33,16 @@ describe('LivePlayerFetcherService', () => {
 
     beforeEach(() => {
 
+        setupDataFixer();
+
         TestBed.configureTestingModule({
 
             imports: [HttpClientTestingModule],
-            providers: [LivePlayerFetcherService]
+            providers: [
+
+                LivePlayerFetcherService,
+                { provide: PlayerDataFixerService, useValue: fixer }
+            ]
         });
 
         httpTestingController = TestBed.get(HttpTestingController);
@@ -58,6 +67,7 @@ describe('LivePlayerFetcherService', () => {
         });
 
         httpTestingController.expectOne(urlById).flush([rawData[0]]);
+        expect(fixSpy).toHaveBeenCalledTimes(1);
     });
 
     it('fetchById() should retry 2 times before returning null on failure', () => {
@@ -81,6 +91,7 @@ describe('LivePlayerFetcherService', () => {
         });
 
         httpTestingController.expectOne(urlByYear).flush(rawData);
+        expect(fixSpy).toHaveBeenCalledTimes(response.length);
     });
 
     it('fetchByYear() should retry 2 times before returning null on failure', () => {
@@ -95,4 +106,10 @@ describe('LivePlayerFetcherService', () => {
             httpTestingController.expectOne(urlByYear).error(null);
         }
     });
+
+    function setupDataFixer(): void {
+
+        fixer = jasmine.createSpyObj('PlayerDataFixerService', ['fix']);
+        fixSpy = fixer.fix.and.callFake(player => player);
+    }
 });
