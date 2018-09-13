@@ -87,8 +87,10 @@ mat-form-field {
     text-align: center;
     display: inline-block;
     border-radius: 10px;
-    border: 1px solid gold;
-    background-color: rgb(88, 93, 109);
+    border: 2px solid gold;
+    background-image: url(https://images.designtrends.com/wp-content/uploads/2016/10/14093648/Dark-Black-Wood-Texture-.jpg);
+    background-size: cover;
+    background-position: center;
 }
 
 .player-block .mat-button {
@@ -118,6 +120,39 @@ mat-form-field {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+
+.country-flag-small, .country-flag-medium, .country-flag-large {
+
+    background-size: cover;
+    background-position: center;
+}
+
+.country-flag-small, .country-flag-medium {
+
+    width: 19px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 2px;
+    margin-right: 1px;
+    vertical-align: middle;
+}
+
+.country-flag-medium {
+
+    width: 21px;
+    height: 14px;
+    margin-right: 5px;
+}
+
+.country-flag-large {
+
+    width: 29%;
+    height: 17%;
+    border-radius: 3px;
+    margin: 0 auto;
+    margin-top: 1.5%;
+    border: 1px solid gold;
 }
 
 /* grids */

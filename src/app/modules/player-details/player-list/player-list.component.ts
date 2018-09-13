@@ -4,6 +4,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operato
 import { IPlayer } from '../../data-providers/players-data/player.interface';
 import { PlayerLookupService } from '../../data-providers/players-data/player-lookup.service';
 import { PlayerFilterService } from './player-filter.service';
+import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { APP_CONFIG } from '../../../app-config';
 
 @Component({
@@ -20,14 +21,16 @@ export class PlayerListComponent implements OnInit {
     private _searchResult: Observable<IPlayer[]>;
     private _sortedPlayers: IPlayer[] = [];
     private _categorizedPlayers: IPlayer[][] = [];
+    private _flags: Map<string, string> = null;
 
     public isLoaded = false;
 
     constructor(
 
         @Inject(APP_CONFIG) private configuration,
-        private lookup: PlayerLookupService,
-        private filter: PlayerFilterService
+        private playerLookup: PlayerLookupService,
+        private filter: PlayerFilterService,
+        private flagLookup: CountryFlagLookupService
 
     ) { }
 
@@ -77,12 +80,17 @@ export class PlayerListComponent implements OnInit {
         return this._categorizedPlayers;
     }
 
+    get flags(): Map<string, string> {
+
+        return this._flags;
+    }
+
     ngOnInit() {
 
         this.setupSearch();
         this._searchResult.subscribe(players => this.setPlayers(players));
 
-        this.lookup.players$.subscribe(players => {
+        this.playerLookup.players$.subscribe(players => {
 
             this.setPlayers(this.toArray(players));
 
@@ -90,6 +98,11 @@ export class PlayerListComponent implements OnInit {
 
                 this.isLoaded = true;
             }
+        });
+
+        this.flagLookup.getFlags().subscribe(flags => {
+
+            this._flags = flags;
         });
     }
 
@@ -160,7 +173,7 @@ export class PlayerListComponent implements OnInit {
 
     private search(term: string): Observable<IPlayer[]> {
 
-        return this.lookup.players$.pipe(
+        return this.playerLookup.players$.pipe(
 
             map(players => {
 
@@ -184,7 +197,7 @@ export class PlayerListComponent implements OnInit {
 
     private applyFilters(year: number, nationality: string): void {
 
-        const players$ = year ? this.lookup.getPlayers(year) : this.lookup.players$;
+        const players$ = year ? this.playerLookup.getPlayers(year) : this.playerLookup.players$;
 
         players$.subscribe(players => {
 
