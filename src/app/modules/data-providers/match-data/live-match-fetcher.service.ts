@@ -26,7 +26,7 @@ export class LiveMatchFetcherService {
 
     public fetchByPlayer(id: number, year: number): Observable<IMatch[]> {
 
-        const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?t=8&p=${id}&s=${year}`;
+        const url = `http://api.snooker.org/?t=8&p=${id}&s=${year}`;
 
         return this.httpClient.get<object>(url).pipe(
 

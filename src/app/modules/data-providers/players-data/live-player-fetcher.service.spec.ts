@@ -12,8 +12,8 @@ describe('LivePlayerFetcherService', () => {
     let fixSpy: jasmine.Spy;
     const id = 109;
     const year = 2017;
-    const urlById = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?p=${id}`;
-    const urlByYear = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?t=10&st=p&s=${year}`;
+    const urlById = `http://api.snooker.org/?p=${id}`;
+    const urlByYear = `http://api.snooker.org/?t=10&st=p&s=${year}`;
 
     const rawData = [{
 

@@ -21,6 +21,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { DoughnutChartFactoryService } from './services/doughnut-chart-factory.service';
 
@@ -51,7 +52,8 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatSidenavModule,
         MatListModule,
         MatProgressSpinnerModule,
-        MatDialogModule
+        MatDialogModule,
+        MatExpansionModule
     ],
     declarations: [UrlFormatterPipe, UrlTruncatePipe, OptionCardComponent],
     providers: [DoughnutChartFactoryService],
@@ -75,6 +77,7 @@ import { OptionCardComponent } from './components/option-card/option-card.compon
         MatListModule,
         MatProgressSpinnerModule,
         MatDialogModule,
+        MatExpansionModule,
         UrlFormatterPipe,
         UrlTruncatePipe,
         OptionCardComponent

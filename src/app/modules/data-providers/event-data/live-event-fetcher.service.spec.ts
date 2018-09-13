@@ -8,7 +8,7 @@ describe('LiveEventFetcherService', () => {
     let httpTestingController: HttpTestingController;
     let fetcher: LiveEventFetcherService;
     const id = 479;
-    const urlById = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?e=${id}`;
+    const urlById = `http://api.snooker.org/?e=${id}`;
 
     const rawData = [{
 

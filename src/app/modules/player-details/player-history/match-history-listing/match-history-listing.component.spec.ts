@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, DebugElement } from '@angular/core';
 import { of } from 'rxjs';
 import { ITournamentEvent } from '../../../data-providers/event-data/tournament-event.interface';
@@ -6,6 +7,8 @@ import { IMatch } from '../../../data-providers/match-data/match.interface';
 import { IMatchHistory } from '../../../data-providers/players-data/match-history.interface';
 import { queryByDirective, queryByCss, queryAllByCss } from '../../../../../testing/custom-test-utilities';
 import { MatchSummaryService } from '../../../data-providers/match-data/match-summary.service';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatchHistoryListingComponent } from './match-history-listing.component';
 
 @Component({
@@ -41,6 +44,7 @@ describe('MatchHistoryListingComponent', () => {
 
         TestBed.configureTestingModule({
 
+            imports: [MatListModule, MatExpansionModule, NoopAnimationsModule],
             declarations: [TestComponent, MatchHistoryListingComponent],
             providers: [{ provide: MatchSummaryService, useValue: summary }]
 
@@ -69,7 +73,7 @@ describe('MatchHistoryListingComponent', () => {
 
     it('should display event name properly', () => {
 
-        const title = queryByCss(fixture.debugElement, 'h3');
+        const title = queryByCss(fixture.debugElement, '.name');
         const eventName = component.history.event.name;
 
         checkTextContent(title, eventName);
@@ -77,7 +81,7 @@ describe('MatchHistoryListingComponent', () => {
 
     it('should display match summaries properly', () => {
 
-        const summaries = queryAllByCss(fixture.debugElement, 'li');
+        const summaries = queryAllByCss(fixture.debugElement, '.match');
 
         expect(summaries.length).toEqual(1);
         checkTextContent(summaries[0], 'John Doe 4 - 1 Jane Doe');
@@ -92,6 +96,6 @@ describe('MatchHistoryListingComponent', () => {
 
     function checkTextContent(debugElement: DebugElement, text: string): void {
 
-        expect(debugElement.nativeElement.textContent).toEqual(text);
+        expect(debugElement.nativeElement.textContent.trim()).toEqual(text);
     }
 });

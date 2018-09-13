@@ -1,4 +1,26 @@
-<h3>{{ history.event.name }}</h3>
-<ul>
-    <li *ngFor="let match of matches$ | async">{{ match }}</li>
-</ul>
+<mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <span class="name">
+                {{ history.event.name }}
+            </span>
+            <span class="location">
+                &nbsp;- {{ history.event.city }}, {{ history.event.country }}
+            </span>
+        </mat-panel-title>
+        <mat-panel-description>
+            <span class="date-long">
+                Scheduled for {{ history.event.startDate }} through {{ history.event.endDate }}
+            </span>
+            <span class="date-short">
+                {{ history.event.startDate }} ~ {{ history.event.endDate }}
+            </span>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-list>
+        <mat-list-item *ngFor="let match of matches$ | async" class="match">
+            {{ match }}
+        </mat-list-item>
+    </mat-list>
+</mat-expansion-panel>
