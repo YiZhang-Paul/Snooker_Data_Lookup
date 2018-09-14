@@ -4,40 +4,67 @@
 
 <h2>Career Statistics</h2>
 
-<mat-list>
-    <mat-list-item>
-        <span class="header status-header">Status:</span>&nbsp;
-        <span [class.status-active]="status === 'Active'"
-            class="status-content status">{{ status }}</span>
-    </mat-list-item>
+<mat-expansion-panel *ngIf="isLoaded" [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>General</mat-panel-title>
+    </mat-expansion-panel-header>
 
-    <mat-list-item>
-        <span class="header year-header">Turned Professional:</span>&nbsp;
-        <span class="year-content turnedPro">{{ player?.turnedPro }}</span>
-    </mat-list-item>
+    <mat-list>
+        <mat-list-item>
+            <div class="header-icon status-icon"></div>
+            <span class="header status-header">Status:</span>&nbsp;
+            <span [class.status-active]="status === 'Active'"
+                class="status-content status">{{ status }}</span>
+        </mat-list-item>
 
-    <mat-list-item>
-        <span class="header year-header">Last Season Played:</span>&nbsp;
-        <span class="year-content lastSeason">{{ player?.lastSeasonPlayed }}</span>
-    </mat-list-item>
+        <mat-list-item>
+            <div class="header-icon year-icon"></div>
+            <span class="header year-header">
+                <span class="text-short">Turned Pro:</span>
+                <span class="text-long">Turned Professional:</span>
+            </span>&nbsp;
+            <span class="year-content turnedPro">{{ player?.turnedPro }}</span>
+        </mat-list-item>
 
-    <mat-list-item>
-        <span class="header currency-header">Career Earnings: &#163;</span>
-        <span class="currency-content earnings">{{ careerEarning }}</span>
-    </mat-list-item>
+        <mat-list-item>
+            <div class="header-icon year-icon"></div>
+            <span class="header year-header">
+                <span class="text-short">Last Season:</span>
+                <span class="text-long">Last Season Played:</span>
+            </span>&nbsp;
+            <span class="year-content lastSeason">{{ player?.lastSeasonPlayed }}</span>
+        </mat-list-item>
 
-    <mat-list-item *ngIf="status === 'Active'">
-        <span class="header ranking-header">Current Ranking:</span>&nbsp;
-        <span class="ranking-content currentRank">{{ currentRank }}</span>
-    </mat-list-item>
+        <mat-list-item>
+            <div class="header-icon currency-icon"></div>
+            <span class="header currency-header">Career Earnings: &#163;</span>
+            <span class="currency-content earnings">{{ careerEarning }}</span>
+        </mat-list-item>
+    </mat-list>
+</mat-expansion-panel>
 
-    <mat-list-item>
-        <span class="header ranking-header">Highest Ranking:</span>&nbsp;
-        <span class="ranking-content highestRank">{{ highestRank }}</span>
-    </mat-list-item>
+<mat-expansion-panel *ngIf="isLoaded" [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>Rankings</mat-panel-title>
+    </mat-expansion-panel-header>
 
-    <mat-list-item>
-        <span class="header ranking-header">Lowest Ranking:</span>&nbsp;
-        <span class="ranking-content lowestRank">{{ lowestRank }}</span>
-    </mat-list-item>
-</mat-list>
+    <mat-list>
+        <mat-list-item *ngIf="status === 'Active'">
+            <div class="header-icon ranking-icon"></div>
+            <span class="header ranking-header">Current:</span>&nbsp;
+            <span class="ranking-content currentRank">{{ currentRank }}</span>
+        </mat-list-item>
+
+        <mat-list-item>
+            <div class="header-icon ranking-icon"></div>
+            <span class="header ranking-header">Highest:</span>&nbsp;
+            <span class="ranking-content highestRank">{{ highestRank }}</span>
+        </mat-list-item>
+
+        <mat-list-item>
+            <div class="header-icon ranking-icon"></div>
+            <span class="header ranking-header">Lowest:</span>&nbsp;
+            <span class="ranking-content lowestRank">{{ lowestRank }}</span>
+        </mat-list-item>
+    </mat-list>
+</mat-expansion-panel>

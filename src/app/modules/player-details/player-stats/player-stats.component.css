@@ -15,6 +15,26 @@ h2 {
 }
 
 /* material component style */
+mat-expansion-panel:hover {
+
+    background-color: rgb(77, 77, 77);
+}
+
+mat-expansion-panel-header,
+mat-expansion-panel-header:hover,
+mat-expansion-panel-header .mat-expanded {
+
+    border-bottom: 1px solid gold;
+    background-color: tomato !important;
+}
+
+mat-panel-title {
+
+    color: gold;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
 .spinner-wrapper {
 
     width: 0;
@@ -30,6 +50,12 @@ h2 {
     display: fixed;
 }
 
+mat-expansion-panel {
+
+    width: 90%;
+    margin: 0 auto;
+}
+
 mat-list {
 
     margin: 0 auto;
@@ -37,7 +63,8 @@ mat-list {
 
 mat-list-item {
 
-    color: black !important;
+    color: white !important;
+    font-size: 0.85em !important;
 }
 
 /* field header style */
@@ -46,34 +73,35 @@ mat-list-item {
     font-weight: bold;
 }
 
-.header:before {
+.header-icon {
 
-    width: 20px;
-    height: 17px;
+    width: 19px;
+    height: 19px;
     content: '';
-    margin-right: 3px;
-    margin-bottom: 1px;
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 4px;
     display: inline-block;
     vertical-align: middle;
-    background-size: 20px 17px;
+    background-size: 19px 19px;
 }
 
-.status-header:before {
+.status-icon {
 
-    background-image: url(https://static.thenounproject.com/png/63767-200.png);
+    background-image: url(http://myheartrisk.creighton.edu/wp-content/uploads/2017/08/heart-icon.png);
 }
 
-.year-header:before {
+.year-icon {
 
-    background-image: url(https://cdn3.iconfinder.com/data/icons/business-office-2/512/calendar_estimate_milestones-512.png);
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Circle-icons-calendar.svg/1024px-Circle-icons-calendar.svg.png);
 }
 
-.currency-header:before {
+.currency-icon {
 
     background-image: url(https://images-na.ssl-images-amazon.com/images/I/51yUXWbUHUL.png);
 }
 
-.ranking-header:before {
+.ranking-icon {
 
     background-image: url(https://cdn4.iconfinder.com/data/icons/we-re-the-best/512/best-badge-cup-gold-medal-game-win-winner-gamification-first-award-acknowledge-acknowledgement-prize-victory-reward-conquest-premium-rank-ranking-gold-hero-star-quality-challenge-trophy-praise-victory-success-512.png);
 }
@@ -81,12 +109,12 @@ mat-list-item {
 /* status field */
 .status-content {
 
-    color: red;
+    color: tomato;
 }
 
 .status-active {
 
-    color: darkgreen;
+    color: limegreen;
 }
 
 .status-content:after, .status-active:after {
@@ -112,42 +140,56 @@ mat-list-item {
 /* turned professional year/last season played field */
 .year-content {
 
-    color: rgb(0, 132, 255);
+    color: rgb(5, 152, 201);
 }
 
 /* career earning field */
 .currency-content {
 
-    color: darkgreen;
+    color: limegreen;
 }
 
 /* rankings fields */
-.ranking-content {
+.currentRank {
 
-    color: red;
+    color: rgb(5, 152, 201);
 }
+
+.highestRank {
+
+    color: limegreen;
+}
+
+.lowestRank {
+
+    color: tomato;
+}
+
+.text-long { display: none; }
 
 /* media queries */
 @media screen and (min-width: 321px) {
 
-    h2, mat-list { width: 85%; }
+    h2, mat-expansion-panel { width: 85%; }
 }
 
 @media screen and (min-width: 451px) {
 
-    h2, mat-list { width: 100%; }
+    .text-long { display: inline; }
+    .text-short { display: none; }
+    h2, mat-expansion-panel { width: 100%; }
 }
 
 @media screen and (min-width: 541px) {
 
     h2 { font-size: 2em; }
-    h2, mat-list { width: 90%; }
+    h2, mat-expansion-panel { width: 90%; }
 }
 
 @media screen and (min-width: 721px) {
 
     h2 { font-size: 2.5em; }
-    h2, mat-list { width: 70%; }
+    h2, mat-expansion-panel { width: 70%; }
     mat-list-item { font-size: 1.3em !important; }
 
     .status-content:after, .status-active:after {
@@ -158,12 +200,13 @@ mat-list-item {
         background-size: 15px 15px;
     }
 
-    .header:before {
+    .header-icon {
 
         width: 23px;
-        height: 19px;
+        height: 23px;
+        margin-left: 4px;
         margin-right: 6px;
-        background-size: 23px 19px;
+        background-size: 23px 23px;
     }
 }
 
@@ -173,10 +216,9 @@ mat-list-item {
 
         font-size: 3em;
         margin-top: 2%;
-        margin-bottom: 8%;
     }
 
-    h2, mat-list { width: 60%; }
+    h2, mat-expansion-panel { width: 60%; }
     mat-list-item { font-size: 1.5em !important; }
 
     .status-content:after, .status-active:after {
@@ -187,17 +229,19 @@ mat-list-item {
         background-size: 18px 18px;
     }
 
-    .header:before {
+    .header-icon {
 
         width: 26px;
-        height: 21px;
-        margin-right: 8px;
-        background-size: 26px 21px;
+        height: 26px;
+        margin-top: 4px;
+        margin-left: 4px;
+        margin-right: 9px;
+        background-size: 26px 26px;
     }
 }
 
 @media screen and (min-width: 1201px) {
 
     h2 { width: 40%; }
-    h2, mat-list { width: 40%; }
+    h2, mat-expansion-panel { width: 40%; }
 }

@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
@@ -8,6 +9,7 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 import { PlayerStatisticsCalculatorService } from '../../data-providers/players-data/player-statistics-calculator.service';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { PlayerStatsComponent } from './player-stats.component';
 
 describe('PlayerStatsComponent', () => {
@@ -54,8 +56,10 @@ describe('PlayerStatsComponent', () => {
             imports: [
 
                 RouterTestingModule,
+                NoopAnimationsModule,
                 MatListModule,
-                MatProgressSpinnerModule
+                MatProgressSpinnerModule,
+                MatExpansionModule
             ],
             declarations: [PlayerStatsComponent],
             providers: [
