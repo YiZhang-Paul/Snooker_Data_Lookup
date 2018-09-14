@@ -6,8 +6,8 @@ export const startYear = 2013;
 export const configuration = {
 
     startYear,
-    useCorsProxy: false, // for debug purpose only
-    corsProxyUrl: 'https://cors-anywhere.herokuapp.com/',
+    useCorsProxy: true, // for debug purpose only
+    corsProxyUrl: 'https://yi-cors-anywhere.herokuapp.com/',
 
     images: {
 
