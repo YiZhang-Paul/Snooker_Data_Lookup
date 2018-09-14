@@ -17,7 +17,7 @@ export class MatchSummaryService {
         return match.winner !== 0 || match.walkover !== null;
     }
 
-    public getShortSummaryArray(
+    public getShortSummary(
 
         match: IMatch, priorityId: number
 
@@ -49,7 +49,7 @@ export class MatchSummaryService {
 
     public getShortSummaryText(match: IMatch, priorityId: number): Observable<string> {
 
-        return this.getShortSummaryArray(match, priorityId).pipe(
+        return this.getShortSummary(match, priorityId).pipe(
 
             map(summary => {
 

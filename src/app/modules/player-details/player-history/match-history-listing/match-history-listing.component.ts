@@ -72,7 +72,7 @@ export class MatchHistoryListingComponent implements OnInit {
 
         this.history.matches.forEach(match => {
 
-            summaries.push(this.summary.getShortSummaryArray(match, this.id));
+            summaries.push(this.summary.getShortSummary(match, this.id));
         });
 
         this._matches$ = forkJoin(summaries);

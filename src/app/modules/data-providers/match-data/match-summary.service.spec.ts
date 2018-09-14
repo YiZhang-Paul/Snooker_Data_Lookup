@@ -38,9 +38,9 @@ describe('MatchSummaryService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('getShortSummaryArray() should properly construct summary with valid players', () => {
+    it('getShortSummary() should properly construct summary with valid players', () => {
 
-        summary.getShortSummaryArray(matchOne, matchOne.player1).subscribe(data => {
+        summary.getShortSummary(matchOne, matchOne.player1).subscribe(data => {
 
             expect(data.player1).toEqual(playerOne);
             expect(data.player2).toEqual(playerTwo);
@@ -51,9 +51,9 @@ describe('MatchSummaryService', () => {
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('getShortSummaryArray() should place player with higher priority on the left', () => {
+    it('getShortSummary() should place player with higher priority on the left', () => {
 
-        summary.getShortSummaryArray(matchOne, matchOne.player2).subscribe(data => {
+        summary.getShortSummary(matchOne, matchOne.player2).subscribe(data => {
 
             expect(data.player1).toEqual(playerTwo);
             expect(data.player2).toEqual(playerOne);
@@ -64,9 +64,9 @@ describe('MatchSummaryService', () => {
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('getShortSummaryArray() should display "N/A" as name for invalid players', () => {
+    it('getShortSummary() should display "N/A" as name for invalid players', () => {
 
-        summary.getShortSummaryArray(matchTwo, matchTwo.player1).subscribe(data => {
+        summary.getShortSummary(matchTwo, matchTwo.player1).subscribe(data => {
 
             expect(data.player1).toEqual(null);
             expect(data.player2).toEqual(playerTwo);
@@ -77,9 +77,9 @@ describe('MatchSummaryService', () => {
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('getShortSummaryArray() should indicate unstarted match when applicable', () => {
+    it('getShortSummary() should indicate unstarted match when applicable', () => {
 
-        summary.getShortSummaryArray(matchThree, matchThree.player1).subscribe(data => {
+        summary.getShortSummary(matchThree, matchThree.player1).subscribe(data => {
 
             expect(data.player1).toEqual(playerOne);
             expect(data.player2).toEqual(playerTwo);

@@ -37,7 +37,7 @@ describe('MatchHistoryListingComponent', () => {
     let fixture: ComponentFixture<TestComponent>;
     let component: TestComponent;
     let summary: jasmine.SpyObj<MatchSummaryService>;
-    let getShortSummaryArray$Spy: jasmine.Spy;
+    let getShortSummary$Spy: jasmine.Spy;
     let flagLookup: jasmine.SpyObj<CountryFlagLookupService>;
     let getFlags$Spy: jasmine.Spy;
     let listingDebugElement: DebugElement;
@@ -117,13 +117,13 @@ describe('MatchHistoryListingComponent', () => {
 
         expect(summaries.length).toEqual(1);
         checkTextContent(summaries[0], 'John Doe 4 - 1 Jane Doe');
-        expect(getShortSummaryArray$Spy).toHaveBeenCalledTimes(1);
+        expect(getShortSummary$Spy).toHaveBeenCalledTimes(1);
     });
 
     function setupMatchSummary(data: IMatchShortSummary): void {
 
-        summary = jasmine.createSpyObj('MatchSummaryService', ['getShortSummaryArray']);
-        getShortSummaryArray$Spy = summary.getShortSummaryArray.and.returnValue(of(data));
+        summary = jasmine.createSpyObj('MatchSummaryService', ['getShortSummary']);
+        getShortSummary$Spy = summary.getShortSummary.and.returnValue(of(data));
     }
 
     function setupFlagLookup(): void {
