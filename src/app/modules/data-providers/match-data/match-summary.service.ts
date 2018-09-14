@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IPlayer } from '../players-data/player.interface';
 import { IMatch } from './match.interface';
 import { PlayerLookupService } from '../players-data/player-lookup.service';
 
@@ -16,7 +17,11 @@ export class MatchSummaryService {
         return match.winner !== 0 || match.walkover !== null;
     }
 
-    public getShortSummary(match: IMatch, priorityId: number): Observable<string> {
+    public getShortSummaryArray(
+
+        match: IMatch, priorityId: number
+
+    ): Observable<[IPlayer, IPlayer, string, boolean]> {
 
         return forkJoin(
 
@@ -27,13 +32,32 @@ export class MatchSummaryService {
 
             map(players => {
 
-                const name1 = players[0] ? players[0].shortFullName : 'N/A';
-                const name2 = players[1] ? players[1].shortFullName : 'N/A';
-                const status = !this.isFinished(match) ? ' (TBA)' : '';
+                const reverse = priorityId === match.player2;
+                const score1 = reverse ? match.score2 : match.score1;
+                const score2 = reverse ? match.score1 : match.score2;
 
-                return priorityId === match.player2 ?
-                    `${name2} ${match.score2} - ${match.score1} ${name1}${status}` :
-                    `${name1} ${match.score1} - ${match.score2} ${name2}${status}`;
+                return <[IPlayer, IPlayer, string, boolean]>[
+
+                    reverse ? players[1] : players[0],
+                    reverse ? players[0] : players[1],
+                    `${score1} - ${score2}`,
+                    this.isFinished(match)
+                ];
+            })
+        );
+    }
+
+    public getShortSummaryText(match: IMatch, priorityId: number): Observable<string> {
+
+        return this.getShortSummaryArray(match, priorityId).pipe(
+
+            map(summary => {
+
+                const name1 = summary[0] ? summary[0].shortFullName : 'N/A';
+                const name2 = summary[1] ? summary[1].shortFullName : 'N/A';
+                const status = summary[3] ? '' : ' (TBA)';
+
+                return `${name1} ${summary[2]} ${name2}${status}`;
             })
         );
     }

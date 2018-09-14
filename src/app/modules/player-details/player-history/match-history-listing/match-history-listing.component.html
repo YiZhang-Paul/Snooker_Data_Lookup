@@ -1,26 +1,25 @@
 <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
         <mat-panel-title>
-            <span class="name">
-                {{ history.event.name }}
-            </span>
-            <span class="location">
-                &nbsp;- {{ history.event.city }}, {{ history.event.country }}
-            </span>
+            <span class="name">{{ history.event.name }}</span>
+            <span class="location">&nbsp;- {{ eventLocation }}</span>
         </mat-panel-title>
         <mat-panel-description>
-            <span class="date-long">
-                Scheduled for {{ history.event.startDate }} through {{ history.event.endDate }}
-            </span>
-            <span class="date-short">
-                {{ history.event.startDate }} ~ {{ history.event.endDate }}
-            </span>
+            <span class="date-long">Scheduled for {{ eventStart }} through {{ eventEnd }}</span>
+            <span class="date-short">{{ eventStart }} ~ {{ eventEnd }}</span>
         </mat-panel-description>
     </mat-expansion-panel-header>
 
     <mat-list>
         <mat-list-item *ngFor="let match of matches$ | async" class="match">
-            {{ match }}
+            <div *ngIf="flags && match[0] && flags.has(match[0].nationality.toLowerCase())"
+                class="country-flag"
+                [ngStyle]="{ 'background-image': 'url(' + flags.get(match[0].nationality.toLowerCase()) + ')' }">
+            </div>{{ match[0] ? match[0].shortFullName : 'N/A' }} {{ match[2] }}
+            <div *ngIf="flags && match[1] && flags.has(match[1].nationality.toLowerCase())"
+                class="country-flag"
+                [ngStyle]="{ 'background-image': 'url(' + flags.get(match[1].nationality.toLowerCase()) + ')' }">
+            </div>{{ match[1] ? match[1].shortFullName : 'N/A' }}{{ match[3] ? '' : ' (TBA)' }}
         </mat-list-item>
     </mat-list>
 </mat-expansion-panel>

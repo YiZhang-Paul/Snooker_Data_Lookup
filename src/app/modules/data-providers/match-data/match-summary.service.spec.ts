@@ -9,7 +9,9 @@ describe('MatchSummaryService', () => {
 
     const playerOne = <IPlayer>{ id: 1, get shortFullName(): string { return 'John Doe'; } };
     const playerTwo = <IPlayer>{ id: 17, get shortFullName(): string { return 'Jane Doe'; } };
-    const match = <IMatch>{ player1: 1, player2: 17, score1: 4, score2: 1 };
+    const matchOne = <IMatch>{ player1: 1, player2: 17, score1: 4, score2: 1 };
+    const matchTwo = <IMatch>{ player1: 5, player2: 17, score1: 4, score2: 1 };
+    const matchThree = <IMatch>{ player1: 1, player2: 17, score1: 0, score2: 0, winner: 0, walkover: null };
 
     let lookup: jasmine.SpyObj<PlayerLookupService>;
     let getPlayerSpy: jasmine.Spy;
@@ -36,9 +38,65 @@ describe('MatchSummaryService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('getShortSummary() should properly construct summary with valid players', () => {
+    it('getShortSummaryArray() should properly construct summary with valid players', () => {
 
-        summary.getShortSummary(match, match.player1).subscribe(data => {
+        summary.getShortSummaryArray(matchOne, matchOne.player1).subscribe(data => {
+
+            expect(data.length).toEqual(4);
+            expect(data[0]).toEqual(playerOne);
+            expect(data[1]).toEqual(playerTwo);
+            expect(data[2]).toEqual('4 - 1');
+            expect(data[3]).toBeTruthy();
+        });
+
+        expect(getPlayerSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('getShortSummaryArray() should place player with higher priority on the left', () => {
+
+        summary.getShortSummaryArray(matchOne, matchOne.player2).subscribe(data => {
+
+            expect(data.length).toEqual(4);
+            expect(data[0]).toEqual(playerTwo);
+            expect(data[1]).toEqual(playerOne);
+            expect(data[2]).toEqual('1 - 4');
+            expect(data[3]).toBeTruthy();
+        });
+
+        expect(getPlayerSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('getShortSummaryArray() should display "N/A" as name for invalid players', () => {
+
+        summary.getShortSummaryArray(matchTwo, matchTwo.player1).subscribe(data => {
+
+            expect(data.length).toEqual(4);
+            expect(data[0]).toEqual(null);
+            expect(data[1]).toEqual(playerTwo);
+            expect(data[2]).toEqual('4 - 1');
+            expect(data[3]).toBeTruthy();
+        });
+
+        expect(getPlayerSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('getShortSummaryArray() should indicate unstarted match when applicable', () => {
+
+        summary.getShortSummaryArray(matchThree, matchThree.player1).subscribe(data => {
+
+            expect(data.length).toEqual(4);
+            expect(data[0]).toEqual(playerOne);
+            expect(data[1]).toEqual(playerTwo);
+            expect(data[2]).toEqual('0 - 0');
+            expect(data[3]).toBeFalsy();
+        });
+
+        expect(getPlayerSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('getShortSummaryText() should properly construct summary with valid players', () => {
+
+        summary.getShortSummaryText(matchOne, matchOne.player1).subscribe(data => {
 
             expect(data).toEqual('John Doe 4 - 1 Jane Doe');
         });
@@ -46,9 +104,9 @@ describe('MatchSummaryService', () => {
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('getShortSummary() should place player with higher priority on the left', () => {
+    it('getShortSummaryText() should place player with higher priority on the left', () => {
 
-        summary.getShortSummary(match, match.player2).subscribe(data => {
+        summary.getShortSummaryText(matchOne, matchOne.player2).subscribe(data => {
 
             expect(data).toEqual('Jane Doe 1 - 4 John Doe');
         });
@@ -56,11 +114,9 @@ describe('MatchSummaryService', () => {
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('getShortSummary() should display "N/A" as name for invalid players', () => {
+    it('getShortSummaryText() should display "N/A" as name for invalid players', () => {
 
-        const anotherMatch = <IMatch>{ player1: 5, player2: 17, score1: 4, score2: 1 };
-
-        summary.getShortSummary(anotherMatch, anotherMatch.player1).subscribe(data => {
+        summary.getShortSummaryText(matchTwo, matchTwo.player1).subscribe(data => {
 
             expect(data).toEqual('N/A 4 - 1 Jane Doe');
         });
@@ -68,14 +124,9 @@ describe('MatchSummaryService', () => {
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('getShortSummary() should indicate unstarted match when applicable', () => {
+    it('getShortSummaryText() should indicate unstarted match when applicable', () => {
 
-        const anotherMatch = <IMatch>{
-
-            player1: 1, player2: 17, score1: 0, score2: 0, winner: 0, walkover: null
-        };
-
-        summary.getShortSummary(anotherMatch, anotherMatch.player1).subscribe(data => {
+        summary.getShortSummaryText(matchThree, matchThree.player1).subscribe(data => {
 
             expect(data).toEqual('John Doe 0 - 0 Jane Doe (TBA)');
         });
