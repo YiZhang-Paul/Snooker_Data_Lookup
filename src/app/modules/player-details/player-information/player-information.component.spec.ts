@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Pipe, PipeTransform } from '@angular/core';
@@ -9,6 +10,7 @@ import { PlayerLookupService } from '../../data-providers/players-data/player-lo
 import { CountryFlagLookupService } from '../../../shared/services/country-flag-lookup.service';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { PlayerInformationComponent } from './player-information.component';
 
 @Pipe({ name: 'urlFormatter' })
@@ -59,8 +61,10 @@ describe('PlayerInformationComponent', () => {
             imports: [
 
                 RouterTestingModule,
+                NoopAnimationsModule,
                 MatListModule,
-                MatProgressSpinnerModule
+                MatProgressSpinnerModule,
+                MatExpansionModule
             ],
             declarations: [
 

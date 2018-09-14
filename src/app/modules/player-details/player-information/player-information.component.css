@@ -15,6 +15,26 @@ h2 {
 }
 
 /* material component style */
+mat-expansion-panel:hover {
+
+    background-color: rgb(77, 77, 77);
+}
+
+mat-expansion-panel-header,
+mat-expansion-panel-header:hover,
+mat-expansion-panel-header .mat-expanded {
+
+    border-bottom: 1px solid gold;
+    background-color: tomato !important;
+}
+
+mat-panel-title {
+
+    color: gold;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
 .spinner-wrapper {
 
     width: 0;
@@ -30,7 +50,7 @@ h2 {
     display: fixed;
 }
 
-mat-list {
+mat-expansion-panel {
 
     width: 90%;
     margin: 0 auto;
@@ -38,7 +58,7 @@ mat-list {
 
 mat-list-item {
 
-    color: black !important;
+    color: white !important;
     font-size: 0.85em !important;
 }
 
@@ -48,6 +68,7 @@ mat-list-item {
     width: 17vh;
     height: 17vh;
     margin: 0 auto;
+    margin-bottom: 3.5%;
     border-radius: 10px;
     background-size: cover;
     background-repeat: no-repeat;
@@ -57,43 +78,35 @@ mat-list-item {
 /* field header style */
 .header:before {
 
-    width: 15px;
-    height: 12px;
+    width: 19px;
+    height: 19px;
     content: '';
-    margin-right: 3px;
+    margin-left: 2px;
+    margin-right: 4px;
     margin-bottom: 2px;
     display: inline-block;
     vertical-align: middle;
-    background-size: 15px 12px;
-}
-
-.gender-header:before, .country-header:before, .url-header:before, .twitter-header:before {
-
-    width: 13px;
-    height: 13px;
-    margin-right: 4px;
-    margin-left: 2px;
-    background-size: 13px 13px;
+    background-size: 19px 19px;
 }
 
 .name-header:before {
 
-    background-image: url(https://cdn3.iconfinder.com/data/icons/glyph/227/Profile-512.png);
+    background-image: url(http://www.iconarchive.com/download/i102641/graphicloads/flat-finance/name-card.ico);
 }
 
 .gender-header:before {
 
-    background-image: url(https://cdn0.iconfinder.com/data/icons/party-and-celebrations-8/128/214-512.png);
+    background-image: url(https://www.shareicon.net/data/2016/09/02/824380_man_512x512.png);
 }
 
 .year-header:before {
 
-    background-image: url(https://cdn3.iconfinder.com/data/icons/business-office-2/512/calendar_estimate_milestones-512.png);
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Circle-icons-calendar.svg/1024px-Circle-icons-calendar.svg.png);
 }
 
 .country-header:before {
 
-    background-image: url(https://images-na.ssl-images-amazon.com/images/I/41ihrDXyrwL.png);
+    background-image: url(https://cdn4.iconfinder.com/data/icons/nationalities-new-collection/383/india-512.png);
 }
 
 .url-header:before {
@@ -103,7 +116,7 @@ mat-list-item {
 
 .twitter-header:before {
 
-    background-image: url(https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-512.png);
+    background-image: url(http://www.stickpng.com/assets/images/58e9196deb97430e819064f6.png);
 }
 
 /* gender field */
@@ -156,7 +169,7 @@ mat-list-item {
 @media screen and (min-width: 311px) {
 
     .country-flag { display: inline-block; }
-    h2, mat-list { width: 80%; }
+    h2, mat-expansion-panel { width: 80%; }
 }
 
 @media screen and (min-width: 351px) {
@@ -167,25 +180,25 @@ mat-list-item {
 
 @media screen and (min-width: 401px) {
 
-    h2, mat-list { width: 70%; }
+    h2, mat-expansion-panel { width: 70%; }
 }
 
 @media screen and (min-width: 451px) {
 
     mat-list-item { font-size: 0.8em !important; }
-    h2, mat-list { width: 100%; }
+    h2, mat-expansion-panel { width: 100%; }
 }
 
 @media screen and (min-width: 541px) {
 
     h2 { font-size: 1.5em; }
-    h2, mat-list { width: 90%; }
+    h2, mat-expansion-panel { width: 90%; }
     mat-list-item { font-size: 1em !important; }
 }
 
 @media screen and (min-width: 621px) {
 
-    h2, mat-list { width: 80%; }
+    h2, mat-expansion-panel { width: 80%; }
 }
 
 @media screen and (min-width: 721px) {
@@ -194,6 +207,11 @@ mat-list-item {
     mat-list-item { font-size: 1.3em !important; }
     .short-text { display: none; }
     .long-text { display: inline; }
+
+    .image-wrapper {
+
+        margin-bottom: 2%;
+    }
 
     .country-flag {
 
@@ -205,18 +223,10 @@ mat-list-item {
     .header:before {
 
         width: 23px;
-        height: 19px;
-        margin-right: 6px;
-        background-size: 23px 19px;
-    }
-
-    .gender-header:before, .country-header:before, .url-header:before, .twitter-header:before {
-
-        width: 19px;
-        height: 19px;
-        margin-right: 6px;
+        height: 23px;
         margin-left: 4px;
-        background-size: 19px 19px;
+        margin-right: 6px;
+        background-size: 23px 23px;
     }
 
     .gender-content:after, .gender-male:after {
@@ -229,12 +239,12 @@ mat-list-item {
 
 @media screen and (min-width: 761px) {
 
-    mat-list { width: 70%; }
+    h2, mat-expansion-panel { width: 70%; }
 }
 
 @media screen and (min-width: 851px) {
 
-    mat-list { width: 65%; }
+    h2, mat-expansion-panel { width: 65%; }
 }
 
 @media screen and (min-width: 1025px) {
@@ -245,24 +255,17 @@ mat-list-item {
         margin-bottom: 1%;
     }
 
-    mat-list { width: 60%; }
+    h2, mat-expansion-panel { width: 60%; }
+    mat-panel-title { font-size: 1.2em; }
     mat-list-item { font-size: 1.5em !important; }
 
     .header:before {
 
         width: 26px;
-        height: 21px;
-        margin-right: 8px;
-        background-size: 26px 21px;
-    }
-
-    .gender-header:before, .country-header:before, .url-header:before, .twitter-header:before {
-
-        width: 21px;
-        height: 21px;
-        margin-right: 9px;
+        height: 26px;
         margin-left: 4px;
-        background-size: 21px 21px;
+        margin-right: 9px;
+        background-size: 26px 26px;
     }
 
     .gender-content:after, .gender-male:after {
@@ -275,18 +278,15 @@ mat-list-item {
 
 @media screen and (min-width: 1201px) {
 
-    h2 { width: 65%; }
-    mat-list { width: 50%; }
+    h2, mat-expansion-panel { width: 50%; }
 }
 
 @media screen and (min-width: 1301px) {
 
-    h2 { width: 60%; }
-    mat-list { width: 45%; }
+    h2, mat-expansion-panel { width: 45%; }
 }
 
 @media screen and (min-width: 1401px) {
 
-    h2 { width: 55%; }
-    mat-list { width: 40%; }
+    h2, mat-expansion-panel { width: 40%; }
 }
