@@ -12,14 +12,14 @@
 
     <mat-list>
         <mat-list-item *ngFor="let match of matches$ | async" class="match">
-            <div *ngIf="flags && match[0] && flags.has(match[0].nationality.toLowerCase())"
+            <div *ngIf="flags && match.player1 && flags.has(match.player1.nationality.toLowerCase())"
                 class="country-flag"
-                [ngStyle]="{ 'background-image': 'url(' + flags.get(match[0].nationality.toLowerCase()) + ')' }">
-            </div>{{ match[0] ? match[0].shortFullName : 'N/A' }} {{ match[2] }}
-            <div *ngIf="flags && match[1] && flags.has(match[1].nationality.toLowerCase())"
+                [ngStyle]="{ 'background-image': 'url(' + flags.get(match.player1.nationality.toLowerCase()) + ')' }">
+            </div>{{ match.player1 ? match.player1.shortFullName : 'N/A' }} {{ match.score }}
+            <div *ngIf="flags && match.player2 && flags.has(match.player2.nationality.toLowerCase())"
                 class="country-flag"
-                [ngStyle]="{ 'background-image': 'url(' + flags.get(match[1].nationality.toLowerCase()) + ')' }">
-            </div>{{ match[1] ? match[1].shortFullName : 'N/A' }}{{ match[3] ? '' : ' (TBA)' }}
+                [ngStyle]="{ 'background-image': 'url(' + flags.get(match.player2.nationality.toLowerCase()) + ')' }">
+            </div>{{ match.player2 ? match.player2.shortFullName : 'N/A' }}{{ match.finished ? '' : ' (TBA)' }}
         </mat-list-item>
     </mat-list>
 </mat-expansion-panel>

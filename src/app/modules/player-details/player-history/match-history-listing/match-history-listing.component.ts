@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
-import { IPlayer } from '../../../data-providers/players-data/player.interface';
 import { IMatchHistory } from '../../../data-providers/players-data/match-history.interface';
+import { IMatchShortSummary } from '../../../data-providers/match-data/match-short-summary.interface';
 import { MatchSummaryService } from '../../../data-providers/match-data/match-summary.service';
 import { CountryFlagLookupService } from '../../../../shared/services/country-flag-lookup.service';
 
@@ -15,7 +15,7 @@ export class MatchHistoryListingComponent implements OnInit {
     @Input() id: number;
     @Input() history: IMatchHistory;
     private _flags: Map<string, string> = null;
-    private _matches$: Observable<[IPlayer, IPlayer, string, boolean][]>;
+    private _matches$: Observable<IMatchShortSummary[]>;
 
     constructor(
 
@@ -46,7 +46,7 @@ export class MatchHistoryListingComponent implements OnInit {
         return this._flags;
     }
 
-    get matches$(): Observable<[IPlayer, IPlayer, string, boolean][]> {
+    get matches$(): Observable<IMatchShortSummary[]> {
 
         return this._matches$;
     }
@@ -68,7 +68,7 @@ export class MatchHistoryListingComponent implements OnInit {
 
     private loadMatchSummaries(): void {
 
-        const summaries: Observable<[IPlayer, IPlayer, string, boolean]>[] = [];
+        const summaries: Observable<IMatchShortSummary>[] = [];
 
         this.history.matches.forEach(match => {
 

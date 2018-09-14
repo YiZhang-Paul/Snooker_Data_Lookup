@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IPlayer } from '../players-data/player.interface';
 import { IMatch } from './match.interface';
+import { IMatchShortSummary } from './match-short-summary.interface';
 import { PlayerLookupService } from '../players-data/player-lookup.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class MatchSummaryService {
 
         match: IMatch, priorityId: number
 
-    ): Observable<[IPlayer, IPlayer, string, boolean]> {
+    ): Observable<IMatchShortSummary> {
 
         return forkJoin(
 
@@ -36,13 +36,13 @@ export class MatchSummaryService {
                 const score1 = reverse ? match.score2 : match.score1;
                 const score2 = reverse ? match.score1 : match.score2;
 
-                return <[IPlayer, IPlayer, string, boolean]>[
+                return <IMatchShortSummary>{
 
-                    reverse ? players[1] : players[0],
-                    reverse ? players[0] : players[1],
-                    `${score1} - ${score2}`,
-                    this.isFinished(match)
-                ];
+                    player1: reverse ? players[1] : players[0],
+                    player2: reverse ? players[0] : players[1],
+                    score: `${score1} - ${score2}`,
+                    finished: this.isFinished(match)
+                };
             })
         );
     }
@@ -53,11 +53,11 @@ export class MatchSummaryService {
 
             map(summary => {
 
-                const name1 = summary[0] ? summary[0].shortFullName : 'N/A';
-                const name2 = summary[1] ? summary[1].shortFullName : 'N/A';
-                const status = summary[3] ? '' : ' (TBA)';
+                const name1 = summary.player1 ? summary.player1.shortFullName : 'N/A';
+                const name2 = summary.player2 ? summary.player2.shortFullName : 'N/A';
+                const status = summary.finished ? '' : ' (TBA)';
 
-                return `${name1} ${summary[2]} ${name2}${status}`;
+                return `${name1} ${summary.score} ${name2}${status}`;
             })
         );
     }

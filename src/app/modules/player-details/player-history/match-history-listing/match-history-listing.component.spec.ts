@@ -6,6 +6,7 @@ import { ITournamentEvent } from '../../../data-providers/event-data/tournament-
 import { IPlayer } from '../../../data-providers/players-data/player.interface';
 import { IMatch } from '../../../data-providers/match-data/match.interface';
 import { IMatchHistory } from '../../../data-providers/players-data/match-history.interface';
+import { IMatchShortSummary } from '../../../data-providers/match-data/match-short-summary.interface';
 import { queryByDirective, queryByCss, queryAllByCss } from '../../../../../testing/custom-test-utilities';
 import { MatchSummaryService } from '../../../data-providers/match-data/match-summary.service';
 import { CountryFlagLookupService } from '../../../../shared/services/country-flag-lookup.service';
@@ -56,7 +57,13 @@ describe('MatchHistoryListingComponent', () => {
         get shortFullName(): string { return 'Jane Doe'; }
     };
 
-    const summaryData = <[IPlayer, IPlayer, string, boolean]>[playerOne, playerTwo, '4 - 1', true];
+    const summaryData = <IMatchShortSummary>{
+
+        player1: playerOne,
+        player2: playerTwo,
+        score: '4 - 1',
+        finished: true
+    };
 
     beforeEach(async(() => {
 
@@ -113,7 +120,7 @@ describe('MatchHistoryListingComponent', () => {
         expect(getShortSummaryArray$Spy).toHaveBeenCalledTimes(1);
     });
 
-    function setupMatchSummary(data: [IPlayer, IPlayer, string, boolean]): void {
+    function setupMatchSummary(data: IMatchShortSummary): void {
 
         summary = jasmine.createSpyObj('MatchSummaryService', ['getShortSummaryArray']);
         getShortSummaryArray$Spy = summary.getShortSummaryArray.and.returnValue(of(data));

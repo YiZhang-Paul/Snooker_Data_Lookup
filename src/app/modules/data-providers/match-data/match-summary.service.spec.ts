@@ -42,11 +42,10 @@ describe('MatchSummaryService', () => {
 
         summary.getShortSummaryArray(matchOne, matchOne.player1).subscribe(data => {
 
-            expect(data.length).toEqual(4);
-            expect(data[0]).toEqual(playerOne);
-            expect(data[1]).toEqual(playerTwo);
-            expect(data[2]).toEqual('4 - 1');
-            expect(data[3]).toBeTruthy();
+            expect(data.player1).toEqual(playerOne);
+            expect(data.player2).toEqual(playerTwo);
+            expect(data.score).toEqual('4 - 1');
+            expect(data.finished).toBeTruthy();
         });
 
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
@@ -56,11 +55,10 @@ describe('MatchSummaryService', () => {
 
         summary.getShortSummaryArray(matchOne, matchOne.player2).subscribe(data => {
 
-            expect(data.length).toEqual(4);
-            expect(data[0]).toEqual(playerTwo);
-            expect(data[1]).toEqual(playerOne);
-            expect(data[2]).toEqual('1 - 4');
-            expect(data[3]).toBeTruthy();
+            expect(data.player1).toEqual(playerTwo);
+            expect(data.player2).toEqual(playerOne);
+            expect(data.score).toEqual('1 - 4');
+            expect(data.finished).toBeTruthy();
         });
 
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
@@ -70,11 +68,10 @@ describe('MatchSummaryService', () => {
 
         summary.getShortSummaryArray(matchTwo, matchTwo.player1).subscribe(data => {
 
-            expect(data.length).toEqual(4);
-            expect(data[0]).toEqual(null);
-            expect(data[1]).toEqual(playerTwo);
-            expect(data[2]).toEqual('4 - 1');
-            expect(data[3]).toBeTruthy();
+            expect(data.player1).toEqual(null);
+            expect(data.player2).toEqual(playerTwo);
+            expect(data.score).toEqual('4 - 1');
+            expect(data.finished).toBeTruthy();
         });
 
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
@@ -84,11 +81,10 @@ describe('MatchSummaryService', () => {
 
         summary.getShortSummaryArray(matchThree, matchThree.player1).subscribe(data => {
 
-            expect(data.length).toEqual(4);
-            expect(data[0]).toEqual(playerOne);
-            expect(data[1]).toEqual(playerTwo);
-            expect(data[2]).toEqual('0 - 0');
-            expect(data[3]).toBeFalsy();
+            expect(data.player1).toEqual(playerOne);
+            expect(data.player2).toEqual(playerTwo);
+            expect(data.score).toEqual('0 - 0');
+            expect(data.finished).toBeFalsy();
         });
 
         expect(getPlayerSpy).toHaveBeenCalledTimes(2);
