@@ -1,13 +1,17 @@
 h2 {
 
-    width: 50%;
     margin: 0 auto;
-    margin-top: 4%;
-    margin-bottom: 6%;
+    margin-top: 2%;
+    margin-bottom: 3%;
+    font-size: 0.95em;
     text-align: center;
-    background-color: gold;
-    border: 6px solid red;
-    border-radius: 50px;
+    color: white;
+    border-radius: 2px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: tomato;
+    border-top: 5px solid gold;
+    border-bottom: 5px solid gold;
 }
 
 /* material component style */
@@ -126,24 +130,24 @@ mat-list-item {
 /* media queries */
 @media screen and (min-width: 321px) {
 
-    mat-list { width: 85%; }
+    h2, mat-list { width: 85%; }
 }
 
 @media screen and (min-width: 451px) {
 
-    mat-list { width: 100%; }
+    h2, mat-list { width: 100%; }
 }
 
 @media screen and (min-width: 541px) {
 
     h2 { font-size: 2em; }
-    mat-list { width: 90%; }
+    h2, mat-list { width: 90%; }
 }
 
 @media screen and (min-width: 721px) {
 
     h2 { font-size: 2.5em; }
-    mat-list { width: 70%; }
+    h2, mat-list { width: 70%; }
     mat-list-item { font-size: 1.3em !important; }
 
     .status-content:after, .status-active:after {
@@ -172,7 +176,7 @@ mat-list-item {
         margin-bottom: 8%;
     }
 
-    mat-list { width: 60%; }
+    h2, mat-list { width: 60%; }
     mat-list-item { font-size: 1.5em !important; }
 
     .status-content:after, .status-active:after {
@@ -195,5 +199,5 @@ mat-list-item {
 @media screen and (min-width: 1201px) {
 
     h2 { width: 40%; }
-    mat-list { width: 40%; }
+    h2, mat-list { width: 40%; }
 }

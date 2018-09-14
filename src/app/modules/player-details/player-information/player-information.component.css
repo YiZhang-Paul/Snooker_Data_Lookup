@@ -1,14 +1,17 @@
 h2 {
 
-    width: 75%;
-    font-size: 1em;
     margin: 0 auto;
     margin-top: 2%;
-    margin-bottom: 2%;
+    margin-bottom: 3%;
+    font-size: 0.95em;
     text-align: center;
-    background-color: gold;
-    border: 6px solid red;
-    border-radius: 50px;
+    color: white;
+    border-radius: 2px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: tomato;
+    border-top: 5px solid gold;
+    border-bottom: 5px solid gold;
 }
 
 /* material component style */
@@ -153,7 +156,7 @@ mat-list-item {
 @media screen and (min-width: 311px) {
 
     .country-flag { display: inline-block; }
-    mat-list { width: 80%; }
+    h2, mat-list { width: 80%; }
 }
 
 @media screen and (min-width: 351px) {
@@ -164,25 +167,25 @@ mat-list-item {
 
 @media screen and (min-width: 401px) {
 
-    mat-list { width: 70%; }
+    h2, mat-list { width: 70%; }
 }
 
 @media screen and (min-width: 451px) {
 
     mat-list-item { font-size: 0.8em !important; }
-    mat-list { width: 100%; }
+    h2, mat-list { width: 100%; }
 }
 
 @media screen and (min-width: 541px) {
 
     h2 { font-size: 1.5em; }
-    mat-list { width: 90%; }
+    h2, mat-list { width: 90%; }
     mat-list-item { font-size: 1em !important; }
 }
 
 @media screen and (min-width: 621px) {
 
-    mat-list { width: 80%; }
+    h2, mat-list { width: 80%; }
 }
 
 @media screen and (min-width: 721px) {

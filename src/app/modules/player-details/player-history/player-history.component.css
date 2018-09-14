@@ -1,14 +1,17 @@
 h2 {
 
-    width: 70%;
     margin: 0 auto;
     margin-top: 2%;
     margin-bottom: 3%;
     font-size: 0.95em;
     text-align: center;
-    background-color: gold;
-    border: 6px solid red;
-    border-radius: 50px;
+    color: white;
+    border-radius: 2px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: tomato;
+    border-top: 5px solid gold;
+    border-bottom: 5px solid gold;
 }
 
 .main-content { margin: 0 auto; }
@@ -61,7 +64,7 @@ mat-option {
 /* media queries */
 @media screen and (min-width: 451px) {
 
-    .main-content {
+    h2, .main-content {
 
         width: 95%;
     }
@@ -77,7 +80,7 @@ mat-option {
 
 @media screen and (min-width: 721px) {
 
-    .main-content {
+    h2, .main-content {
 
         width: 90%;
     }
@@ -90,7 +93,7 @@ mat-option {
 
 @media screen and (min-width: 1025px) {
 
-    .main-content {
+    h2, .main-content {
 
         width: 85%;
     }
@@ -109,7 +112,7 @@ mat-option {
 
 @media screen and (min-width: 1101px) {
 
-    .main-content {
+    h2, .main-content {
 
         width: 80%;
     }
@@ -117,7 +120,7 @@ mat-option {
 
 @media screen and (min-width: 1201px) {
 
-    .main-content {
+    h2, .main-content {
 
         width: 75%;
     }
@@ -125,7 +128,7 @@ mat-option {
 
 @media screen and (min-width: 1401px) {
 
-    .main-content {
+    h2, .main-content {
 
         width: 70%;
     }
