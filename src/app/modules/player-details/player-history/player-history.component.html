@@ -3,18 +3,28 @@
 </div>
 
 <h2>Tournament History</h2>
-<select (change)="onYearSelected($event.target.value)" class="years">
-    <option *ngFor="let year of years"
-        [selected]="year === selectedYear"
-        value="{{ year }}">{{ year }}</option>
-</select>
 
-<p #message class="message message-invisible">No history found for this year.</p>
-
-<ng-container *ngIf="histories">
-    <div *ngFor="let history of histories">
-        <app-match-history-listing
-            [history]="history" [id]="id">
-        </app-match-history-listing>
+<div class="main-content">
+    <div class="option">
+        <mat-form-field class="year" color="warn">
+            <mat-select [value]="selectedYear"
+                placeholder="Season" panelClass="select-options"
+                (selectionChange)="onYearSelected($event.value)"
+                disableOptionCentering class="select">
+                <mat-option *ngFor="let year of years" [value]="year">
+                    {{ year }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
-</ng-container>
+
+    <p #message class="message message-invisible">No history found for this year.</p>
+
+    <ng-container *ngIf="histories">
+        <div *ngFor="let history of histories">
+            <app-match-history-listing
+                [history]="history" [id]="id">
+            </app-match-history-listing>
+        </div>
+    </ng-container>
+</div>
