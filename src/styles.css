@@ -34,6 +34,18 @@ app-root, app-home, app-site {
     width: 100%;
 }
 
+/* material component styles */
+.mat-content {
+
+    justify-content: space-between;
+}
+
+.mat-content mat-panel-title, .mat-content mat-panel-description {
+
+    flex: 0 0 auto;
+}
+
+/* media queries */
 @media screen and (max-width: 320px) {
 
 }

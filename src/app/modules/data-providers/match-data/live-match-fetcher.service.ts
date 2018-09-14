@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { retry, map, catchError } from 'rxjs/operators';
 import { IMatch } from './match.interface';
 import { recordToMatch } from './match';
+import { attachCorsProxy } from '../../../app-config';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,7 @@ export class LiveMatchFetcherService {
 
     public fetchByPlayer(id: number, year: number): Observable<IMatch[]> {
 
-        const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?t=8&p=${id}&s=${year}`;
+        const url = attachCorsProxy(`http://api.snooker.org/?t=8&p=${id}&s=${year}`);
 
         return this.httpClient.get<object>(url).pipe(
 

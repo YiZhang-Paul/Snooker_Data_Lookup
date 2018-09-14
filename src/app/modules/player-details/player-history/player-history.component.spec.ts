@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,6 +9,7 @@ import { IMatch } from '../../data-providers/match-data/match.interface';
 import { IMatchHistory } from '../../data-providers/players-data/match-history.interface';
 import { PlayerMatchHistoryLookupService } from '../../data-providers/players-data/player-match-history-lookup.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { PlayerHistoryComponent } from './player-history.component';
 
 @Component({ selector: 'app-match-history-listing', template: '' })
@@ -43,7 +45,13 @@ describe('PlayerHistoryComponent', () => {
 
         TestBed.configureTestingModule({
 
-            imports: [RouterTestingModule, MatProgressSpinnerModule],
+            imports: [
+
+                NoopAnimationsModule,
+                RouterTestingModule,
+                MatProgressSpinnerModule,
+                MatSelectModule
+            ],
             declarations: [PlayerHistoryComponent, MatchHistoryListingComponent],
             providers: [{ provide: PlayerMatchHistoryLookupService, useValue: historyLookup }]
 

@@ -1,4 +1,25 @@
-<h3>{{ history.event.name }}</h3>
-<ul>
-    <li *ngFor="let match of matches$ | async">{{ match }}</li>
-</ul>
+<mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <span class="name">{{ history.event.name }}</span>
+            <span class="location">&nbsp;- {{ eventLocation }}</span>
+        </mat-panel-title>
+        <mat-panel-description>
+            <span class="date-long">Scheduled for {{ eventStart }} through {{ eventEnd }}</span>
+            <span class="date-short">{{ eventStart }} ~ {{ eventEnd }}</span>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-list>
+        <mat-list-item *ngFor="let match of matches$ | async" class="match">
+            <div *ngIf="flags && match.player1 && flags.has(match.player1.nationality.toLowerCase())"
+                class="country-flag"
+                [ngStyle]="{ 'background-image': 'url(' + flags.get(match.player1.nationality.toLowerCase()) + ')' }">
+            </div>{{ match.player1 ? match.player1.shortFullName : 'N/A' }} {{ match.score }}
+            <div *ngIf="flags && match.player2 && flags.has(match.player2.nationality.toLowerCase())"
+                class="country-flag"
+                [ngStyle]="{ 'background-image': 'url(' + flags.get(match.player2.nationality.toLowerCase()) + ')' }">
+            </div>{{ match.player2 ? match.player2.shortFullName : 'N/A' }}{{ match.finished ? '' : ' (TBA)' }}
+        </mat-list-item>
+    </mat-list>
+</mat-expansion-panel>

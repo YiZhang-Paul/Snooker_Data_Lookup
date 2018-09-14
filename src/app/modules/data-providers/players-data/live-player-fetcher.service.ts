@@ -5,6 +5,7 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { PlayerDataFixerService } from './player-data-fixer.service';
 import { recordToPlayer } from './player';
+import { attachCorsProxy } from '../../../app-config';
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +38,7 @@ export class LivePlayerFetcherService {
 
     public fetchById(id: number): Observable<IPlayer> {
 
-        const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?p=${id}`;
+        const url = attachCorsProxy(`http://api.snooker.org/?p=${id}`);
 
         return this.httpClient.get<object>(url).pipe(
 
@@ -49,7 +50,7 @@ export class LivePlayerFetcherService {
 
     public fetchByYear(year: number): Observable<IPlayer[]> {
 
-        const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?t=10&st=p&s=${year}`;
+        const url = attachCorsProxy(`http://api.snooker.org/?t=10&st=p&s=${year}`);
 
         return this.httpClient.get<object>(url).pipe(
 

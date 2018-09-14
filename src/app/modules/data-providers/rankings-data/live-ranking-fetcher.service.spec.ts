@@ -2,6 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { IRankData } from './rank-data.interface';
 import { LiveRankingFetcherService } from './live-ranking-fetcher.service';
+import { attachCorsProxy } from '../../../app-config';
 
 describe('LiveRankingFetcherService', () => {
 
@@ -10,7 +11,7 @@ describe('LiveRankingFetcherService', () => {
     const year = 2015;
     const rawData: object[] = [{ Position: 1, PlayerID: 1, Sum: 1, Type: 'MoneyRankings' }];
     const response: IRankData[] = [{ position: 1, playerId: 1, earnings: 1, type: 'MoneyRankings' }];
-    const url = `https://cors-anywhere.herokuapp.com/http://api.snooker.org/?rt=MoneyRankings&s=${year}`;
+    const url = attachCorsProxy(`http://api.snooker.org/?rt=MoneyRankings&s=${year}`);
 
     beforeEach(() => {
 
