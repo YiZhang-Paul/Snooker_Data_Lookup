@@ -1,3 +1,8 @@
+a {
+
+    color: orange;
+}
+
 h2 {
 
     margin: 0 auto;
@@ -76,45 +81,45 @@ mat-list-item {
 }
 
 /* field header style */
-.header:before {
+.header-icon {
 
     width: 19px;
     height: 19px;
     content: '';
+    margin-top: 2px;
     margin-left: 2px;
     margin-right: 4px;
-    margin-bottom: 2px;
     display: inline-block;
     vertical-align: middle;
     background-size: 19px 19px;
 }
 
-.name-header:before {
+.name-icon {
 
     background-image: url(http://www.iconarchive.com/download/i102641/graphicloads/flat-finance/name-card.ico);
 }
 
-.gender-header:before {
+.gender-icon {
 
     background-image: url(https://www.shareicon.net/data/2016/09/02/824380_man_512x512.png);
 }
 
-.year-header:before {
+.year-icon {
 
     background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Circle-icons-calendar.svg/1024px-Circle-icons-calendar.svg.png);
 }
 
-.country-header:before {
+.country-icon {
 
     background-image: url(https://cdn4.iconfinder.com/data/icons/nationalities-new-collection/383/india-512.png);
 }
 
-.url-header:before {
+.url-icon {
 
     background-image: url(https://cdn3.iconfinder.com/data/icons/seo-internet-marketing-flat-icons/250/web-code.png);
 }
 
-.twitter-header:before {
+.twitter-icon {
 
     background-image: url(http://www.stickpng.com/assets/images/58e9196deb97430e819064f6.png);
 }
@@ -220,7 +225,7 @@ mat-list-item {
         margin-right: 3px;
     }
 
-    .header:before {
+    .header-icon {
 
         width: 23px;
         height: 23px;
@@ -259,10 +264,11 @@ mat-list-item {
     mat-panel-title { font-size: 1.2em; }
     mat-list-item { font-size: 1.5em !important; }
 
-    .header:before {
+    .header-icon {
 
         width: 26px;
         height: 26px;
+        margin-top: 4px;
         margin-left: 4px;
         margin-right: 9px;
         background-size: 26px 26px;

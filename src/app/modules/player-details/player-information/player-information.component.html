@@ -15,6 +15,7 @@
 
     <mat-list>
         <mat-list-item>
+            <div class="header-icon name-icon"></div>
             <span class="header name-header">
                 <span class="long-text">First Name:</span>
                 <span class="short-text">First:</span>
@@ -23,6 +24,7 @@
         </mat-list-item>
 
         <mat-list-item *ngIf="player?.middleName">
+            <div class="header-icon name-icon"></div>
             <span class="header name-header">
                 <span class="long-text">Middle Name:</span>
                 <span class="short-text">Middle:</span>
@@ -31,6 +33,7 @@
         </mat-list-item>
 
         <mat-list-item>
+            <div class="header-icon name-icon"></div>
             <span class="header name-header">
                 <span class="long-text">Last Name:</span>
                 <span class="short-text">Last:</span>
@@ -39,6 +42,7 @@
         </mat-list-item>
 
         <mat-list-item>
+            <div class="header-icon gender-icon"></div>
             <span class="header gender-header">
                 <span class="long-text">Gender:</span>
                 <span class="short-text">Sex:</span>
@@ -47,6 +51,7 @@
         </mat-list-item>
 
         <mat-list-item>
+            <div class="header-icon year-icon"></div>
             <span class="header year-header">
                 <span class="long-text">Date of Birth:</span>
                 <span class="short-text">D.O.B:</span>
@@ -55,6 +60,7 @@
         </mat-list-item>
 
         <mat-list-item>
+            <div class="header-icon country-icon"></div>
             <span class="header country-header">
                 <span class="long-text">Country of Origin:</span>
                 <span class="short-text">Nationality:</span>
@@ -66,6 +72,7 @@
         </mat-list-item>
 
         <mat-list-item *ngIf="player?.bioPage">
+            <div class="header-icon url-icon"></div>
             <span class="header url-header">
                 <span class="long-text">Bio Page:</span>
                 <span class="short-text">Bio:</span>
@@ -76,6 +83,7 @@
         </mat-list-item>
 
         <mat-list-item *ngIf="player?.website">
+            <div class="header-icon url-icon"></div>
             <span class="header url-header">Website:</span>&nbsp;
             <span class="url-content website">
                 <a [href]="player?.website | urlFormatter">{{ player?.website | urlTruncate }}</a>
@@ -83,6 +91,7 @@
         </mat-list-item>
 
         <mat-list-item *ngIf="player?.twitter">
+            <div class="header-icon twitter-icon"></div>
             <span class="header twitter-header">Twitter: @</span>
             <span class="twitter-content twitter">{{ player?.twitter }}</span>
         </mat-list-item>
