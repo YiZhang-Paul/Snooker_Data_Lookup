@@ -14,8 +14,8 @@ export class LivePlayerFetcherService {
 
     constructor(
 
-        private httpClient: HttpClient,
-        private fixer: PlayerDataFixerService
+        protected httpClient: HttpClient,
+        protected fixer: PlayerDataFixerService
 
     ) { }
 
