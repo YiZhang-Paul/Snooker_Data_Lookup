@@ -36,23 +36,23 @@ export class Player implements IPlayer {
 
 export function recordToPlayer(record: object): IPlayer {
 
-    const lastSeason = record['LastSeasonAsPro'];
+    const lastSeason = record['last_season_played'];
 
     return new Player(
 
-        record['ID'],
-        record['FirstName'],
-        record['MiddleName'],
-        record['LastName'],
-        record['ShortName'],
-        record['Born'],
-        record['Sex'],
-        record['Nationality'],
-        record['Photo'],
-        record['BioPage'],
-        record['URL'],
-        record['Twitter'],
-        record['FirstSeasonAsPro'],
+        record['player_id'],
+        record['first_name'],
+        record['middle_name'],
+        record['last_name'],
+        record['short_name'],
+        record['date_of_birth'],
+        record['gender'],
+        record['nationality'],
+        record['image'],
+        record['bio_page'],
+        record['website'],
+        record['twitter'],
+        record['turned_pro'],
         lastSeason ? lastSeason : new Date().getFullYear()
     );
 }
