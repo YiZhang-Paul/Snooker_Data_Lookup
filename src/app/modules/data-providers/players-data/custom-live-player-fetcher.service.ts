@@ -38,7 +38,7 @@ export class CustomLivePlayerFetcherService extends LivePlayerFetcherService {
 
     private filterByYear(records: object[], year: number): object[] {
 
-        return records.filter(record => record['activeYears'].includes(year));
+        return records.filter(record => record['active_years'].includes(year));
     }
 
     public fetchByYear(year: number): Observable<IPlayer[]> {

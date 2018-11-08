@@ -55,11 +55,6 @@ describe('AppComponent', () => {
         expect(component).toBeTruthy();
     }));
 
-    it('should load players from all supported years on load', () => {
-
-        expect(getPlayersSpy).toHaveBeenCalledTimes(totalYears);
-    });
-
     it('should load rankings from all supported years on load', () => {
 
         expect(getRankingsSpy).toHaveBeenCalledTimes(totalYears);

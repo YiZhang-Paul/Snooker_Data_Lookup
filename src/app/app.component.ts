@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { CustomPlayerLookupService } from './modules/data-providers/players-data/custom-player-lookup.service';
 import { RankingLookupService } from './modules/data-providers/rankings-data/ranking-lookup.service';
 import { APP_CONFIG } from './app-config';
 
@@ -12,6 +13,7 @@ export class AppComponent implements OnInit {
     constructor(
 
         @Inject(APP_CONFIG) private configuration,
+        private playerLookup: CustomPlayerLookupService,
         private rankingLookup: RankingLookupService
 
     ) { }
