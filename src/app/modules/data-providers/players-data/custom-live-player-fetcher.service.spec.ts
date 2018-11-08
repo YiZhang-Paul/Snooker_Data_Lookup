@@ -18,18 +18,18 @@ describe('CustomLivePlayerFetcherServiceService', () => {
 
     const rawData = [
         {
-            activeYears: [2015, 2016],
-            ID: id,
-            Nationality: 'three-body',
-            FirstSeasonAsPro: 2013,
-            LastSeasonAsPro: 2018
+            active_years: [2015, 2016],
+            player_id: id,
+            nationality: 'three-body',
+            turned_pro: 2013,
+            last_season_played: 2018
         },
         {
-            activeYears: [2015, 2017],
-            ID: id + 1,
-            Nationality: 'three-body',
-            FirstSeasonAsPro: 2012,
-            LastSeasonAsPro: 2018
+            active_years: [2015, 2017],
+            player_id: id + 1,
+            nationality: 'three-body',
+            turned_pro: 2012,
+            last_season_played: 2018
         }
     ];
 

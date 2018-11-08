@@ -5,6 +5,7 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { IPlayer } from './player.interface';
 import { PlayerDataFixerService } from './player-data-fixer.service';
 import { LivePlayerFetcherService } from './live-player-fetcher.service';
+import { customRecordToPlayer } from './player';
 import { attachCorsProxy } from '../../../app-config';
 
 @Injectable({
@@ -22,6 +23,11 @@ export class CustomLivePlayerFetcherService extends LivePlayerFetcherService {
     ) {
 
         super(httpClient, fixer);
+    }
+
+    protected toPlayer(record: object): IPlayer {
+
+        return this.fixer.fix(customRecordToPlayer(record));
     }
 
     public fetchById(id: number): Observable<IPlayer> {
